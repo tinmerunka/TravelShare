@@ -1,6 +1,6 @@
 @using TravelShare.Models
 @{
-    ViewData["Title"] = "Poèetna stranica";
+    ViewData["Title"] = "Home";
 }
 
 @section Styles {
@@ -193,18 +193,13 @@
         padding: 2rem;
         margin-bottom: 1.5rem;
         box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        text-align: center;
     }
 
-    .activity-icon {
-        width: 60px;
-        height: 60px;
-        background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
-        border-radius: 15px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+    .activity-card h4 {
+        font-weight: 600;
+        color: var(--text-dark);
         margin-bottom: 1rem;
-        font-size: 2rem;
     }
 
     .section-title {
@@ -263,41 +258,38 @@
     <div class="hero-section">
         <div class="container">
             <div class="hero-content fade-in">
-                <h1>Dobrodošao/la, @currentUser?.FirstName!</h1>
-                <p>Vrijeme je za novu avanturu</p>
+                <h1>Welcome, @currentUser?.FirstName!</h1>
+                <p>Time for a new adventure</p>
                 <a href="#" class="btn btn-accent btn-lg">
-                    Kreiraj putovanje
+                    Create Trip
                 </a>
             </div>
         </div>
     </div>
 
     <div class="container mb-5">
-        <h2 class="section-title fade-in">Tvoja aktivnost</h2>
+        <h2 class="section-title fade-in">Your Activity</h2>
         
         <div class="row">
             <div class="col-md-4 mb-4 fade-in">
                 <div class="activity-card">
-                    <div class="activity-icon">P</div>
-                    <h4>Predstojeca putovanja</h4>
-                    <p class="text-muted mb-3">Trenutno nemaš planiranih putovanja</p>
-                    <a href="#" class="btn btn-primary">Pretraži putovanja</a>
+                    <h4>Upcoming Trips</h4>
+                    <p class="text-muted mb-3">You don't have any planned trips yet</p>
+                    <a href="#" class="btn btn-primary">Browse Trips</a>
                 </div>
             </div>
             <div class="col-md-4 mb-4 fade-in" style="animation-delay: 0.1s">
                 <div class="activity-card">
-                    <div class="activity-icon">G</div>
-                    <h4>Tvoje grupe</h4>
-                    <p class="text-muted mb-3">Još nisi èlan nijedne grupe</p>
-                    <a href="#" class="btn btn-primary">Pronaði grupu</a>
+                    <h4>Your Groups</h4>
+                    <p class="text-muted mb-3">You're not a member of any group yet</p>
+                    <a href="#" class="btn btn-primary">Find Groups</a>
                 </div>
             </div>
             <div class="col-md-4 mb-4 fade-in" style="animation-delay: 0.2s">
                 <div class="activity-card">
-                    <div class="activity-icon">T</div>
-                    <h4>Troškovi</h4>
-                    <p class="text-muted mb-3">Nemaš aktivnih dijeljena troškova</p>
-                    <a href="#" class="btn btn-primary">Vidi pregled</a>
+                    <h4>Expenses</h4>
+                    <p class="text-muted mb-3">No active shared expenses</p>
+                    <a href="#" class="btn btn-primary">View Overview</a>
                 </div>
             </div>
         </div>
@@ -309,13 +301,13 @@ else
         <div class="container">
             <div class="hero-content fade-in">
                 <h1>Travel<span>Share</span> hub</h1>
-                <p>Putuj zajedno, dijeli troškove,  stvaraj uspomene</p>
+                <p>Travel together, share costs, create memories</p>
                 <div class="mt-4">
                     <a asp-controller="Account" asp-action="Login" class="btn btn-accent btn-lg me-3">
-                        Prijavi se
+                        Sign In
                     </a>
                     <a asp-controller="Account" asp-action="Register" class="btn btn-outline-light btn-lg">
-                        Pridruži se besplatno
+                        Join For Free
                     </a>
                 </div>
             </div>
@@ -334,19 +326,19 @@ else
         <div class="search-card fade-in">
             <div class="row g-3 align-items-end">
                 <div class="col-md-3">
-                    <label>Destinacija</label>
-                    <input type="text" class="form-control" placeholder="Gdje želiš iæi?" />
+                    <label>Destination</label>
+                    <input type="text" class="form-control" placeholder="Where do you want to go?" />
                 </div>
                 <div class="col-md-3">
-                    <label>Trajanje</label>
+                    <label>Duration</label>
                     <select class="form-select">
-                        <option>1 tjedan</option>
-                        <option>2 tjedna</option>
-                        <option>1 mjesec</option>
+                        <option>1 week</option>
+                        <option>2 weeks</option>
+                        <option>1 month</option>
                     </select>
                 </div>
                 <div class="col-md-3">
-                    <label>Tip putovanja</label>
+                    <label>Trip Type</label>
                     <select class="form-select">
                         <option>Backpacking</option>
                         <option>Beach</option>
@@ -356,7 +348,7 @@ else
                 </div>
                 <div class="col-md-3">
                     <button class="btn btn-primary w-100" style="padding: 0.8rem;">
-                        Pretraži
+                        Search
                     </button>
                 </div>
             </div>
@@ -364,28 +356,28 @@ else
     </div>
 
     <div class="container mt-5 pt-4">
-        <h2 class="section-title fade-in">Zašto TravelShare?</h2>
+        <h2 class="section-title fade-in">Why TravelShare?</h2>
         
         <div class="row">
             <div class="col-md-4 mb-4 fade-in">
                 <div class="feature-card">
                     <div class="feature-icon">S</div>
-                    <h4>Pronaði suputnike</h4>
-                    <p>Spoji se sa studentima koji dijele tvoje interese i želju za putovanjima</p>
+                    <h4>Find Travel Buddies</h4>
+                    <p>Connect with students who share your interests and passion for travel</p>
                 </div>
             </div>
             <div class="col-md-4 mb-4 fade-in" style="animation-delay: 0.1s">
                 <div class="feature-card">
                     <div class="feature-icon">€</div>
-                    <h4>Dijeli troškove</h4>
-                    <p>Automatski izraèunaj i podijeli troškove putovanja sa grupom</p>
+                    <h4>Share Costs</h4>
+                    <p>Automatically calculate and split trip expenses with your group</p>
                 </div>
             </div>
             <div class="col-md-4 mb-4 fade-in" style="animation-delay: 0.2s">
                 <div class="feature-card">
                     <div class="feature-icon">O</div>
-                    <h4>Organiziraj lako</h4>
-                    <p>Planiraj putovanja, glasaj o odlukama i koordiniraj sve na jednom mjestu</p>
+                    <h4>Organize Easily</h4>
+                    <p>Plan trips, vote on decisions, and coordinate everything in one place</p>
                 </div>
             </div>
         </div>
@@ -397,22 +389,22 @@ else
                 <div class="col-md-3 stat-item">
                     <div class="stat-icon">1K+</div>
                     <div class="stat-number">1,200+</div>
-                    <div class="stat-label">Aktivnih studenata</div>
+                    <div class="stat-label">Active Students</div>
                 </div>
                 <div class="col-md-3 stat-item">
                     <div class="stat-icon">350</div>
                     <div class="stat-number">350+</div>
-                    <div class="stat-label">Organiziranih putovanja</div>
+                    <div class="stat-label">Organized Trips</div>
                 </div>
                 <div class="col-md-3 stat-item">
                     <div class="stat-icon">45</div>
                     <div class="stat-number">45</div>
-                    <div class="stat-label">Država posjeæeno</div>
+                    <div class="stat-label">Countries Visited</div>
                 </div>
                 <div class="col-md-3 stat-item">
                     <div class="stat-icon">€</div>
                     <div class="stat-number">€250k+</div>
-                    <div class="stat-label">Ušteðeno grupnim putovanjima</div>
+                    <div class="stat-label">Saved by Group Travel</div>
                 </div>
             </div>
         </div>
