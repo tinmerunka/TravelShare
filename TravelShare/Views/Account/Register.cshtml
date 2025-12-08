@@ -1,0 +1,422 @@
+@model TravelShare.ViewModels.RegisterViewModel
+@{
+    ViewData["Title"] = "Registracija";
+}
+
+@section Styles {
+<style>
+    .register-page {
+        min-height: calc(100vh - 200px);
+        display: flex;
+        align-items: center;
+        padding: 3rem 0;
+    }
+
+    .register-container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .register-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0;
+        background: white;
+        border-radius: 30px;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+    }
+
+    .register-visual {
+        background: linear-gradient(135deg, #2C3E50 0%, #4A5F7F 100%);
+        padding: 3rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .register-visual::before {
+        content: '';
+        position: absolute;
+        top: -30%;
+        right: -20%;
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(circle, rgba(232, 180, 240, 0.2) 0%, transparent 70%);
+        border-radius: 50%;
+    }
+
+    .register-visual::after {
+        content: '';
+        position: absolute;
+        bottom: -30%;
+        left: -20%;
+        width: 350px;
+        height: 350px;
+        background: radial-gradient(circle, rgba(255, 184, 77, 0.15) 0%, transparent 70%);
+        border-radius: 50%;
+    }
+
+    .register-visual h2 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .register-visual h2 span {
+        font-weight: 300;
+        font-style: italic;
+        color: var(--secondary-color);
+    }
+
+    .register-visual p {
+        font-size: 1.1rem;
+        opacity: 0.9;
+        position: relative;
+        z-index: 1;
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .register-visual .benefits-list {
+        margin-top: 2rem;
+        position: relative;
+        z-index: 1;
+        width: 100%;
+    }
+
+    .benefit-item {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 1.5rem;
+        padding: 1rem;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        backdrop-filter: blur(10px);
+    }
+
+    .benefit-icon {
+        width: 50px;
+        height: 50px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 1rem;
+        font-size: 1.5rem;
+        font-weight: 700;
+        flex-shrink: 0;
+    }
+
+    .benefit-content h5 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 0.3rem;
+    }
+
+    .benefit-content p {
+        font-size: 0.9rem;
+        opacity: 0.9;
+        margin: 0;
+        text-align: left;
+    }
+
+    .register-form {
+        padding: 3rem;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .register-form::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .register-form::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+    }
+
+    .register-form::-webkit-scrollbar-thumb {
+        background: var(--secondary-color);
+        border-radius: 10px;
+    }
+
+    .register-form h3 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        margin-bottom: 0.5rem;
+    }
+
+    .register-form .subtitle {
+        color: var(--text-muted);
+        margin-bottom: 2rem;
+    }
+
+    .form-section {
+        margin-bottom: 2rem;
+    }
+
+    .form-section-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid var(--light-bg);
+    }
+
+    .form-floating {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-floating label {
+        color: var(--text-muted);
+        font-weight: 500;
+    }
+
+    .form-control, .form-select {
+        border: 2px solid #E9ECEF;
+        border-radius: 12px;
+        padding: 1rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus, .form-select:focus {
+        border-color: var(--secondary-color);
+        box-shadow: 0 0 0 0.2rem rgba(232, 180, 240, 0.25);
+    }
+
+    .form-check {
+        margin-bottom: 1.5rem;
+        padding: 1rem;
+        background: var(--light-bg);
+        border-radius: 12px;
+    }
+
+    .form-check-input:checked {
+        background-color: var(--secondary-color);
+        border-color: var(--secondary-color);
+    }
+
+    .form-check-label {
+        font-weight: 500;
+    }
+
+    .demo-info {
+        background: linear-gradient(135deg, rgba(232, 180, 240, 0.1), rgba(255, 184, 77, 0.1));
+        border: 2px dashed var(--secondary-color);
+        border-radius: 15px;
+        padding: 1rem;
+        margin-bottom: 2rem;
+        font-size: 0.9rem;
+        color: var(--text-muted);
+    }
+
+    .demo-info strong {
+        color: var(--primary-color);
+    }
+
+    .divider {
+        text-align: center;
+        margin: 1.5rem 0;
+        position: relative;
+    }
+
+    .divider::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: #E9ECEF;
+    }
+
+    .divider span {
+        background: white;
+        padding: 0 1rem;
+        position: relative;
+        color: var(--text-muted);
+        font-weight: 500;
+    }
+
+    @@media (max-width: 992px) {
+        .register-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .register-visual {
+            padding: 2rem;
+        }
+
+        .register-form {
+            padding: 2rem;
+        }
+    }
+</style>
+}
+
+<div class="register-page">
+    <div class="container">
+        <div class="register-container fade-in">
+            <div class="register-grid">
+                <div class="register-visual">
+                    <h2>Travel<span>Share</span></h2>
+                    <p>Pridruži se zajednici putnika i zapoèni svoju avanturu!</p>
+                    
+                    <div class="benefits-list">
+                        <div class="benefit-item">
+                            <div class="benefit-icon">1</div>
+                            <div class="benefit-content">
+                                <h5>Pronaði suputnike</h5>
+                                <p>Poveži se sa studentima s istim interesima</p>
+                            </div>
+                        </div>
+                        <div class="benefit-item">
+                            <div class="benefit-icon">2</div>
+                            <div class="benefit-content">
+                                <h5>Podijeli troškove</h5>
+                                <p>Putuj jeftinije dijeleæi troškove s grupom</p>
+                            </div>
+                        </div>
+                        <div class="benefit-item">
+                            <div class="benefit-icon">3</div>
+                            <div class="benefit-content">
+                                <h5>Organiziraj lako</h5>
+                                <p>Sve na jednom mjestu - planiranje, glasanje, troškovi</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="register-form">
+                    <h3>Registracija</h3>
+                    <p class="subtitle">Kreiraj besplatan raèun u par klikova</p>
+
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                    <div class="demo-info">
+                        <strong>Demo verzija:</strong> Možeš testirati registraciju s bilo kojim podacima
+                    </div>
+
+                    <form asp-action="Register" method="post">
+                        <div class="form-section">
+                            <div class="form-section-title">Osobni podaci</div>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input asp-for="FirstName" class="form-control" id="firstNameInput" 
+                                               placeholder="Ime" />
+                                        <label for="firstNameInput">Ime</label>
+                                        <span asp-validation-for="FirstName" class="text-danger small"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input asp-for="LastName" class="form-control" id="lastNameInput" 
+                                               placeholder="Prezime" />
+                                        <label for="lastNameInput">Prezime</label>
+                                        <span asp-validation-for="LastName" class="text-danger small"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-floating">
+                                <input asp-for="Email" class="form-control" id="emailInput" 
+                                       placeholder="name@example.com" />
+                                <label for="emailInput">Email adresa</label>
+                                <span asp-validation-for="Email" class="text-danger small"></span>
+                            </div>
+
+                            <div class="form-floating">
+                                <input asp-for="PhoneNumber" class="form-control" id="phoneInput" 
+                                       placeholder="Broj telefona" />
+                                <label for="phoneInput">Broj telefona (opcionalno)</label>
+                                <span asp-validation-for="PhoneNumber" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <div class="form-section-title">Studentski podaci</div>
+                            
+                            <div class="form-floating">
+                                <input asp-for="StudentId" class="form-control" id="studentIdInput" 
+                                       placeholder="Broj indeksa" />
+                                <label for="studentIdInput">Broj indeksa</label>
+                                <span asp-validation-for="StudentId" class="text-danger small"></span>
+                            </div>
+
+                            <div class="form-floating">
+                                <input asp-for="University" class="form-control" id="universityInput" 
+                                       placeholder="Sveuèilište" />
+                                <label for="universityInput">Sveuèilište</label>
+                                <span asp-validation-for="University" class="text-danger small"></span>
+                            </div>
+
+                            <div class="form-floating">
+                                <input asp-for="Faculty" class="form-control" id="facultyInput" 
+                                       placeholder="Fakultet" />
+                                <label for="facultyInput">Fakultet</label>
+                                <span asp-validation-for="Faculty" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <div class="form-section-title">Sigurnost</div>
+                            
+                            <div class="form-floating">
+                                <input asp-for="Password" class="form-control" id="passwordInput" 
+                                       placeholder="Lozinka" type="password" />
+                                <label for="passwordInput">Lozinka (najmanje 6 znakova)</label>
+                                <span asp-validation-for="Password" class="text-danger small"></span>
+                            </div>
+
+                            <div class="form-floating">
+                                <input asp-for="ConfirmPassword" class="form-control" id="confirmPasswordInput" 
+                                       placeholder="Potvrdi lozinku" type="password" />
+                                <label for="confirmPasswordInput">Potvrdi lozinku</label>
+                                <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-check">
+                            <input asp-for="AcceptTerms" class="form-check-input" type="checkbox" id="termsCheck" />
+                            <label class="form-check-label" for="termsCheck">
+                                Prihvaæam <a href="#" class="text-decoration-none">uvjete korištenja</a> i 
+                                <a href="#" class="text-decoration-none">politiku privatnosti</a>
+                            </label>
+                            <span asp-validation-for="AcceptTerms" class="text-danger small d-block mt-1"></span>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 mb-3">
+                            Registriraj se
+                        </button>
+
+                        <div class="text-center">
+                            <p class="mb-0">
+                                Veæ imaš raèun? 
+                                <a asp-action="Login" class="text-decoration-none fw-bold" style="color: var(--secondary-color)">
+                                    Prijavi se
+                                </a>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

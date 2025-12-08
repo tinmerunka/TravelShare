@@ -1,8 +1,4 @@
 namespace TravelShare.Models.Users;
-
-/// <summary>
-/// Represents user travel preferences
-/// </summary>
 public class TravelPreferences
 {
     public decimal MaxBudget { get; set; }

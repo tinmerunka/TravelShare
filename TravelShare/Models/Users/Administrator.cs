@@ -1,8 +1,8 @@
 namespace TravelShare.Models.Users;
 
-/// <summary>
-/// Represents an administrator user - inherits from UserBase
-/// </summary>
+
+
+
 public class Administrator : UserBase
 {
     public string Department { get; set; } = string.Empty;

@@ -1,15 +1,7 @@
 namespace TravelShare.Models.Authentication;
-
-/// <summary>
-/// Base class for authentication providers - demonstrates polymorphism
-/// </summary>
 public abstract class AuthenticationProvider
 {
     public abstract string ProviderName { get; }
-    
-    /// <summary>
-    /// Template method pattern - defines the skeleton of authentication
-    /// </summary>
     public async Task<AuthenticationResult> AuthenticateAsync(string identifier, string credential)
     {
         if (!await ValidateCredentialsAsync(identifier, credential))

@@ -1,10 +1,6 @@
 using TravelShare.Models.Users;
 
 namespace TravelShare.Models.Authentication;
-
-/// <summary>
-/// Email/Password authentication provider - inherits from AuthenticationProvider
-/// </summary>
 public class EmailAuthenticationProvider : AuthenticationProvider
 {
     private readonly Dictionary<string, (string password, UserBase user)> _mockUsers;

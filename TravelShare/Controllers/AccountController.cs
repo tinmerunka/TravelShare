@@ -5,10 +5,6 @@ using TravelShare.Services;
 using TravelShare.ViewModels;
 
 namespace TravelShare.Controllers;
-
-/// <summary>
-/// Controller for user account management - demonstrates clean MVC architecture
-/// </summary>
 public class AccountController : Controller
 {
     private readonly IAuthenticationService _authService;
@@ -61,6 +57,67 @@ public class AccountController : Controller
 
         ModelState.AddModelError(string.Empty, result.ErrorMessage ?? "Pogrešan email ili lozinka");
         return View(model);
+    }
+
+    #endregion
+
+    #region Register
+
+    [HttpGet]
+    public IActionResult Register()
+    {
+        // Redirect if already logged in
+        if (IsUserLoggedIn())
+        {
+            return RedirectToAction("Index", "Home");
+        }
+
+        return View();
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Register(RegisterViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        var existingUser = await _userService.GetUserByEmailAsync(model.Email);
+        if (existingUser != null)
+        {
+            ModelState.AddModelError("Email", "Email adresa je veæ registrirana");
+            return View(model);
+        }
+
+        var newStudent = new Student
+        {
+            Id = new Random().Next(1000, 9999),
+            Email = model.Email,
+            FirstName = model.FirstName,
+            LastName = model.LastName,
+            StudentId = model.StudentId,
+            University = model.University,
+            Faculty = model.Faculty,
+            PhoneNumber = model.PhoneNumber,
+            CreatedAt = DateTime.UtcNow,
+            IsActive = true,
+            Preferences = new TravelPreferences
+            {
+                MinBudget = 200,
+                MaxBudget = 1000,
+                PreferredTravelType = TravelType.Beach,
+                PreferredAccommodation = AccommodationType.Hostel,
+                PreferredDestinations = new List<string> { "Hrvatska", "Italija" }
+            }
+        };
+
+        StoreUserInSession(newStudent);
+        _logger.LogInformation("New user {Email} registered successfully", model.Email);
+
+        TempData["SuccessMessage"] = "Registracija uspješna! Dobrodošli u TravelShare!";
+        return RedirectToAction("Index", "Home");
     }
 
     #endregion

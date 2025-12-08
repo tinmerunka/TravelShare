@@ -2,324 +2,500 @@
 @{
     ViewData["Title"] = "Korisnièki profil";
     var currentUser = Model.User;
+    var avatarUrl = currentUser.ProfileImageUrl;
+    if (string.IsNullOrEmpty(avatarUrl))
+    {
+        var initials = $"{currentUser.FirstName[0]}{currentUser.LastName[0]}";
+        var name = System.Web.HttpUtility.UrlEncode($"{currentUser.FirstName} {currentUser.LastName}");
+        avatarUrl = $"https://ui-avatars.com/api/?name={name}&size=120&background=E8B4F0&color=2C3E50&font-size=0.4&bold=true";
+    }
 }
 
+@section Styles {
 <style>
-    .profile-header {
-        background: linear-gradient(135deg, #3498db, #2ecc71);
-        color: white;
-        padding: 50px 0;
-        margin-bottom: 30px;
+    .profile-page {
+        padding: 2rem 0;
+        min-height: calc(100vh - 200px);
+    }
+
+    .profile-sidebar {
+        background: white;
+        border-radius: 20px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        position: sticky;
+        top: 90px;
+        height: fit-content;
+    }
+
+    .profile-avatar-container {
+        position: relative;
+        width: 100px;
+        height: 100px;
+        margin: 0 auto 1rem;
     }
 
     .profile-avatar {
-        width: 150px;
-        height: 150px;
+        width: 100px;
+        height: 100px;
         border-radius: 50%;
-        border: 5px solid white;
         object-fit: cover;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    }
-
-    .profile-card {
-        border: none;
-        border-radius: 15px;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        margin-bottom: 25px;
-        overflow: hidden;
-    }
-
-    .profile-card-header {
-        background: linear-gradient(135deg, #3498db, #2ecc71);
+        border: 3px solid white;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        background: linear-gradient(135deg, #E8B4F0, #FFB84D);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        font-weight: 700;
         color: white;
-        padding: 15px 20px;
-        font-weight: 600;
     }
 
-    .profile-card-body {
-        padding: 25px;
+    .profile-avatar-img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    .profile-badge {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 28px;
+        height: 28px;
+        background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+        border-radius: 50%;
+        border: 3px solid white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.7rem;
+        font-weight: 700;
+        color: white;
+    }
+
+    .profile-name {
+        text-align: center;
+        margin-bottom: 0.8rem;
+    }
+
+    .profile-name h4 {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        margin-bottom: 0.4rem;
+    }
+
+    .profile-type {
+        display: inline-block;
+        padding: 0.3rem 0.8rem;
+        background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+        color: white;
+        border-radius: 15px;
+        font-weight: 600;
+        font-size: 0.75rem;
+    }
+
+    .profile-meta {
+        text-align: center;
+        color: var(--text-muted);
+        font-size: 0.85rem;
+        margin: 0.8rem 0;
+        padding: 0.8rem 0;
+        border-top: 1px solid var(--light-bg);
+        border-bottom: 1px solid var(--light-bg);
+    }
+
+    .profile-meta p {
+        margin: 0.2rem 0;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.8rem;
+        margin: 1rem 0;
+    }
+
+    .stat-box {
+        text-align: center;
+        padding: 1rem;
+        background: var(--light-bg);
+        border-radius: 12px;
+        transition: all 0.3s ease;
+    }
+
+    .stat-box:hover {
+        transform: translateY(-3px);
+        background: linear-gradient(135deg, rgba(232, 180, 240, 0.2), rgba(255, 184, 77, 0.2));
+    }
+
+    .stat-number {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        display: block;
+    }
+
+    .stat-label {
+        color: var(--text-muted);
+        font-size: 0.75rem;
+        font-weight: 500;
+        margin-top: 0.3rem;
+    }
+
+    .btn-edit {
+        width: 100%;
+        background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+        border: none;
+        color: white;
+        padding: 0.6rem 1rem;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+        margin-top: 1rem;
+    }
+
+    .btn-edit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(232, 180, 240, 0.4);
+    }
+
+    .info-card {
+        background: white;
+        border-radius: 20px;
+        padding: 1.8rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        transition: all 0.3s ease;
+    }
+
+    .info-card:hover {
+        box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+        transform: translateY(-2px);
+    }
+
+    .info-card-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid var(--light-bg);
+    }
+
+    .info-card-icon {
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+        font-weight: 700;
+        color: white;
+        margin-right: 1rem;
+        flex-shrink: 0;
+    }
+
+    .info-card-title {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        margin: 0;
     }
 
     .info-item {
-        margin-bottom: 15px;
-        padding-bottom: 15px;
-        border-bottom: 1px solid #e9ecef;
-    }
-
-    .info-item:last-child {
-        border-bottom: none;
-        margin-bottom: 0;
-        padding-bottom: 0;
+        margin-bottom: 1.2rem;
     }
 
     .info-label {
         font-weight: 600;
-        color: #7f8c8d;
-        font-size: 0.9rem;
-        margin-bottom: 5px;
+        color: var(--text-muted);
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 0.4rem;
+        display: block;
     }
 
     .info-value {
-        color: #2c3e50;
-        font-size: 1.1rem;
-    }
-
-    .badge-custom {
-        padding: 8px 15px;
-        border-radius: 20px;
+        color: var(--text-dark);
+        font-size: 1rem;
         font-weight: 500;
     }
 
     .preference-tag {
         display: inline-block;
-        background-color: #e3f2fd;
-        color: #1976d2;
-        padding: 5px 12px;
+        background: linear-gradient(135deg, rgba(232, 180, 240, 0.2), rgba(255, 184, 77, 0.2));
+        padding: 0.4rem 0.8rem;
         border-radius: 15px;
-        margin: 5px 5px 5px 0;
-        font-size: 0.9rem;
+        margin: 0.2rem;
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: var(--primary-color);
     }
 
-    .btn-edit-profile {
-        background: linear-gradient(135deg, #3498db, #2ecc71);
-        border: none;
-        color: white;
-        padding: 10px 30px;
-        border-radius: 25px;
-        font-weight: 600;
-        transition: transform 0.2s;
-    }
-
-    .btn-edit-profile:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    }
-
-    .stats-row {
-        background-color: rgba(255,255,255,0.9);
+    .action-btn {
+        padding: 0.7rem 1rem;
         border-radius: 10px;
-        padding: 20px;
-        margin-top: 20px;
+        font-weight: 500;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+        margin-bottom: 0.8rem;
+        width: 100%;
     }
 
-    .stat-box {
-        text-align: center;
-        padding: 15px;
+    .action-btn:hover {
+        transform: translateX(3px);
     }
 
-    .stat-number {
-        font-size: 2rem;
-        font-weight: bold;
-        color: #3498db;
-        display: block;
-    }
+    @@media (max-width: 991px) {
+        .profile-sidebar {
+            position: relative;
+            top: 0;
+            margin-bottom: 1.5rem;
+        }
 
-    .stat-label {
-        color: #7f8c8d;
-        font-size: 0.9rem;
+        .stats-grid {
+            grid-template-columns: repeat(4, 1fr);
+        }
     }
 </style>
+}
 
-<div class="profile-header">
+<div class="profile-page">
     <div class="container">
-        <div class="row align-items-center">
-            <div class="col-md-3 text-center">
-                <img src="@(currentUser.ProfileImageUrl ?? "/images/default-avatar.png")" 
-                     alt="Profile Avatar" 
-                     class="profile-avatar" />
-            </div>
-            <div class="col-md-6">
-                <h1 class="mb-2">@currentUser.GetDisplayName()</h1>
-                <p class="mb-2">
-                    <span class="badge bg-light text-dark badge-custom">
-                        <i class="bi bi-person-badge"></i> @currentUser.GetUserType()
-                    </span>
-                </p>
-                <p class="mb-0">
-                    <i class="bi bi-envelope-fill"></i> @currentUser.Email
-                </p>
-                <p class="mb-0 mt-1">
-                    <i class="bi bi-calendar-check"></i> Èlan od: @currentUser.CreatedAt.ToString("dd.MM.yyyy")
-                </p>
-            </div>
-            <div class="col-md-3 text-center">
-                <button class="btn btn-edit-profile">
-                    <i class="bi bi-pencil-fill"></i> Uredi profil
-                </button>
-            </div>
-        </div>
-        
-        @if (Model.StudentProfile != null)
-        {
-            <div class="stats-row">
-                <div class="row">
-                    <div class="col-md-3 stat-box">
-                        <span class="stat-number">0</span>
-                        <span class="stat-label">Putovanja</span>
+        <div class="row">
+            <!-- Sidebar - Avatar & Stats -->
+            <div class="col-lg-3 mb-4">
+                <div class="profile-sidebar fade-in">
+                    <div class="profile-avatar-container">
+                        <div class="profile-avatar">
+                            <img src="@avatarUrl" 
+                                 alt="@currentUser.FirstName @currentUser.LastName" 
+                                 class="profile-avatar-img"
+                                 onerror="this.style.display='none'; this.parentElement.innerHTML='@(currentUser.FirstName[0])@(currentUser.LastName[0])';" />
+                        </div>
+                        <div class="profile-badge">
+                            @if (Model.StudentProfile != null)
+                            {
+                                <span>S</span>
+                            }
+                            else
+                            {
+                                <span>A</span>
+                            }
+                        </div>
                     </div>
-                    <div class="col-md-3 stat-box">
-                        <span class="stat-number">0</span>
-                        <span class="stat-label">Grupe</span>
+                    
+                    <div class="profile-name">
+                        <h4>@currentUser.FirstName @currentUser.LastName</h4>
+                        <span class="profile-type">
+                            @currentUser.GetUserType()
+                        </span>
                     </div>
-                    <div class="col-md-3 stat-box">
-                        <span class="stat-number">0</span>
-                        <span class="stat-label">Destinacije</span>
+                    
+                    <div class="profile-meta">
+                        <p>@currentUser.Email</p>
+                        <p>Èlan od: @currentUser.CreatedAt.ToString("dd.MM.yyyy")</p>
+                        @if (currentUser.LastLoginAt.HasValue)
+                        {
+                            <p>Prijava: @currentUser.LastLoginAt.Value.ToString("dd.MM.yyyy")</p>
+                        }
                     </div>
-                    <div class="col-md-3 stat-box">
-                        <span class="stat-number">€0</span>
-                        <span class="stat-label">Ušteðeno</span>
-                    </div>
-                </div>
-            </div>
-        }
-    </div>
-</div>
 
-<div class="container mb-5">
-    <div class="row">
-        <div class="col-md-6">
-            <div class="card profile-card">
-                <div class="profile-card-header">
-                    <i class="bi bi-person-fill"></i> Osnovne informacije
+                    @if (Model.StudentProfile != null)
+                    {
+                        <div class="stats-grid">
+                            <div class="stat-box">
+                                <span class="stat-number">0</span>
+                                <span class="stat-label">Putovanja</span>
+                            </div>
+                            <div class="stat-box">
+                                <span class="stat-number">0</span>
+                                <span class="stat-label">Grupe</span>
+                            </div>
+                            <div class="stat-box">
+                                <span class="stat-number">0</span>
+                                <span class="stat-label">Destinacije</span>
+                            </div>
+                            <div class="stat-box">
+                                <span class="stat-number">€0</span>
+                                <span class="stat-label">Ušteðeno</span>
+                            </div>
+                        </div>
+                    }
+
+                    <button class="btn btn-edit">
+                        Uredi profil
+                    </button>
                 </div>
-                <div class="profile-card-body">
-                    <div class="info-item">
-                        <div class="info-label">Ime i prezime</div>
-                        <div class="info-value">@currentUser.FirstName @currentUser.LastName</div>
+            </div>
+
+            <!-- Content - Info Cards -->
+            <div class="col-lg-9">
+                <!-- Osnovne informacije -->
+                <div class="info-card fade-in">
+                    <div class="info-card-header">
+                        <div class="info-card-icon">i</div>
+                        <h3 class="info-card-title">Osnovne informacije</h3>
                     </div>
-                    <div class="info-item">
-                        <div class="info-label">Email adresa</div>
-                        <div class="info-value">@currentUser.Email</div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="info-item">
+                                <span class="info-label">Ime i prezime</span>
+                                <div class="info-value">@currentUser.FirstName @currentUser.LastName</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="info-item">
+                                <span class="info-label">Email adresa</span>
+                                <div class="info-value">@currentUser.Email</div>
+                            </div>
+                        </div>
                     </div>
                     
                     @if (Model.StudentProfile != null)
                     {
-                        <div class="info-item">
-                            <div class="info-label">Broj indeksa</div>
-                            <div class="info-value">@Model.StudentProfile.StudentId</div>
-                        </div>
-                        <div class="info-item">
-                            <div class="info-label">Sveuèilište</div>
-                            <div class="info-value">@Model.StudentProfile.University</div>
-                        </div>
-                        <div class="info-item">
-                            <div class="info-label">Fakultet</div>
-                            <div class="info-value">@Model.StudentProfile.Faculty</div>
-                        </div>
-                        @if (!string.IsNullOrEmpty(Model.StudentProfile.PhoneNumber))
-                        {
-                            <div class="info-item">
-                                <div class="info-label">Telefon</div>
-                                <div class="info-value">@Model.StudentProfile.PhoneNumber</div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="info-item">
+                                    <span class="info-label">Broj indeksa</span>
+                                    <div class="info-value">@Model.StudentProfile.StudentId</div>
+                                </div>
                             </div>
-                        }
+                            <div class="col-md-6">
+                                <div class="info-item">
+                                    <span class="info-label">Sveuèilište</span>
+                                    <div class="info-value">@Model.StudentProfile.University</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="info-item">
+                                    <span class="info-label">Fakultet</span>
+                                    <div class="info-value">@Model.StudentProfile.Faculty</div>
+                                </div>
+                            </div>
+                            @if (!string.IsNullOrEmpty(Model.StudentProfile.PhoneNumber))
+                            {
+                                <div class="col-md-6">
+                                    <div class="info-item">
+                                        <span class="info-label">Telefon</span>
+                                        <div class="info-value">@Model.StudentProfile.PhoneNumber</div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
                     }
                     
                     @if (Model.AdminProfile != null)
                     {
-                        <div class="info-item">
-                            <div class="info-label">Odjel</div>
-                            <div class="info-value">@Model.AdminProfile.Department</div>
-                        </div>
-                        <div class="info-item">
-                            <div class="info-label">Dozvole</div>
-                            <div class="info-value">
-                                @foreach (var permission in Model.AdminProfile.Permissions)
-                                {
-                                    <span class="preference-tag">@permission</span>
-                                }
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="info-item">
+                                    <span class="info-label">Odjel</span>
+                                    <div class="info-value">@Model.AdminProfile.Department</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="info-item">
+                                    <span class="info-label">Dozvole</span>
+                                    <div class="info-value">
+                                        @foreach (var permission in Model.AdminProfile.Permissions)
+                                        {
+                                            <span class="preference-tag">@permission</span>
+                                        }
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     }
-                    
-                    <div class="info-item">
-                        <div class="info-label">Posljednja prijava</div>
-                        <div class="info-value">
-                            @if (currentUser.LastLoginAt.HasValue)
-                            {
-                                @currentUser.LastLoginAt.Value.ToString("dd.MM.yyyy HH:mm")
-                            }
-                            else
-                            {
-                                <span class="text-muted">Nikada</span>
-                            }
-                        </div>
-                    </div>
                 </div>
-            </div>
-        </div>
 
-        <div class="col-md-6">
-            @if (Model.StudentProfile?.Preferences != null)
-            {
-                <div class="card profile-card">
-                    <div class="profile-card-header">
-                        <i class="bi bi-sliders"></i> Preferencije putovanja
+                @if (Model.StudentProfile?.Preferences != null)
+                {
+                    <!-- Preferencije putovanja -->
+                    <div class="info-card fade-in" style="animation-delay: 0.1s">
+                        <div class="info-card-header">
+                            <div class="info-card-icon">P</div>
+                            <h3 class="info-card-title">Preferencije putovanja</h3>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="info-item">
+                                    <span class="info-label">Budžet</span>
+                                    <div class="info-value">
+                                        €@Model.StudentProfile.Preferences.MinBudget - €@Model.StudentProfile.Preferences.MaxBudget
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="info-item">
+                                    <span class="info-label">Tip putovanja</span>
+                                    <div class="info-value">
+                                        <span class="preference-tag">
+                                            @Model.StudentProfile.Preferences.PreferredTravelType
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="info-item">
+                                    <span class="info-label">Smještaj</span>
+                                    <div class="info-value">
+                                        <span class="preference-tag">
+                                            @Model.StudentProfile.Preferences.PreferredAccommodation
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="info-item">
+                                    <span class="info-label">Destinacije</span>
+                                    <div class="info-value">
+                                        @foreach (var destination in Model.StudentProfile.Preferences.PreferredDestinations)
+                                        {
+                                            <span class="preference-tag">
+                                                @destination
+                                            </span>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="profile-card-body">
-                        <div class="info-item">
-                            <div class="info-label">Budžet</div>
-                            <div class="info-value">
-                                €@Model.StudentProfile.Preferences.MinBudget - €@Model.StudentProfile.Preferences.MaxBudget
-                            </div>
-                        </div>
-                        <div class="info-item">
-                            <div class="info-label">Tip putovanja</div>
-                            <div class="info-value">
-                                <span class="preference-tag">
-                                    <i class="bi bi-compass"></i> @Model.StudentProfile.Preferences.PreferredTravelType
-                                </span>
-                            </div>
-                        </div>
-                        <div class="info-item">
-                            <div class="info-label">Preferirana smještaj</div>
-                            <div class="info-value">
-                                <span class="preference-tag">
-                                    <i class="bi bi-house"></i> @Model.StudentProfile.Preferences.PreferredAccommodation
-                                </span>
-                            </div>
-                        </div>
-                        <div class="info-item">
-                            <div class="info-label">Preferirane destinacije</div>
-                            <div class="info-value">
-                                @foreach (var destination in Model.StudentProfile.Preferences.PreferredDestinations)
-                                {
-                                    <span class="preference-tag">
-                                        <i class="bi bi-geo-alt-fill"></i> @destination
-                                    </span>
-                                }
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            }
+                }
 
-            <div class="card profile-card">
-                <div class="profile-card-header">
-                    <i class="bi bi-clock-history"></i> Aktivnost
-                </div>
-                <div class="profile-card-body">
-                    <div class="alert alert-info mb-0">
-                        <i class="bi bi-info-circle-fill"></i> Trenutno nemaš zabilježenih aktivnosti.
-                        Pridruži se putovanju ili kreiraj novu grupu!
+                <!-- Sigurnost -->
+                <div class="info-card fade-in" style="animation-delay: 0.2s">
+                    <div class="info-card-header">
+                        <div class="info-card-icon">S</div>
+                        <h3 class="info-card-title">Sigurnost i postavke</h3>
                     </div>
-                </div>
-            </div>
-
-            <div class="card profile-card">
-                <div class="profile-card-header">
-                    <i class="bi bi-shield-check"></i> Sigurnost i privatnost
-                </div>
-                <div class="profile-card-body">
-                    <button class="btn btn-outline-primary w-100 mb-2">
-                        <i class="bi bi-key-fill"></i> Promijeni lozinku
-                    </button>
-                    <button class="btn btn-outline-secondary w-100 mb-2">
-                        <i class="bi bi-gear-fill"></i> Postavke privatnosti
-                    </button>
-                    <button class="btn btn-outline-warning w-100">
-                        <i class="bi bi-bell-fill"></i> Postavke notifikacija
-                    </button>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <button class="btn btn-outline-primary action-btn">
+                                Promijeni lozinku
+                            </button>
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btn btn-outline-secondary action-btn">
+                                Postavke privatnosti
+                            </button>
+                        </div>
+                        <div class="col-md-4">
+                            <button class="btn btn-outline-warning action-btn">
+                                Notifikacije
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

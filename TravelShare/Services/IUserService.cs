@@ -1,10 +1,6 @@
 using TravelShare.Models.Users;
 
 namespace TravelShare.Services;
-
-/// <summary>
-/// Interface for user service - defines contract for user operations
-/// </summary>
 public interface IUserService
 {
     Task<UserBase?> GetUserByIdAsync(int userId);

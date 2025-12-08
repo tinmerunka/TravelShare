@@ -1,8 +1,8 @@
 namespace TravelShare.Models.Users;
 
-/// <summary>
-/// Represents a student user - inherits from UserBase
-/// </summary>
+
+
+
 public class Student : UserBase
 {
     public string StudentId { get; set; } = string.Empty;

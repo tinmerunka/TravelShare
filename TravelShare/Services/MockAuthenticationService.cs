@@ -2,10 +2,6 @@ using TravelShare.Models.Authentication;
 using TravelShare.Models.Users;
 
 namespace TravelShare.Services;
-
-/// <summary>
-/// Mock authentication service - demonstrates polymorphism with authentication providers
-/// </summary>
 public class MockAuthenticationService : IAuthenticationService
 {
     private readonly Dictionary<string, AuthenticationProvider> _providers;

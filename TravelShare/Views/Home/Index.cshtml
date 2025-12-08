@@ -1,117 +1,303 @@
-Ôªø@{
-    ViewData["Title"] = "Poƒçetna stranica";
+@using TravelShare.Models
+@{
+    ViewData["Title"] = "PoËetna stranica";
 }
 
+@section Styles {
 <style>
     .hero-section {
-        background: linear-gradient(135deg, rgba(52, 152, 219, 0.9), rgba(46, 204, 113, 0.9)),
-                    url('https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1600') center/cover;
-        color: white;
-        padding: 100px 0;
+        background: linear-gradient(135deg, #2C3E50 0%, #4A5F7F 100%);
+        padding: 4rem 0 3rem;
+        margin-bottom: 4rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .hero-section::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -10%;
+        width: 500px;
+        height: 500px;
+        background: radial-gradient(circle, rgba(232, 180, 240, 0.2) 0%, transparent 70%);
+        border-radius: 50%;
+    }
+
+    .hero-section::after {
+        content: '';
+        position: absolute;
+        bottom: -30%;
+        left: -5%;
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(circle, rgba(255, 184, 77, 0.15) 0%, transparent 70%);
+        border-radius: 50%;
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 1;
         text-align: center;
-        margin-bottom: 50px;
+        color: white;
     }
 
-    .hero-section h1 {
-        font-size: 3rem;
-        font-weight: bold;
-        margin-bottom: 20px;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    .hero-content h1 {
+        font-size: 3.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        letter-spacing: -1px;
     }
 
-    .hero-section p {
-        font-size: 1.3rem;
-        margin-bottom: 30px;
+    .hero-content h1 span {
+        font-weight: 300;
+        font-style: italic;
+        color: var(--secondary-color);
+    }
+
+    .hero-content p {
+        font-size: 1.25rem;
+        opacity: 0.9;
+        margin-bottom: 2rem;
+        font-weight: 300;
+    }
+
+    .hero-image {
+        margin-top: 2rem;
+        border-radius: 30px;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+
+    .hero-image img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+
+    .search-card {
+        background: white;
+        border-radius: 20px;
+        padding: 2rem;
+        margin-top: -3rem;
+        position: relative;
+        z-index: 2;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    }
+
+    .search-card .form-select,
+    .search-card .form-control {
+        border: 2px solid #E9ECEF;
+        border-radius: 12px;
+        padding: 0.8rem 1rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    .search-card .form-select:focus,
+    .search-card .form-control:focus {
+        border-color: var(--secondary-color);
+        box-shadow: 0 0 0 0.2rem rgba(232, 180, 240, 0.25);
+    }
+
+    .search-card label {
+        font-weight: 600;
+        color: var(--text-dark);
+        margin-bottom: 0.5rem;
+        font-size: 0.9rem;
     }
 
     .feature-card {
-        border: none;
-        border-radius: 15px;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        transition: transform 0.3s, box-shadow 0.3s;
+        text-align: center;
+        padding: 2rem;
         height: 100%;
+        border-radius: 20px;
+        background: white;
+        transition: all 0.3s ease;
     }
 
     .feature-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 12px rgba(0,0,0,0.15);
+        transform: translateY(-8px);
+        box-shadow: 0 12px 24px rgba(0,0,0,0.15);
     }
 
     .feature-icon {
-        font-size: 3rem;
-        color: #3498db;
-        margin-bottom: 20px;
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        font-size: 2.5rem;
+        transition: all 0.3s ease;
+    }
+
+    .feature-card:hover .feature-icon {
+        transform: scale(1.1) rotate(5deg);
+    }
+
+    .feature-card h4 {
+        font-weight: 600;
+        color: var(--text-dark);
+        margin-bottom: 1rem;
+    }
+
+    .feature-card p {
+        color: var(--text-muted);
+        font-size: 0.95rem;
+        line-height: 1.6;
     }
 
     .stats-section {
-        background-color: white;
-        padding: 50px 0;
-        margin: 50px 0;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        background: linear-gradient(135deg, #E8B4F0 0%, #FFB84D 100%);
+        padding: 3rem 0;
+        margin: 4rem 0;
+        border-radius: 30px;
     }
 
     .stat-item {
         text-align: center;
-        padding: 20px;
+        padding: 1.5rem;
+    }
+
+    .stat-icon {
+        width: 60px;
+        height: 60px;
+        background: white;
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+        font-size: 1.8rem;
     }
 
     .stat-number {
         font-size: 2.5rem;
-        font-weight: bold;
-        color: #3498db;
+        font-weight: 700;
+        color: white;
+        margin-bottom: 0.5rem;
     }
 
     .stat-label {
-        color: #7f8c8d;
+        color: rgba(255,255,255,0.9);
+        font-weight: 500;
+        font-size: 1rem;
+    }
+
+    .activity-card {
+        background: white;
+        border-radius: 20px;
+        padding: 2rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    .activity-icon {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+        font-size: 2rem;
+    }
+
+    .section-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        margin-bottom: 3rem;
+        text-align: center;
+    }
+
+    .section-subtitle {
+        text-align: center;
+        color: var(--text-muted);
         font-size: 1.1rem;
+        margin-top: -2rem;
+        margin-bottom: 3rem;
+    }
+
+    .alert-success-custom {
+        background: linear-gradient(135deg, rgba(40, 167, 69, 0.1), rgba(40, 167, 69, 0.05));
+        border: 2px solid #28a745;
+        border-radius: 15px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        color: #155724;
+        font-weight: 500;
+        animation: slideDown 0.5s ease-out;
+    }
+
+    @@keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 </style>
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="container mt-4">
+        <div class="alert alert-success-custom text-center">
+            @TempData["SuccessMessage"]
+        </div>
+    </div>
+}
 
 @if (ViewBag.CurrentUser != null)
 {
     var currentUser = ViewBag.CurrentUser as TravelShare.Models.Users.UserBase;
-    <!-- Logged in user view -->
+    
     <div class="hero-section">
         <div class="container">
-            <h1>Dobrodo≈°ao/la, @currentUser?.FirstName! üëã</h1>
-            <p>Spremni ste za novo putovanje?</p>
-            <a href="#" class="btn btn-light btn-lg">
-                <i class="bi bi-plus-circle"></i> Kreiraj novo putovanje
-            </a>
+            <div class="hero-content fade-in">
+                <h1>Dobrodoöao/la, @currentUser?.FirstName!</h1>
+                <p>Vrijeme je za novu avanturu</p>
+                <a href="#" class="btn btn-accent btn-lg">
+                    Kreiraj putovanje
+                </a>
+            </div>
         </div>
     </div>
 
-    <div class="container">
-        <h2 class="text-center mb-4">Tvoja aktivnost</h2>
+    <div class="container mb-5">
+        <h2 class="section-title fade-in">Tvoja aktivnost</h2>
+        
         <div class="row">
-            <div class="col-md-4 mb-4">
-                <div class="card feature-card">
-                    <div class="card-body text-center">
-                        <i class="bi bi-compass-fill feature-icon"></i>
-                        <h4>Predstojeca putovanja</h4>
-                        <p class="text-muted">Trenutno nema≈° planiranih putovanja</p>
-                        <a href="#" class="btn btn-primary">Pretra≈æi putovanja</a>
-                    </div>
+            <div class="col-md-4 mb-4 fade-in">
+                <div class="activity-card">
+                    <div class="activity-icon">P</div>
+                    <h4>Predstojeca putovanja</h4>
+                    <p class="text-muted mb-3">Trenutno nemaö planiranih putovanja</p>
+                    <a href="#" class="btn btn-primary">Pretraûi putovanja</a>
                 </div>
             </div>
-            <div class="col-md-4 mb-4">
-                <div class="card feature-card">
-                    <div class="card-body text-center">
-                        <i class="bi bi-people-fill feature-icon"></i>
-                        <h4>Tvoje grupe</h4>
-                        <p class="text-muted">Jo≈° nisi ƒçlan nijedne grupe</p>
-                        <a href="#" class="btn btn-primary">Pronaƒëi grupu</a>
-                    </div>
+            <div class="col-md-4 mb-4 fade-in" style="animation-delay: 0.1s">
+                <div class="activity-card">
+                    <div class="activity-icon">G</div>
+                    <h4>Tvoje grupe</h4>
+                    <p class="text-muted mb-3">Joö nisi Ëlan nijedne grupe</p>
+                    <a href="#" class="btn btn-primary">Pronai grupu</a>
                 </div>
             </div>
-            <div class="col-md-4 mb-4">
-                <div class="card feature-card">
-                    <div class="card-body text-center">
-                        <i class="bi bi-cash-coin feature-icon"></i>
-                        <h4>Tro≈°kovi</h4>
-                        <p class="text-muted">Nema≈° aktivnih dijeljena tro≈°kova</p>
-                        <a href="#" class="btn btn-primary">Vidi pregled</a>
-                    </div>
+            <div class="col-md-4 mb-4 fade-in" style="animation-delay: 0.2s">
+                <div class="activity-card">
+                    <div class="activity-icon">T</div>
+                    <h4>Troökovi</h4>
+                    <p class="text-muted mb-3">Nemaö aktivnih dijeljena troökova</p>
+                    <a href="#" class="btn btn-primary">Vidi pregled</a>
                 </div>
             </div>
         </div>
@@ -119,71 +305,114 @@
 }
 else
 {
-    <!-- Guest view -->
     <div class="hero-section">
         <div class="container">
-            <h1>Putuj zajedno, tro≈°kove dijeli! ‚úàÔ∏è</h1>
-            <p>Pridru≈æi se zajednici studenata koji zajedno istra≈æuju svijet</p>
-            <a asp-controller="Account" asp-action="Login" class="btn btn-light btn-lg me-3">
-                <i class="bi bi-box-arrow-in-right"></i> Prijavi se
-            </a>
-            <a href="#" class="btn btn-outline-light btn-lg">
-                <i class="bi bi-person-plus-fill"></i> Registriraj se
-            </a>
+            <div class="hero-content fade-in">
+                <h1>Travel<span>Share</span> hub</h1>
+                <p>Putuj zajedno, dijeli troökove,  stvaraj uspomene</p>
+                <div class="mt-4">
+                    <a asp-controller="Account" asp-action="Login" class="btn btn-accent btn-lg me-3">
+                        Prijavi se
+                    </a>
+                    <a asp-controller="Account" asp-action="Register" class="btn btn-outline-light btn-lg">
+                        Pridruûi se besplatno
+                    </a>
+                </div>
+            </div>
+            <div class="row justify-content-center mt-4">
+                <div class="col-md-10">
+                    <div class="hero-image fade-in" style="animation-delay: 0.3s">
+                        <img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1200&h=600&fit=crop" 
+                             alt="Happy travelers" />
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
     <div class="container">
-        <h2 class="text-center mb-5">Za≈°to TravelShare?</h2>
-        <div class="row">
-            <div class="col-md-4 mb-4">
-                <div class="card feature-card">
-                    <div class="card-body text-center">
-                        <i class="bi bi-people-fill feature-icon"></i>
-                        <h4>Pronaƒëi suputnike</h4>
-                        <p class="text-muted">Spoji se sa studentima koji dijele tvoje interese i ≈æelju za putovanjima</p>
-                    </div>
+        <div class="search-card fade-in">
+            <div class="row g-3 align-items-end">
+                <div class="col-md-3">
+                    <label>Destinacija</label>
+                    <input type="text" class="form-control" placeholder="Gdje ûeliö iÊi?" />
                 </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card feature-card">
-                    <div class="card-body text-center">
-                        <i class="bi bi-cash-stack feature-icon"></i>
-                        <h4>Dijeli tro≈°kove</h4>
-                        <p class="text-muted">Automatski izraƒçunaj i podijeli tro≈°kove putovanja sa grupom</p>
-                    </div>
+                <div class="col-md-3">
+                    <label>Trajanje</label>
+                    <select class="form-select">
+                        <option>1 tjedan</option>
+                        <option>2 tjedna</option>
+                        <option>1 mjesec</option>
+                    </select>
                 </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card feature-card">
-                    <div class="card-body text-center">
-                        <i class="bi bi-calendar-check feature-icon"></i>
-                        <h4>Organiziraj lako</h4>
-                        <p class="text-muted">Planiraj putovanja, glasaj o odlukama i koordiniraj sve na jednom mjestu</p>
-                    </div>
+                <div class="col-md-3">
+                    <label>Tip putovanja</label>
+                    <select class="form-select">
+                        <option>Backpacking</option>
+                        <option>Beach</option>
+                        <option>Cultural</option>
+                        <option>Adventure</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-primary w-100" style="padding: 0.8rem;">
+                        Pretraûi
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="stats-section">
-        <div class="container">
+    <div class="container mt-5 pt-4">
+        <h2 class="section-title fade-in">Zaöto TravelShare?</h2>
+        
+        <div class="row">
+            <div class="col-md-4 mb-4 fade-in">
+                <div class="feature-card">
+                    <div class="feature-icon">S</div>
+                    <h4>Pronai suputnike</h4>
+                    <p>Spoji se sa studentima koji dijele tvoje interese i ûelju za putovanjima</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4 fade-in" style="animation-delay: 0.1s">
+                <div class="feature-card">
+                    <div class="feature-icon">Ä</div>
+                    <h4>Dijeli troökove</h4>
+                    <p>Automatski izraËunaj i podijeli troökove putovanja sa grupom</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4 fade-in" style="animation-delay: 0.2s">
+                <div class="feature-card">
+                    <div class="feature-icon">O</div>
+                    <h4>Organiziraj lako</h4>
+                    <p>Planiraj putovanja, glasaj o odlukama i koordiniraj sve na jednom mjestu</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="stats-section fade-in">
             <div class="row">
                 <div class="col-md-3 stat-item">
+                    <div class="stat-icon">1K+</div>
                     <div class="stat-number">1,200+</div>
                     <div class="stat-label">Aktivnih studenata</div>
                 </div>
                 <div class="col-md-3 stat-item">
+                    <div class="stat-icon">350</div>
                     <div class="stat-number">350+</div>
                     <div class="stat-label">Organiziranih putovanja</div>
                 </div>
                 <div class="col-md-3 stat-item">
+                    <div class="stat-icon">45</div>
                     <div class="stat-number">45</div>
-                    <div class="stat-label">Dr≈æava posjeƒáeno</div>
+                    <div class="stat-label">Drûava posjeÊeno</div>
                 </div>
                 <div class="col-md-3 stat-item">
-                    <div class="stat-number">‚Ç¨250k+</div>
-                    <div class="stat-label">U≈°teƒëeno grupnim putovanjima</div>
+                    <div class="stat-icon">Ä</div>
+                    <div class="stat-number">Ä250k+</div>
+                    <div class="stat-label">Uöteeno grupnim putovanjima</div>
                 </div>
             </div>
         </div>

@@ -1,10 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace TravelShare.ViewModels;
-
-/// <summary>
-/// ViewModel for login form
-/// </summary>
 public class LoginViewModel
 {
     [Required(ErrorMessage = "Email je obavezan")]

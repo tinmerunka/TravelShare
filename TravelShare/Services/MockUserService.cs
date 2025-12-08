@@ -1,10 +1,6 @@
 using TravelShare.Models.Users;
 
 namespace TravelShare.Services;
-
-/// <summary>
-/// Mock implementation of user service for demonstration purposes
-/// </summary>
 public class MockUserService : IUserService
 {
     private readonly List<UserBase> _users;
