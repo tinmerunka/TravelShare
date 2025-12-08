@@ -1,0 +1,39 @@
+## Build artifacts
+bin/
+obj/
+
+## Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## VSCode
+.vscode/
+
+## Rider
+.idea/
+
+## Project evaluation files
+.cr/
+**/CopilotSnapshots/
+**/ProjectEvaluation/
+
+## Temporary files
+*.swp
+*~
+.DS_Store
+
+## NuGet
+*.nupkg
+*.snupkg
+packages/
+
+## Test Results
+TestResults/
+*.trx
+
+## Other
+*.log
+*.cache
