@@ -3,7 +3,7 @@ namespace TravelShare.Models.Users;
 
 
 
-public class Student : UserBase
+public class Student : User
 {
     public string StudentId { get; set; } = string.Empty;
     public string University { get; set; } = string.Empty;

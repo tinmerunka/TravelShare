@@ -5,7 +5,7 @@ namespace TravelShare.Services;
 public class MockAuthenticationService : IAuthenticationService
 {
     private readonly Dictionary<string, AuthenticationProvider> _providers;
-    private UserBase? _currentUser;
+    private User? _currentUser;
 
     public MockAuthenticationService()
     {
@@ -35,12 +35,12 @@ public class MockAuthenticationService : IAuthenticationService
         return Task.FromResult(true);
     }
 
-    public void SetCurrentUser(UserBase user)
+    public void SetCurrentUser(User user)
     {
         _currentUser = user;
     }
 
-    public UserBase? GetCurrentUser()
+    public User? GetCurrentUser()
     {
         return _currentUser;
     }

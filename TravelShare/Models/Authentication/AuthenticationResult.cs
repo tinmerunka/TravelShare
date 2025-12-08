@@ -6,11 +6,11 @@ public class AuthenticationResult
 {
     public bool IsSuccess { get; private set; }
     public string? ErrorMessage { get; private set; }
-    public UserBase? User { get; private set; }
+    public User? User { get; private set; }
 
     private AuthenticationResult() { }
 
-    public static AuthenticationResult Success(UserBase user)
+    public static AuthenticationResult Success(User user)
     {
         return new AuthenticationResult
         {

@@ -312,7 +312,7 @@
                 <ul class="navbar-nav ms-auto align-items-center">
                     @if (ViewBag.CurrentUser != null)
                     {
-                        var currentUser = ViewBag.CurrentUser as TravelShare.Models.Users.UserBase;
+                        var currentUser = ViewBag.CurrentUser as TravelShare.Models.Users.User;
                         var isAdmin = currentUser is TravelShare.Models.Users.Administrator;
                         var navAvatarUrl = currentUser?.ProfileImageUrl;
                         if (string.IsNullOrEmpty(navAvatarUrl))

@@ -20,9 +20,9 @@ public abstract class AuthenticationProvider
     }
 
     protected abstract Task<bool> ValidateCredentialsAsync(string identifier, string credential);
-    protected abstract Task<Users.UserBase?> GetUserAsync(string identifier);
+    protected abstract Task<Users.User?> GetUserAsync(string identifier);
     
-    protected virtual async Task LogAuthenticationAsync(Users.UserBase user)
+    protected virtual async Task LogAuthenticationAsync(Users.User user)
     {
         user.LastLoginAt = DateTime.UtcNow;
         await Task.CompletedTask;

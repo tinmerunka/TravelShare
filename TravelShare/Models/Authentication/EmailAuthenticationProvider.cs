@@ -3,14 +3,14 @@ using TravelShare.Models.Users;
 namespace TravelShare.Models.Authentication;
 public class EmailAuthenticationProvider : AuthenticationProvider
 {
-    private readonly Dictionary<string, (string password, UserBase user)> _mockUsers;
+    private readonly Dictionary<string, (string password, User user)> _mockUsers;
 
     public override string ProviderName => "Email";
 
     public EmailAuthenticationProvider()
     {
         // Mock data for demonstration
-        _mockUsers = new Dictionary<string, (string, UserBase)>
+        _mockUsers = new Dictionary<string, (string, User)>
         {
             ["student@travelshare.com"] = ("password123", new Student
             {
@@ -54,12 +54,12 @@ public class EmailAuthenticationProvider : AuthenticationProvider
         return Task.FromResult(false);
     }
 
-    protected override Task<UserBase?> GetUserAsync(string identifier)
+    protected override Task<User?> GetUserAsync(string identifier)
     {
         if (_mockUsers.TryGetValue(identifier, out var userData))
         {
-            return Task.FromResult<UserBase?>(userData.user);
+            return Task.FromResult<User?>(userData.user);
         }
-        return Task.FromResult<UserBase?>(null);
+        return Task.FromResult<User?>(null);
     }
 }

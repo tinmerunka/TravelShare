@@ -27,19 +27,13 @@ namespace TravelShare.Controllers
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-
         private void LoadCurrentUser()
         {
             var userJson = HttpContext.Session.GetString("CurrentUser");
             if (!string.IsNullOrEmpty(userJson))
             {
                 var userType = HttpContext.Session.GetString("UserType");
-                UserBase? currentUser = null;
+                User? currentUser = null;
 
                 if (userType == "Student")
                 {
