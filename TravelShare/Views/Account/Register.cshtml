@@ -1,6 +1,6 @@
 @model TravelShare.ViewModels.RegisterViewModel
 @{
-    ViewData["Title"] = "Registracija";
+    ViewData["Title"] = "Sign Up";
 }
 
 @section Styles {
@@ -271,61 +271,61 @@
             <div class="register-grid">
                 <div class="register-visual">
                     <h2>Travel<span>Share</span></h2>
-                    <p>Pridruži se zajednici putnika i zapoèni svoju avanturu!</p>
+                    <p>Join the traveler community and start your adventure!</p>
                     
                     <div class="benefits-list">
                         <div class="benefit-item">
                             <div class="benefit-icon">1</div>
                             <div class="benefit-content">
-                                <h5>Pronaði suputnike</h5>
-                                <p>Poveži se sa studentima s istim interesima</p>
+                                <h5>Find Travel Buddies</h5>
+                                <p>Connect with students who share your interests</p>
                             </div>
                         </div>
                         <div class="benefit-item">
                             <div class="benefit-icon">2</div>
                             <div class="benefit-content">
-                                <h5>Podijeli troškove</h5>
-                                <p>Putuj jeftinije dijeleæi troškove s grupom</p>
+                                <h5>Share Costs</h5>
+                                <p>Travel cheaper by sharing expenses with your group</p>
                             </div>
                         </div>
                         <div class="benefit-item">
                             <div class="benefit-icon">3</div>
                             <div class="benefit-content">
-                                <h5>Organiziraj lako</h5>
-                                <p>Sve na jednom mjestu - planiranje, glasanje, troškovi</p>
+                                <h5>Organize Easily</h5>
+                                <p>Everything in one place - planning, voting, expenses</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="register-form">
-                    <h3>Registracija</h3>
-                    <p class="subtitle">Kreiraj besplatan raèun u par klikova</p>
+                    <h3>Sign Up</h3>
+                    <p class="subtitle">Create your free account in a few clicks</p>
 
                     <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
 
                     <div class="demo-info">
-                        <strong>Demo verzija:</strong> Možeš testirati registraciju s bilo kojim podacima
+                        <strong>Demo version:</strong> You can test registration with any data
                     </div>
 
                     <form asp-action="Register" method="post">
                         <div class="form-section">
-                            <div class="form-section-title">Osobni podaci</div>
+                            <div class="form-section-title">Personal Information</div>
                             
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-floating">
                                         <input asp-for="FirstName" class="form-control" id="firstNameInput" 
-                                               placeholder="Ime" />
-                                        <label for="firstNameInput">Ime</label>
+                                               placeholder="First Name" />
+                                        <label for="firstNameInput">First Name</label>
                                         <span asp-validation-for="FirstName" class="text-danger small"></span>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating">
                                         <input asp-for="LastName" class="form-control" id="lastNameInput" 
-                                               placeholder="Prezime" />
-                                        <label for="lastNameInput">Prezime</label>
+                                               placeholder="Last Name" />
+                                        <label for="lastNameInput">Last Name</label>
                                         <span asp-validation-for="LastName" class="text-danger small"></span>
                                     </div>
                                 </div>
@@ -334,57 +334,57 @@
                             <div class="form-floating">
                                 <input asp-for="Email" class="form-control" id="emailInput" 
                                        placeholder="name@example.com" />
-                                <label for="emailInput">Email adresa</label>
+                                <label for="emailInput">Email Address</label>
                                 <span asp-validation-for="Email" class="text-danger small"></span>
                             </div>
 
                             <div class="form-floating">
                                 <input asp-for="PhoneNumber" class="form-control" id="phoneInput" 
-                                       placeholder="Broj telefona" />
-                                <label for="phoneInput">Broj telefona (opcionalno)</label>
+                                       placeholder="Phone Number" />
+                                <label for="phoneInput">Phone Number (optional)</label>
                                 <span asp-validation-for="PhoneNumber" class="text-danger small"></span>
                             </div>
                         </div>
 
                         <div class="form-section">
-                            <div class="form-section-title">Studentski podaci</div>
+                            <div class="form-section-title">Student Information</div>
                             
                             <div class="form-floating">
                                 <input asp-for="StudentId" class="form-control" id="studentIdInput" 
-                                       placeholder="Broj indeksa" />
-                                <label for="studentIdInput">Broj indeksa</label>
+                                       placeholder="Student ID" />
+                                <label for="studentIdInput">Student ID</label>
                                 <span asp-validation-for="StudentId" class="text-danger small"></span>
                             </div>
 
                             <div class="form-floating">
                                 <input asp-for="University" class="form-control" id="universityInput" 
-                                       placeholder="Sveuèilište" />
-                                <label for="universityInput">Sveuèilište</label>
+                                       placeholder="University" />
+                                <label for="universityInput">University</label>
                                 <span asp-validation-for="University" class="text-danger small"></span>
                             </div>
 
                             <div class="form-floating">
                                 <input asp-for="Faculty" class="form-control" id="facultyInput" 
-                                       placeholder="Fakultet" />
-                                <label for="facultyInput">Fakultet</label>
+                                       placeholder="Faculty" />
+                                <label for="facultyInput">Faculty</label>
                                 <span asp-validation-for="Faculty" class="text-danger small"></span>
                             </div>
                         </div>
 
                         <div class="form-section">
-                            <div class="form-section-title">Sigurnost</div>
+                            <div class="form-section-title">Security</div>
                             
                             <div class="form-floating">
                                 <input asp-for="Password" class="form-control" id="passwordInput" 
-                                       placeholder="Lozinka" type="password" />
-                                <label for="passwordInput">Lozinka (najmanje 6 znakova)</label>
+                                       placeholder="Password" type="password" />
+                                <label for="passwordInput">Password (at least 6 characters)</label>
                                 <span asp-validation-for="Password" class="text-danger small"></span>
                             </div>
 
                             <div class="form-floating">
                                 <input asp-for="ConfirmPassword" class="form-control" id="confirmPasswordInput" 
-                                       placeholder="Potvrdi lozinku" type="password" />
-                                <label for="confirmPasswordInput">Potvrdi lozinku</label>
+                                       placeholder="Confirm Password" type="password" />
+                                <label for="confirmPasswordInput">Confirm Password</label>
                                 <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
                             </div>
                         </div>
@@ -392,21 +392,21 @@
                         <div class="form-check">
                             <input asp-for="AcceptTerms" class="form-check-input" type="checkbox" id="termsCheck" />
                             <label class="form-check-label" for="termsCheck">
-                                Prihvaæam <a href="#" class="text-decoration-none">uvjete korištenja</a> i 
-                                <a href="#" class="text-decoration-none">politiku privatnosti</a>
+                                I accept the <a href="#" class="text-decoration-none">terms of use</a> and 
+                                <a href="#" class="text-decoration-none">privacy policy</a>
                             </label>
                             <span asp-validation-for="AcceptTerms" class="text-danger small d-block mt-1"></span>
                         </div>
 
                         <button type="submit" class="btn btn-primary w-100 mb-3">
-                            Registriraj se
+                            Sign Up
                         </button>
 
                         <div class="text-center">
                             <p class="mb-0">
-                                Veæ imaš raèun? 
+                                Already have an account? 
                                 <a asp-action="Login" class="text-decoration-none fw-bold" style="color: var(--secondary-color)">
-                                    Prijavi se
+                                    Sign In
                                 </a>
                             </p>
                         </div>

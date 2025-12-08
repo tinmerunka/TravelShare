@@ -1,6 +1,6 @@
 @model TravelShare.ViewModels.LoginViewModel
 @{
-    ViewData["Title"] = "Prijava";
+    ViewData["Title"] = "Sign In";
 }
 
 @section Styles {
@@ -228,29 +228,29 @@
             <div class="login-grid">
                 <div class="login-visual">
                     <h2>Travel<span>Share</span></h2>
-                    <p>Dobrodošao natrag! Nastavi gdje si stao</p>
+                    <p>Your student travel community</p>
                     
                     <div class="feature-list">
                         <div class="feature-item">
-                            <span>Pronaði suputnike</span>
+                            <span>Find travel buddies</span>
                         </div>
                         <div class="feature-item">
-                            <span>Podijeli troškove</span>
+                            <span>Share costs</span>
                         </div>
                         <div class="feature-item">
-                            <span>Organiziraj putovanja</span>
+                            <span>Organize trips</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="login-form">
-                    <h3>Prijava</h3>
-                    <p class="subtitle">Unesi svoje podatke za pristup</p>
+                    <h3>Sign In</h3>
+                    <p class="subtitle">Enter your credentials to access</p>
 
                     <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
 
                     <div class="demo-box">
-                        <h6>Demo pristupni podaci</h6>
+                        <h6>Demo Credentials</h6>
                         <div class="credential">
                             <strong>Student:</strong> student@travelshare.com / password123
                         </div>
@@ -263,35 +263,35 @@
                         <div class="form-floating">
                             <input asp-for="Email" class="form-control" id="emailInput" 
                                    placeholder="name@example.com" />
-                            <label for="emailInput">Email adresa</label>
+                            <label for="emailInput">Email Address</label>
                             <span asp-validation-for="Email" class="text-danger small"></span>
                         </div>
 
                         <div class="form-floating">
                             <input asp-for="Password" class="form-control" id="passwordInput" 
                                    placeholder="Password" type="password" />
-                            <label for="passwordInput">Lozinka</label>
+                            <label for="passwordInput">Password</label>
                             <span asp-validation-for="Password" class="text-danger small"></span>
                         </div>
 
                         <div class="form-check">
                             <input asp-for="RememberMe" class="form-check-input" type="checkbox" id="rememberCheck" />
                             <label class="form-check-label" for="rememberCheck">
-                                Zapamti me
+                                Remember me
                             </label>
                         </div>
 
                         <button type="submit" class="btn btn-primary w-100 mb-3">
-                            Prijavi se
+                            Sign In
                         </button>
 
                         <div class="text-center">
-                            <a href="#" class="text-decoration-none">Zaboravio si lozinku?</a>
+                            <a href="#" class="text-decoration-none">Forgot your password?</a>
                         </div>
                     </form>
 
                     <div class="divider">
-                        <span>ili nastavi sa</span>
+                        <span>or continue with</span>
                     </div>
 
                     <button class="social-btn" disabled>
@@ -303,9 +303,9 @@
 
                     <div class="text-center mt-4">
                         <p class="mb-0">
-                            Nemaš raèun? 
+                            Don't have an account? 
                             <a asp-action="Register" class="text-decoration-none fw-bold" style="color: var(--secondary-color)">
-                                Registriraj se
+                                Sign Up
                             </a>
                         </p>
                     </div>
