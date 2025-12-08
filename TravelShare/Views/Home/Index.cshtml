@@ -1,0 +1,191 @@
+﻿@{
+    ViewData["Title"] = "Početna stranica";
+}
+
+<style>
+    .hero-section {
+        background: linear-gradient(135deg, rgba(52, 152, 219, 0.9), rgba(46, 204, 113, 0.9)),
+                    url('https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1600') center/cover;
+        color: white;
+        padding: 100px 0;
+        text-align: center;
+        margin-bottom: 50px;
+    }
+
+    .hero-section h1 {
+        font-size: 3rem;
+        font-weight: bold;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .hero-section p {
+        font-size: 1.3rem;
+        margin-bottom: 30px;
+    }
+
+    .feature-card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        transition: transform 0.3s, box-shadow 0.3s;
+        height: 100%;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 12px rgba(0,0,0,0.15);
+    }
+
+    .feature-icon {
+        font-size: 3rem;
+        color: #3498db;
+        margin-bottom: 20px;
+    }
+
+    .stats-section {
+        background-color: white;
+        padding: 50px 0;
+        margin: 50px 0;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .stat-item {
+        text-align: center;
+        padding: 20px;
+    }
+
+    .stat-number {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: #3498db;
+    }
+
+    .stat-label {
+        color: #7f8c8d;
+        font-size: 1.1rem;
+    }
+</style>
+
+@if (ViewBag.CurrentUser != null)
+{
+    var currentUser = ViewBag.CurrentUser as TravelShare.Models.Users.UserBase;
+    <!-- Logged in user view -->
+    <div class="hero-section">
+        <div class="container">
+            <h1>Dobrodošao/la, @currentUser?.FirstName! 👋</h1>
+            <p>Spremni ste za novo putovanje?</p>
+            <a href="#" class="btn btn-light btn-lg">
+                <i class="bi bi-plus-circle"></i> Kreiraj novo putovanje
+            </a>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2 class="text-center mb-4">Tvoja aktivnost</h2>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card feature-card">
+                    <div class="card-body text-center">
+                        <i class="bi bi-compass-fill feature-icon"></i>
+                        <h4>Predstojeca putovanja</h4>
+                        <p class="text-muted">Trenutno nemaš planiranih putovanja</p>
+                        <a href="#" class="btn btn-primary">Pretraži putovanja</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card feature-card">
+                    <div class="card-body text-center">
+                        <i class="bi bi-people-fill feature-icon"></i>
+                        <h4>Tvoje grupe</h4>
+                        <p class="text-muted">Još nisi član nijedne grupe</p>
+                        <a href="#" class="btn btn-primary">Pronađi grupu</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card feature-card">
+                    <div class="card-body text-center">
+                        <i class="bi bi-cash-coin feature-icon"></i>
+                        <h4>Troškovi</h4>
+                        <p class="text-muted">Nemaš aktivnih dijeljena troškova</p>
+                        <a href="#" class="btn btn-primary">Vidi pregled</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <!-- Guest view -->
+    <div class="hero-section">
+        <div class="container">
+            <h1>Putuj zajedno, troškove dijeli! ✈️</h1>
+            <p>Pridruži se zajednici studenata koji zajedno istražuju svijet</p>
+            <a asp-controller="Account" asp-action="Login" class="btn btn-light btn-lg me-3">
+                <i class="bi bi-box-arrow-in-right"></i> Prijavi se
+            </a>
+            <a href="#" class="btn btn-outline-light btn-lg">
+                <i class="bi bi-person-plus-fill"></i> Registriraj se
+            </a>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2 class="text-center mb-5">Zašto TravelShare?</h2>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card feature-card">
+                    <div class="card-body text-center">
+                        <i class="bi bi-people-fill feature-icon"></i>
+                        <h4>Pronađi suputnike</h4>
+                        <p class="text-muted">Spoji se sa studentima koji dijele tvoje interese i želju za putovanjima</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card feature-card">
+                    <div class="card-body text-center">
+                        <i class="bi bi-cash-stack feature-icon"></i>
+                        <h4>Dijeli troškove</h4>
+                        <p class="text-muted">Automatski izračunaj i podijeli troškove putovanja sa grupom</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card feature-card">
+                    <div class="card-body text-center">
+                        <i class="bi bi-calendar-check feature-icon"></i>
+                        <h4>Organiziraj lako</h4>
+                        <p class="text-muted">Planiraj putovanja, glasaj o odlukama i koordiniraj sve na jednom mjestu</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="stats-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 stat-item">
+                    <div class="stat-number">1,200+</div>
+                    <div class="stat-label">Aktivnih studenata</div>
+                </div>
+                <div class="col-md-3 stat-item">
+                    <div class="stat-number">350+</div>
+                    <div class="stat-label">Organiziranih putovanja</div>
+                </div>
+                <div class="col-md-3 stat-item">
+                    <div class="stat-number">45</div>
+                    <div class="stat-label">Država posjećeno</div>
+                </div>
+                <div class="col-md-3 stat-item">
+                    <div class="stat-number">€250k+</div>
+                    <div class="stat-label">Ušteđeno grupnim putovanjima</div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

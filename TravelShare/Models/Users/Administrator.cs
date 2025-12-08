@@ -1,0 +1,25 @@
+namespace TravelShare.Models.Users;
+
+/// <summary>
+/// Represents an administrator user - inherits from UserBase
+/// </summary>
+public class Administrator : UserBase
+{
+    public string Department { get; set; } = string.Empty;
+    public List<string> Permissions { get; set; } = new();
+
+    public override string GetUserType()
+    {
+        return "Administrator";
+    }
+
+    public override string GetUserDescription()
+    {
+        return $"{GetUserType()} - {Department} Department";
+    }
+
+    public bool HasPermission(string permission)
+    {
+        return Permissions.Contains(permission, StringComparer.OrdinalIgnoreCase);
+    }
+}

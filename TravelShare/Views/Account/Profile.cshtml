@@ -1,0 +1,327 @@
+@model TravelShare.ViewModels.UserProfileViewModel
+@{
+    ViewData["Title"] = "Korisnièki profil";
+    var currentUser = Model.User;
+}
+
+<style>
+    .profile-header {
+        background: linear-gradient(135deg, #3498db, #2ecc71);
+        color: white;
+        padding: 50px 0;
+        margin-bottom: 30px;
+    }
+
+    .profile-avatar {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        border: 5px solid white;
+        object-fit: cover;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .profile-card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        margin-bottom: 25px;
+        overflow: hidden;
+    }
+
+    .profile-card-header {
+        background: linear-gradient(135deg, #3498db, #2ecc71);
+        color: white;
+        padding: 15px 20px;
+        font-weight: 600;
+    }
+
+    .profile-card-body {
+        padding: 25px;
+    }
+
+    .info-item {
+        margin-bottom: 15px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #e9ecef;
+    }
+
+    .info-item:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+
+    .info-label {
+        font-weight: 600;
+        color: #7f8c8d;
+        font-size: 0.9rem;
+        margin-bottom: 5px;
+    }
+
+    .info-value {
+        color: #2c3e50;
+        font-size: 1.1rem;
+    }
+
+    .badge-custom {
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-weight: 500;
+    }
+
+    .preference-tag {
+        display: inline-block;
+        background-color: #e3f2fd;
+        color: #1976d2;
+        padding: 5px 12px;
+        border-radius: 15px;
+        margin: 5px 5px 5px 0;
+        font-size: 0.9rem;
+    }
+
+    .btn-edit-profile {
+        background: linear-gradient(135deg, #3498db, #2ecc71);
+        border: none;
+        color: white;
+        padding: 10px 30px;
+        border-radius: 25px;
+        font-weight: 600;
+        transition: transform 0.2s;
+    }
+
+    .btn-edit-profile:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .stats-row {
+        background-color: rgba(255,255,255,0.9);
+        border-radius: 10px;
+        padding: 20px;
+        margin-top: 20px;
+    }
+
+    .stat-box {
+        text-align: center;
+        padding: 15px;
+    }
+
+    .stat-number {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #3498db;
+        display: block;
+    }
+
+    .stat-label {
+        color: #7f8c8d;
+        font-size: 0.9rem;
+    }
+</style>
+
+<div class="profile-header">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-3 text-center">
+                <img src="@(currentUser.ProfileImageUrl ?? "/images/default-avatar.png")" 
+                     alt="Profile Avatar" 
+                     class="profile-avatar" />
+            </div>
+            <div class="col-md-6">
+                <h1 class="mb-2">@currentUser.GetDisplayName()</h1>
+                <p class="mb-2">
+                    <span class="badge bg-light text-dark badge-custom">
+                        <i class="bi bi-person-badge"></i> @currentUser.GetUserType()
+                    </span>
+                </p>
+                <p class="mb-0">
+                    <i class="bi bi-envelope-fill"></i> @currentUser.Email
+                </p>
+                <p class="mb-0 mt-1">
+                    <i class="bi bi-calendar-check"></i> Èlan od: @currentUser.CreatedAt.ToString("dd.MM.yyyy")
+                </p>
+            </div>
+            <div class="col-md-3 text-center">
+                <button class="btn btn-edit-profile">
+                    <i class="bi bi-pencil-fill"></i> Uredi profil
+                </button>
+            </div>
+        </div>
+        
+        @if (Model.StudentProfile != null)
+        {
+            <div class="stats-row">
+                <div class="row">
+                    <div class="col-md-3 stat-box">
+                        <span class="stat-number">0</span>
+                        <span class="stat-label">Putovanja</span>
+                    </div>
+                    <div class="col-md-3 stat-box">
+                        <span class="stat-number">0</span>
+                        <span class="stat-label">Grupe</span>
+                    </div>
+                    <div class="col-md-3 stat-box">
+                        <span class="stat-number">0</span>
+                        <span class="stat-label">Destinacije</span>
+                    </div>
+                    <div class="col-md-3 stat-box">
+                        <span class="stat-number">€0</span>
+                        <span class="stat-label">Ušteðeno</span>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="container mb-5">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card profile-card">
+                <div class="profile-card-header">
+                    <i class="bi bi-person-fill"></i> Osnovne informacije
+                </div>
+                <div class="profile-card-body">
+                    <div class="info-item">
+                        <div class="info-label">Ime i prezime</div>
+                        <div class="info-value">@currentUser.FirstName @currentUser.LastName</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Email adresa</div>
+                        <div class="info-value">@currentUser.Email</div>
+                    </div>
+                    
+                    @if (Model.StudentProfile != null)
+                    {
+                        <div class="info-item">
+                            <div class="info-label">Broj indeksa</div>
+                            <div class="info-value">@Model.StudentProfile.StudentId</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Sveuèilište</div>
+                            <div class="info-value">@Model.StudentProfile.University</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Fakultet</div>
+                            <div class="info-value">@Model.StudentProfile.Faculty</div>
+                        </div>
+                        @if (!string.IsNullOrEmpty(Model.StudentProfile.PhoneNumber))
+                        {
+                            <div class="info-item">
+                                <div class="info-label">Telefon</div>
+                                <div class="info-value">@Model.StudentProfile.PhoneNumber</div>
+                            </div>
+                        }
+                    }
+                    
+                    @if (Model.AdminProfile != null)
+                    {
+                        <div class="info-item">
+                            <div class="info-label">Odjel</div>
+                            <div class="info-value">@Model.AdminProfile.Department</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Dozvole</div>
+                            <div class="info-value">
+                                @foreach (var permission in Model.AdminProfile.Permissions)
+                                {
+                                    <span class="preference-tag">@permission</span>
+                                }
+                            </div>
+                        </div>
+                    }
+                    
+                    <div class="info-item">
+                        <div class="info-label">Posljednja prijava</div>
+                        <div class="info-value">
+                            @if (currentUser.LastLoginAt.HasValue)
+                            {
+                                @currentUser.LastLoginAt.Value.ToString("dd.MM.yyyy HH:mm")
+                            }
+                            else
+                            {
+                                <span class="text-muted">Nikada</span>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            @if (Model.StudentProfile?.Preferences != null)
+            {
+                <div class="card profile-card">
+                    <div class="profile-card-header">
+                        <i class="bi bi-sliders"></i> Preferencije putovanja
+                    </div>
+                    <div class="profile-card-body">
+                        <div class="info-item">
+                            <div class="info-label">Budžet</div>
+                            <div class="info-value">
+                                €@Model.StudentProfile.Preferences.MinBudget - €@Model.StudentProfile.Preferences.MaxBudget
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Tip putovanja</div>
+                            <div class="info-value">
+                                <span class="preference-tag">
+                                    <i class="bi bi-compass"></i> @Model.StudentProfile.Preferences.PreferredTravelType
+                                </span>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Preferirana smještaj</div>
+                            <div class="info-value">
+                                <span class="preference-tag">
+                                    <i class="bi bi-house"></i> @Model.StudentProfile.Preferences.PreferredAccommodation
+                                </span>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Preferirane destinacije</div>
+                            <div class="info-value">
+                                @foreach (var destination in Model.StudentProfile.Preferences.PreferredDestinations)
+                                {
+                                    <span class="preference-tag">
+                                        <i class="bi bi-geo-alt-fill"></i> @destination
+                                    </span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <div class="card profile-card">
+                <div class="profile-card-header">
+                    <i class="bi bi-clock-history"></i> Aktivnost
+                </div>
+                <div class="profile-card-body">
+                    <div class="alert alert-info mb-0">
+                        <i class="bi bi-info-circle-fill"></i> Trenutno nemaš zabilježenih aktivnosti.
+                        Pridruži se putovanju ili kreiraj novu grupu!
+                    </div>
+                </div>
+            </div>
+
+            <div class="card profile-card">
+                <div class="profile-card-header">
+                    <i class="bi bi-shield-check"></i> Sigurnost i privatnost
+                </div>
+                <div class="profile-card-body">
+                    <button class="btn btn-outline-primary w-100 mb-2">
+                        <i class="bi bi-key-fill"></i> Promijeni lozinku
+                    </button>
+                    <button class="btn btn-outline-secondary w-100 mb-2">
+                        <i class="bi bi-gear-fill"></i> Postavke privatnosti
+                    </button>
+                    <button class="btn btn-outline-warning w-100">
+                        <i class="bi bi-bell-fill"></i> Postavke notifikacija
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

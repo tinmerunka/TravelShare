@@ -1,0 +1,195 @@
+@model TravelShare.ViewModels.LoginViewModel
+@{
+    ViewData["Title"] = "Prijava";
+}
+
+<style>
+    .login-container {
+        max-width: 450px;
+        margin: 50px auto;
+    }
+
+    .login-card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        overflow: hidden;
+    }
+
+    .login-header {
+        background: linear-gradient(135deg, #3498db, #2ecc71);
+        color: white;
+        padding: 30px;
+        text-align: center;
+    }
+
+    .login-header h2 {
+        margin: 0;
+        font-weight: bold;
+    }
+
+    .login-header p {
+        margin: 10px 0 0 0;
+        opacity: 0.9;
+    }
+
+    .login-body {
+        padding: 40px;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: #2c3e50;
+    }
+
+    .form-control:focus {
+        border-color: #3498db;
+        box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+    }
+
+    .btn-login {
+        background: linear-gradient(135deg, #3498db, #2ecc71);
+        border: none;
+        color: white;
+        padding: 12px;
+        font-weight: 600;
+        transition: transform 0.2s;
+    }
+
+    .btn-login:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .divider {
+        text-align: center;
+        margin: 25px 0;
+        position: relative;
+    }
+
+    .divider::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: #dee2e6;
+    }
+
+    .divider span {
+        background: white;
+        padding: 0 15px;
+        position: relative;
+        color: #6c757d;
+    }
+
+    .social-login-btn {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #dee2e6;
+        border-radius: 8px;
+        background: white;
+        transition: all 0.3s;
+        margin-bottom: 10px;
+    }
+
+    .social-login-btn:hover {
+        border-color: #3498db;
+        background: #f8f9fa;
+    }
+
+    .demo-credentials {
+        background-color: #fff3cd;
+        border: 1px solid #ffc107;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+
+    .demo-credentials h6 {
+        color: #856404;
+        margin-bottom: 10px;
+    }
+
+    .demo-credentials code {
+        background-color: rgba(0,0,0,0.05);
+        padding: 2px 6px;
+        border-radius: 3px;
+        color: #856404;
+    }
+</style>
+
+<div class="login-container">
+    <div class="card login-card">
+        <div class="login-header">
+            <h2><i class="bi bi-airplane-fill"></i> TravelShare</h2>
+            <p>Prijavi se i kreni na avanturu!</p>
+        </div>
+        <div class="login-body">
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+            <div class="demo-credentials">
+                <h6><i class="bi bi-info-circle-fill"></i> Demo pristupni podaci:</h6>
+                <p class="mb-1">
+                    <strong>Student:</strong> <code>student@travelshare.com</code> / <code>password123</code>
+                </p>
+                <p class="mb-0">
+                    <strong>Admin:</strong> <code>admin@travelshare.com</code> / <code>admin123</code>
+                </p>
+            </div>
+
+            <form asp-action="Login" method="post">
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label">
+                        <i class="bi bi-envelope-fill"></i> Email adresa
+                    </label>
+                    <input asp-for="Email" class="form-control" placeholder="tvoj.email@example.com" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Password" class="form-label">
+                        <i class="bi bi-lock-fill"></i> Lozinka
+                    </label>
+                    <input asp-for="Password" class="form-control" placeholder="••••••••" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3 form-check">
+                    <input asp-for="RememberMe" class="form-check-input" />
+                    <label asp-for="RememberMe" class="form-check-label">
+                        Zapamti me
+                    </label>
+                </div>
+
+                <button type="submit" class="btn btn-login w-100 mb-3">
+                    <i class="bi bi-box-arrow-in-right"></i> Prijavi se
+                </button>
+
+                <div class="text-center">
+                    <a href="#" class="text-decoration-none">Zaboravili ste lozinku?</a>
+                </div>
+            </form>
+
+            <div class="divider">
+                <span>ili se prijavi pomoæu</span>
+            </div>
+
+            <button class="social-login-btn" disabled>
+                <i class="bi bi-google"></i> Nastavi s Google raèunom
+            </button>
+            <button class="social-login-btn" disabled>
+                <i class="bi bi-microsoft"></i> Nastavi s Microsoft raèunom
+            </button>
+
+            <div class="text-center mt-4">
+                <p class="mb-0">Nemaš raèun? <a href="#" class="text-decoration-none fw-bold">Registriraj se</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
