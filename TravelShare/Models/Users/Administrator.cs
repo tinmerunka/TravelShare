@@ -3,7 +3,7 @@ namespace TravelShare.Models.Users;
 
 
 
-public class Administrator : UserBase
+public class Administrator : User
 {
     public string Department { get; set; } = string.Empty;
     public List<string> Permissions { get; set; } = new();
