@@ -1,4 +1,5 @@
 using TravelShare.Services;
+using TravelShare.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 

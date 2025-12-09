@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using TravelShare.Models.Users;
-using TravelShare.Services;
+using TravelShare.Services.Interfaces;
 using TravelShare.ViewModels;
 
 namespace TravelShare.Controllers;

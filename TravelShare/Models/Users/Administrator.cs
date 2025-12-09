@@ -1,8 +1,4 @@
 namespace TravelShare.Models.Users;
-
-
-
-
 public class Administrator : User
 {
     public string Department { get; set; } = string.Empty;

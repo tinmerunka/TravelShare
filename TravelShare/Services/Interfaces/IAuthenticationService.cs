@@ -1,7 +1,7 @@
 using TravelShare.Models.Authentication;
 using TravelShare.Models.Users;
 
-namespace TravelShare.Services;
+namespace TravelShare.Services.Interfaces;
 public interface IAuthenticationService
 {
     Task<AuthenticationResult> AuthenticateAsync(string email, string password);

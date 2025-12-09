@@ -1,4 +1,5 @@
 using TravelShare.Models.Users;
+using TravelShare.Services.Interfaces;
 
 namespace TravelShare.Services;
 public class MockUserService : IUserService
