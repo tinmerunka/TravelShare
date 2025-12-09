@@ -3,16 +3,16 @@ using System.ComponentModel.DataAnnotations;
 namespace TravelShare.ViewModels;
 public class LoginViewModel
 {
-    [Required(ErrorMessage = "Email je obavezan")]
-    [EmailAddress(ErrorMessage = "Unesite validnu email adresu")]
-    [Display(Name = "Email adresa")]
+    [Required(ErrorMessage = "Email is required")]
+    [EmailAddress(ErrorMessage = "Please insert a valid mail")]
+    [Display(Name = "Email address")]
     public string Email { get; set; } = string.Empty;
 
-    [Required(ErrorMessage = "Lozinka je obavezna")]
+    [Required(ErrorMessage = "Password is reqired")]
     [DataType(DataType.Password)]
-    [Display(Name = "Lozinka")]
+    [Display(Name = "Password")]
     public string Password { get; set; } = string.Empty;
 
-    [Display(Name = "Zapamti me")]
+    [Display(Name = "Remeber me")]
     public bool RememberMe { get; set; }
 }

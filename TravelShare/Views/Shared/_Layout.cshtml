@@ -312,7 +312,7 @@
                 <ul class="navbar-nav ms-auto align-items-center">
                     @if (ViewBag.CurrentUser != null)
                     {
-                        var currentUser = ViewBag.CurrentUser as TravelShare.Models.Users.UserBase;
+                        var currentUser = ViewBag.CurrentUser as TravelShare.Models.Users.User;
                         var isAdmin = currentUser is TravelShare.Models.Users.Administrator;
                         var navAvatarUrl = currentUser?.ProfileImageUrl;
                         if (string.IsNullOrEmpty(navAvatarUrl))
@@ -323,17 +323,17 @@
 
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="Home" asp-action="Index">
-                                Početna
+                                Home
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">
-                                Putovanja
+                                Trips
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">
-                                Grupe
+                                Groups
                             </a>
                         </li>
 
@@ -345,39 +345,39 @@
                                     Admin Panel
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="adminDropdown" style="min-width: 280px;">
-                                    <li><h6 class="dropdown-header">Upravljanje korisnicima</h6></li>
+                                    <li><h6 class="dropdown-header">User Management</h6></li>
                                     <li>
                                         <a class="dropdown-item" href="#" onclick="showManageUsers(); return false;">
-                                            Pregled svih korisnika
+                                            All Users
                                         </a>
                                     </li>
                                     <li>
                                         <a class="dropdown-item" href="#" onclick="showBlockedUsers(); return false;">
-                                            Blokirani korisnici
+                                            Blocked Users
                                         </a>
                                     </li>
                                     <li><hr class="dropdown-divider"></li>
-                                    <li><h6 class="dropdown-header">Grupe i putovanja</h6></li>
+                                    <li><h6 class="dropdown-header">Groups & Trips</h6></li>
                                     <li>
                                         <a class="dropdown-item" href="#" onclick="showGroupManagement(); return false;">
-                                            Upravljanje grupama
+                                            Manage Groups
                                         </a>
                                     </li>
                                     <li>
                                         <a class="dropdown-item" href="#" onclick="showTripReports(); return false;">
-                                            Izvještaji o putovanjima
+                                            Trip Reports
                                         </a>
                                     </li>
                                     <li><hr class="dropdown-divider"></li>
-                                    <li><h6 class="dropdown-header">Sistem</h6></li>
+                                    <li><h6 class="dropdown-header">System</h6></li>
                                     <li>
                                         <a class="dropdown-item" href="#" onclick="showSystemLogs(); return false;">
-                                            Logovi sistema
+                                            System Logs
                                         </a>
                                     </li>
                                     <li>
                                         <a class="dropdown-item" href="#" onclick="showSettings(); return false;">
-                                            Postavke aplikacije
+                                            App Settings
                                         </a>
                                     </li>
                                 </ul>
@@ -403,19 +403,19 @@
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                                 <li>
                                     <a class="dropdown-item" asp-controller="Account" asp-action="Profile">
-                                        Moj profil
+                                        My Profile
                                     </a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item" href="#">
-                                        Postavke
+                                        Settings
                                     </a>
                                 </li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
                                     <form method="post" asp-controller="Account" asp-action="Logout">
                                         <button type="submit" class="dropdown-item text-danger">
-                                            Odjava
+                                            Logout
                                         </button>
                                     </form>
                                 </li>
@@ -426,23 +426,23 @@
                     {
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="Home" asp-action="Index">
-                                Početna
+                                Home
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">O nama</a>
+                            <a class="nav-link" href="#">About</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Kontakt</a>
+                            <a class="nav-link" href="#">Contact</a>
                         </li>
                         <li class="nav-item ms-3">
                             <a asp-controller="Account" asp-action="Login" class="btn btn-outline">
-                                Prijava
+                                Sign In
                             </a>
                         </li>
                         <li class="nav-item ms-2">
                             <a asp-controller="Account" asp-action="Register" class="btn btn-secondary">
-                                Pridruži se
+                                Sign Up
                             </a>
                         </li>
                     }
@@ -457,8 +457,8 @@
 
     <footer class="text-center">
         <div class="container">
-            <p>&copy; 2024 TravelShare - Studentska platforma za dijeljenje putovanja</p>
-            <p class="text-muted small">Putuj zajedno, troškove dijeli</p>
+            <p>&copy; 2024 TravelShare - Student travel sharing platform</p>
+            <p class="text-muted small">Travel together, share costs</p>
         </div>
     </footer>
 
@@ -482,15 +482,15 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content" style="border-radius: 20px; border: none;">
                 <div class="modal-header" style="border-bottom: none; padding-bottom: 0;">
-                    <h5 class="modal-title" id="confirmModalTitle">Potvrda</h5>
+                    <h5 class="modal-title" id="confirmModalTitle">Confirm</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" id="confirmModalBody">
                     <!-- Message will be set dynamically -->
                 </div>
                 <div class="modal-footer" style="border-top: none; padding-top: 0;">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Odustani</button>
-                    <button type="button" class="btn btn-primary" id="confirmModalButton">Potvrdi</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="confirmModalButton">Confirm</button>
                 </div>
             </div>
         </div>
@@ -501,14 +501,14 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content" style="border-radius: 20px; border: none;">
                 <div class="modal-header" style="border-bottom: none; padding-bottom: 0;">
-                    <h5 class="modal-title" id="infoModalTitle">Informacija</h5>
+                    <h5 class="modal-title" id="infoModalTitle">Information</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" id="infoModalBody">
                     <!-- Message will be set dynamically -->
                 </div>
                 <div class="modal-footer" style="border-top: none; padding-top: 0;">
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">U redu</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
                 </div>
             </div>
         </div>
@@ -538,18 +538,18 @@
         }
 
         function showManageUsers() {
-            document.getElementById('adminModalTitle').textContent = 'Upravljanje korisnicima';
+            document.getElementById('adminModalTitle').textContent = 'User Management';
             document.getElementById('adminModalBody').innerHTML = `
                 <div class="table-responsive">
                     <table class="table table-hover">
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Ime</th>
+                                <th>Name</th>
                                 <th>Email</th>
-                                <th>Tip</th>
+                                <th>Type</th>
                                 <th>Status</th>
-                                <th>Akcije</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -558,10 +558,10 @@
                                 <td>Marko Simić</td>
                                 <td>student@travelshare.com</td>
                                 <td><span class="badge bg-primary">Student</span></td>
-                                <td><span class="badge bg-success">Aktivan</span></td>
+                                <td><span class="badge bg-success">Active</span></td>
                                 <td>
-                                    <button class="btn btn-sm btn-warning" onclick="blockUser(1, 'Marko Simić')">Blokiraj</button>
-                                    <button class="btn btn-sm btn-danger" onclick="deleteUser(1, 'Marko Simić')">Izbriši</button>
+                                    <button class="btn btn-sm btn-warning" onclick="blockUser(1, 'Marko Simić')">Block</button>
+                                    <button class="btn btn-sm btn-danger" onclick="deleteUser(1, 'Marko Simić')">Delete</button>
                                 </td>
                             </tr>
                             <tr>
@@ -569,10 +569,10 @@
                                 <td>Ana Horvat</td>
                                 <td>ana.horvat@student.hr</td>
                                 <td><span class="badge bg-primary">Student</span></td>
-                                <td><span class="badge bg-success">Aktivan</span></td>
+                                <td><span class="badge bg-success">Active</span></td>
                                 <td>
-                                    <button class="btn btn-sm btn-warning" onclick="blockUser(2, 'Ana Horvat')">Blokiraj</button>
-                                    <button class="btn btn-sm btn-danger" onclick="deleteUser(2, 'Ana Horvat')">Izbriši</button>
+                                    <button class="btn btn-sm btn-warning" onclick="blockUser(2, 'Ana Horvat')">Block</button>
+                                    <button class="btn btn-sm btn-danger" onclick="deleteUser(2, 'Ana Horvat')">Delete</button>
                                 </td>
                             </tr>
                             <tr>
@@ -580,10 +580,10 @@
                                 <td>Petar Kovač</td>
                                 <td>petar.kovac@student.hr</td>
                                 <td><span class="badge bg-primary">Student</span></td>
-                                <td><span class="badge bg-success">Aktivan</span></td>
+                                <td><span class="badge bg-success">Active</span></td>
                                 <td>
-                                    <button class="btn btn-sm btn-warning" onclick="blockUser(3, 'Petar Kovač')">Blokiraj</button>
-                                    <button class="btn btn-sm btn-danger" onclick="deleteUser(3, 'Petar Kovač')">Izbriši</button>
+                                    <button class="btn btn-sm btn-warning" onclick="blockUser(3, 'Petar Kovač')">Block</button>
+                                    <button class="btn btn-sm btn-danger" onclick="deleteUser(3, 'Petar Kovač')">Delete</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -594,26 +594,26 @@
         }
 
         function showBlockedUsers() {
-            document.getElementById('adminModalTitle').textContent = 'Blokirani korisnici';
+            document.getElementById('adminModalTitle').textContent = 'Blocked Users';
             document.getElementById('adminModalBody').innerHTML = `
                 <div class="alert alert-info">
-                    <strong>Info:</strong> Trenutno nema blokiranih korisnika.
+                    <strong>Info:</strong> There are no blocked users at the moment.
                 </div>
                 <div class="table-responsive">
                     <table class="table table-hover">
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Ime</th>
+                                <th>Name</th>
                                 <th>Email</th>
-                                <th>Razlog</th>
-                                <th>Blokirano</th>
-                                <th>Akcije</th>
+                                <th>Reason</th>
+                                <th>Blocked</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td colspan="6" class="text-center text-muted">Nema blokiranih korisnika</td>
+                                <td colspan="6" class="text-center text-muted">No blocked users</td>
                             </tr>
                         </tbody>
                     </table>
@@ -623,45 +623,45 @@
         }
 
         function showGroupManagement() {
-            document.getElementById('adminModalTitle').textContent = 'Upravljanje grupama';
+            document.getElementById('adminModalTitle').textContent = 'Group Management';
             document.getElementById('adminModalBody').innerHTML = `
                 <div class="list-group">
                     <div class="list-group-item">
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
-                                <h6 class="mb-1">Ljetovanje u Grčkoj 2024</h6>
-                                <p class="mb-1 text-muted small">5 članova • Kreirana: 15.01.2024</p>
+                                <h6 class="mb-1">Summer in Greece 2024</h6>
+                                <p class="mb-1 text-muted small">5 members • Created: 15.01.2024</p>
                             </div>
                             <div>
-                                <button class="btn btn-sm btn-info" onclick="viewGroupDetails(1)">Detalji</button>
-                                <button class="btn btn-sm btn-warning" onclick="removeUserFromGroup(1)">Ukloni člana</button>
-                                <button class="btn btn-sm btn-danger" onclick="deleteGroup(1, 'Ljetovanje u Grčkoj 2024')">Izbriši</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="list-group-item">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h6 class="mb-1">Planinarenje Alpe</h6>
-                                <p class="mb-1 text-muted small">3 članova • Kreirana: 20.01.2024</p>
-                            </div>
-                            <div>
-                                <button class="btn btn-sm btn-info" onclick="viewGroupDetails(2)">Detalji</button>
-                                <button class="btn btn-sm btn-warning" onclick="removeUserFromGroup(2)">Ukloni člana</button>
-                                <button class="btn btn-sm btn-danger" onclick="deleteGroup(2, 'Planinarenje Alpe')">Izbriši</button>
+                                <button class="btn btn-sm btn-info" onclick="viewGroupDetails(1)">Details</button>
+                                <button class="btn btn-sm btn-warning" onclick="removeUserFromGroup(1)">Remove Member</button>
+                                <button class="btn btn-sm btn-danger" onclick="deleteGroup(1, 'Summer in Greece 2024')">Delete</button>
                             </div>
                         </div>
                     </div>
                     <div class="list-group-item">
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
-                                <h6 class="mb-1">Kulturni vikend u Beču</h6>
-                                <p class="mb-1 text-muted small">8 članova • Kreirana: 22.01.2024</p>
+                                <h6 class="mb-1">Alps Hiking</h6>
+                                <p class="mb-1 text-muted small">3 members • Created: 20.01.2024</p>
                             </div>
                             <div>
-                                <button class="btn btn-sm btn-info" onclick="viewGroupDetails(3)">Detalji</button>
-                                <button class="btn btn-sm btn-warning" onclick="removeUserFromGroup(3)">Ukloni člana</button>
-                                <button class="btn btn-sm btn-danger" onclick="deleteGroup(3, 'Kulturni vikend u Beču')">Izbriši</button>
+                                <button class="btn btn-sm btn-info" onclick="viewGroupDetails(2)">Details</button>
+                                <button class="btn btn-sm btn-warning" onclick="removeUserFromGroup(2)">Remove Member</button>
+                                <button class="btn btn-sm btn-danger" onclick="deleteGroup(2, 'Alps Hiking')">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-group-item">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="mb-1">Cultural Weekend in Vienna</h6>
+                                <p class="mb-1 text-muted small">8 members • Created: 22.01.2024</p>
+                            </div>
+                            <div>
+                                <button class="btn btn-sm btn-info" onclick="viewGroupDetails(3)">Details</button>
+                                <button class="btn btn-sm btn-warning" onclick="removeUserFromGroup(3)">Remove Member</button>
+                                <button class="btn btn-sm btn-danger" onclick="deleteGroup(3, 'Cultural Weekend in Vienna')">Delete</button>
                             </div>
                         </div>
                     </div>
@@ -671,14 +671,14 @@
         }
 
         function showTripReports() {
-            document.getElementById('adminModalTitle').textContent = 'Izvještaji o putovanjima';
+            document.getElementById('adminModalTitle').textContent = 'Trip Reports';
             document.getElementById('adminModalBody').innerHTML = `
                 <div class="row g-3">
                     <div class="col-md-6">
                         <div class="card">
                             <div class="card-body text-center">
                                 <h3 class="text-primary">23</h3>
-                                <p class="text-muted mb-0">Ukupno putovanja</p>
+                                <p class="text-muted mb-0">Total Trips</p>
                             </div>
                         </div>
                     </div>
@@ -686,7 +686,7 @@
                         <div class="card">
                             <div class="card-body text-center">
                                 <h3 class="text-success">€45,200</h3>
-                                <p class="text-muted mb-0">Ukupna vrijednost</p>
+                                <p class="text-muted mb-0">Total Value</p>
                             </div>
                         </div>
                     </div>
@@ -694,7 +694,7 @@
                         <div class="card">
                             <div class="card-body text-center">
                                 <h3 class="text-info">156</h3>
-                                <p class="text-muted mb-0">Ukupno putnika</p>
+                                <p class="text-muted mb-0">Total Travelers</p>
                             </div>
                         </div>
                     </div>
@@ -702,30 +702,30 @@
                         <div class="card">
                             <div class="card-body text-center">
                                 <h3 class="text-warning">15</h3>
-                                <p class="text-muted mb-0">Destinacija</p>
+                                <p class="text-muted mb-0">Destinations</p>
                             </div>
                         </div>
                     </div>
                 </div>
                 <hr class="my-4">
-                <h6 class="mb-3">Najpopularnije destinacije</h6>
+                <h6 class="mb-3">Most Popular Destinations</h6>
                 <div class="list-group">
                     <div class="list-group-item">
                         <div class="d-flex justify-content-between">
-                            <span>Hrvatska</span>
-                            <span class="badge bg-primary">8 putovanja</span>
+                            <span>Croatia</span>
+                            <span class="badge bg-primary">8 trips</span>
                         </div>
                     </div>
                     <div class="list-group-item">
                         <div class="d-flex justify-content-between">
-                            <span>Italija</span>
-                            <span class="badge bg-primary">5 putovanja</span>
+                            <span>Italy</span>
+                            <span class="badge bg-primary">5 trips</span>
                         </div>
                     </div>
                     <div class="list-group-item">
                         <div class="d-flex justify-content-between">
-                            <span>Grčka</span>
-                            <span class="badge bg-primary">4 putovanja</span>
+                            <span>Greece</span>
+                            <span class="badge bg-primary">4 trips</span>
                         </div>
                     </div>
                 </div>
@@ -734,14 +734,14 @@
         }
 
         function showSystemLogs() {
-            document.getElementById('adminModalTitle').textContent = 'Logovi sistema';
+            document.getElementById('adminModalTitle').textContent = 'System Logs';
             document.getElementById('adminModalBody').innerHTML = `
                 <div class="mb-3">
                     <select class="form-select" onchange="filterLogs(this.value)">
-                        <option value="all">Svi logovi</option>
+                        <option value="all">All Logs</option>
                         <option value="info">Info</option>
-                        <option value="warning">Upozorenja</option>
-                        <option value="error">Greške</option>
+                        <option value="warning">Warnings</option>
+                        <option value="error">Errors</option>
                     </select>
                 </div>
                 <div class="list-group">
@@ -749,7 +749,7 @@
                         <div class="d-flex justify-content-between align-items-start">
                             <div>
                                 <span class="badge bg-info mb-1">INFO</span>
-                                <p class="mb-1">Korisnik marko@email.com se prijavio</p>
+                                <p class="mb-1">User marko@email.com logged in</p>
                                 <small class="text-muted">25.01.2024 14:32</small>
                             </div>
                         </div>
@@ -758,7 +758,7 @@
                         <div class="d-flex justify-content-between align-items-start">
                             <div>
                                 <span class="badge bg-success mb-1">INFO</span>
-                                <p class="mb-1">Nova grupa kreirana: "Ljetovanje 2024"</p>
+                                <p class="mb-1">New group created: "Summer 2024"</p>
                                 <small class="text-muted">25.01.2024 13:15</small>
                             </div>
                         </div>
@@ -767,7 +767,7 @@
                         <div class="d-flex justify-content-between align-items-start">
                             <div>
                                 <span class="badge bg-warning mb-1">WARNING</span>
-                                <p class="mb-1">Neuspješan pokušaj prijave za admin@test.com</p>
+                                <p class="mb-1">Failed login attempt for admin@test.com</p>
                                 <small class="text-muted">25.01.2024 12:45</small>
                             </div>
                         </div>
@@ -778,29 +778,29 @@
         }
 
         function showSettings() {
-            document.getElementById('adminModalTitle').textContent = 'Postavke aplikacije';
+            document.getElementById('adminModalTitle').textContent = 'Application Settings';
             document.getElementById('adminModalBody').innerHTML = `
                 <form>
                     <div class="mb-3">
-                        <label class="form-label">Naziv aplikacije</label>
+                        <label class="form-label">Application Name</label>
                         <input type="text" class="form-control" value="TravelShare" readonly>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Maksimalan broj članova grupe</label>
+                        <label class="form-label">Max Group Members</label>
                         <input type="number" class="form-control" value="10">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Automatsko odobrenje novih korisnika</label>
+                        <label class="form-label">Auto-approve New Users</label>
                         <select class="form-select">
-                            <option selected>Da</option>
-                            <option>Ne</option>
+                            <option selected>Yes</option>
+                            <option>No</option>
                         </select>
                     </div>
                     <div class="mb-3">
                         <div class="form-check form-switch">
                             <input class="form-check-input" type="checkbox" id="maintenanceMode">
                             <label class="form-check-label" for="maintenanceMode">
-                                Maintenance mod
+                                Maintenance Mode
                             </label>
                         </div>
                     </div>
@@ -808,49 +808,49 @@
                         <div class="form-check form-switch">
                             <input class="form-check-input" type="checkbox" id="emailNotifications" checked>
                             <label class="form-check-label" for="emailNotifications">
-                                Email notifikacije
+                                Email Notifications
                             </label>
                         </div>
                     </div>
-                    <button type="button" class="btn btn-primary" onclick="saveSettings()">Spremi postavke</button>
+                    <button type="button" class="btn btn-primary" onclick="saveSettings()">Save Settings</button>
                 </form>
             `;
             adminModal.show();
         }
 
         function blockUser(userId, userName) {
-            showConfirm('Blokiraj korisnika', 
-                `Jeste li sigurni da želite blokirati korisnika ${userName}?`,
+            showConfirm('Block User', 
+                `Are you sure you want to block user ${userName}?`,
                 function() {
-                    showInfo('Uspjeh', `Korisnik ${userName} je blokiran. (Demo)`);
+                    showInfo('Success', `User ${userName} has been blocked. (Demo)`);
                 }
             );
         }
 
         function deleteUser(userId, userName) {
-            showConfirm('Izbriši korisnika',
-                `Jeste li sigurni da želite izbrisati korisnika ${userName}? Ova akcija je nepovratna!`,
+            showConfirm('Delete User',
+                `Are you sure you want to delete user ${userName}? This action cannot be undone!`,
                 function() {
-                    showInfo('Uspjeh', `Korisnik ${userName} je izbrisan. (Demo)`);
+                    showInfo('Success', `User ${userName} has been deleted. (Demo)`);
                 }
             );
         }
 
         function deleteGroup(groupId, groupName) {
-            showConfirm('Izbriši grupu',
-                `Jeste li sigurni da želite izbrisati grupu "${groupName}"?`,
+            showConfirm('Delete Group',
+                `Are you sure you want to delete group "${groupName}"?`,
                 function() {
-                    showInfo('Uspjeh', `Grupa "${groupName}" je izbrisana. (Demo)`);
+                    showInfo('Success', `Group "${groupName}" has been deleted. (Demo)`);
                 }
             );
         }
 
         function removeUserFromGroup(groupId) {
-            showInfo('Info', `Otvara se prozor za odabir člana za uklanjanje iz grupe. (Demo)`);
+            showInfo('Info', `Opening member selection window for removal from group. (Demo)`);
         }
 
         function viewGroupDetails(groupId) {
-            showInfo('Info', `Prikazuju se detalji grupe ID: ${groupId}. (Demo)`);
+            showInfo('Info', `Showing details for group ID: ${groupId}. (Demo)`);
         }
 
         function filterLogs(type) {
@@ -858,7 +858,7 @@
         }
 
         function saveSettings() {
-            showInfo('Uspjeh', 'Postavke spremljene! (Demo)');
+            showInfo('Success', 'Settings saved! (Demo)');
             setTimeout(() => adminModal.hide(), 1500);
         }
     </script>
