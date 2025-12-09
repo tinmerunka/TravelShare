@@ -3,10 +3,10 @@ using TravelShare.Models.Users;
 namespace TravelShare.Services;
 public interface IUserService
 {
-    Task<UserBase?> GetUserByIdAsync(int userId);
-    Task<UserBase?> GetUserByEmailAsync(string email);
-    Task<bool> UpdateUserProfileAsync(UserBase user);
-    Task<IEnumerable<UserBase>> GetAllUsersAsync();
+    Task<User?> GetUserByIdAsync(int userId);
+    Task<User?> GetUserByEmailAsync(string email);
+    Task<bool> UpdateUserProfileAsync(User user);
+    Task<IEnumerable<User>> GetAllUsersAsync();
     Task<bool> ResetPasswordAsync(string email);
     Task<bool> UpdateTravelPreferencesAsync(int userId, TravelPreferences preferences);
 }

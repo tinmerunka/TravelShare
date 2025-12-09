@@ -3,11 +3,11 @@ using TravelShare.Models.Users;
 namespace TravelShare.Services;
 public class MockUserService : IUserService
 {
-    private readonly List<UserBase> _users;
+    private readonly List<User> _users;
 
     public MockUserService()
     {
-        _users = new List<UserBase>
+        _users = new List<User>
         {
             new Student
             {
@@ -67,19 +67,19 @@ public class MockUserService : IUserService
         };
     }
 
-    public Task<UserBase?> GetUserByIdAsync(int userId)
+    public Task<User?> GetUserByIdAsync(int userId)
     {
         var user = _users.FirstOrDefault(u => u.Id == userId);
         return Task.FromResult(user);
     }
 
-    public Task<UserBase?> GetUserByEmailAsync(string email)
+    public Task<User?> GetUserByEmailAsync(string email)
     {
         var user = _users.FirstOrDefault(u => u.Email.Equals(email, StringComparison.OrdinalIgnoreCase));
         return Task.FromResult(user);
     }
 
-    public Task<bool> UpdateUserProfileAsync(UserBase user)
+    public Task<bool> UpdateUserProfileAsync(User user)
     {
         var existingUser = _users.FirstOrDefault(u => u.Id == user.Id);
         if (existingUser != null)
@@ -91,9 +91,9 @@ public class MockUserService : IUserService
         return Task.FromResult(false);
     }
 
-    public Task<IEnumerable<UserBase>> GetAllUsersAsync()
+    public Task<IEnumerable<User>> GetAllUsersAsync()
     {
-        return Task.FromResult<IEnumerable<UserBase>>(_users);
+        return Task.FromResult<IEnumerable<User>>(_users);
     }
 
     public Task<bool> ResetPasswordAsync(string email)

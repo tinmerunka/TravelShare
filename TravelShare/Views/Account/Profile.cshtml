@@ -1,6 +1,6 @@
 @model TravelShare.ViewModels.UserProfileViewModel
 @{
-    ViewData["Title"] = "Korisnièki profil";
+    ViewData["Title"] = "User Profile";
     var currentUser = Model.User;
     var avatarUrl = currentUser.ProfileImageUrl;
     if (string.IsNullOrEmpty(avatarUrl))
@@ -300,10 +300,10 @@
                     
                     <div class="profile-meta">
                         <p>@currentUser.Email</p>
-                        <p>Èlan od: @currentUser.CreatedAt.ToString("dd.MM.yyyy")</p>
+                        <p>Member since: @currentUser.CreatedAt.ToString("dd.MM.yyyy")</p>
                         @if (currentUser.LastLoginAt.HasValue)
                         {
-                            <p>Prijava: @currentUser.LastLoginAt.Value.ToString("dd.MM.yyyy")</p>
+                            <p>Last login: @currentUser.LastLoginAt.Value.ToString("dd.MM.yyyy")</p>
                         }
                     </div>
 
@@ -312,47 +312,47 @@
                         <div class="stats-grid">
                             <div class="stat-box">
                                 <span class="stat-number">0</span>
-                                <span class="stat-label">Putovanja</span>
+                                <span class="stat-label">Trips</span>
                             </div>
                             <div class="stat-box">
                                 <span class="stat-number">0</span>
-                                <span class="stat-label">Grupe</span>
+                                <span class="stat-label">Groups</span>
                             </div>
                             <div class="stat-box">
                                 <span class="stat-number">0</span>
-                                <span class="stat-label">Destinacije</span>
+                                <span class="stat-label">Destinations</span>
                             </div>
                             <div class="stat-box">
                                 <span class="stat-number">€0</span>
-                                <span class="stat-label">Ušteðeno</span>
+                                <span class="stat-label">Saved</span>
                             </div>
                         </div>
                     }
 
                     <button class="btn btn-edit">
-                        Uredi profil
+                        Edit Profile
                     </button>
                 </div>
             </div>
 
             <!-- Content - Info Cards -->
             <div class="col-lg-9">
-                <!-- Osnovne informacije -->
+                <!-- Basic Information -->
                 <div class="info-card fade-in">
                     <div class="info-card-header">
                         <div class="info-card-icon">i</div>
-                        <h3 class="info-card-title">Osnovne informacije</h3>
+                        <h3 class="info-card-title">Basic Information</h3>
                     </div>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="info-item">
-                                <span class="info-label">Ime i prezime</span>
+                                <span class="info-label">Full Name</span>
                                 <div class="info-value">@currentUser.FirstName @currentUser.LastName</div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="info-item">
-                                <span class="info-label">Email adresa</span>
+                                <span class="info-label">Email Address</span>
                                 <div class="info-value">@currentUser.Email</div>
                             </div>
                         </div>
@@ -363,13 +363,13 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="info-item">
-                                    <span class="info-label">Broj indeksa</span>
+                                    <span class="info-label">Student ID</span>
                                     <div class="info-value">@Model.StudentProfile.StudentId</div>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="info-item">
-                                    <span class="info-label">Sveuèilište</span>
+                                    <span class="info-label">University</span>
                                     <div class="info-value">@Model.StudentProfile.University</div>
                                 </div>
                             </div>
@@ -377,7 +377,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="info-item">
-                                    <span class="info-label">Fakultet</span>
+                                    <span class="info-label">Faculty</span>
                                     <div class="info-value">@Model.StudentProfile.Faculty</div>
                                 </div>
                             </div>
@@ -385,7 +385,7 @@
                             {
                                 <div class="col-md-6">
                                     <div class="info-item">
-                                        <span class="info-label">Telefon</span>
+                                        <span class="info-label">Phone</span>
                                         <div class="info-value">@Model.StudentProfile.PhoneNumber</div>
                                     </div>
                                 </div>
@@ -398,13 +398,13 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="info-item">
-                                    <span class="info-label">Odjel</span>
+                                    <span class="info-label">Department</span>
                                     <div class="info-value">@Model.AdminProfile.Department</div>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="info-item">
-                                    <span class="info-label">Dozvole</span>
+                                    <span class="info-label">Permissions</span>
                                     <div class="info-value">
                                         @foreach (var permission in Model.AdminProfile.Permissions)
                                         {
@@ -419,16 +419,16 @@
 
                 @if (Model.StudentProfile?.Preferences != null)
                 {
-                    <!-- Preferencije putovanja -->
+                    <!-- Travel Preferences -->
                     <div class="info-card fade-in" style="animation-delay: 0.1s">
                         <div class="info-card-header">
                             <div class="info-card-icon">P</div>
-                            <h3 class="info-card-title">Preferencije putovanja</h3>
+                            <h3 class="info-card-title">Travel Preferences</h3>
                         </div>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="info-item">
-                                    <span class="info-label">Budžet</span>
+                                    <span class="info-label">Budget</span>
                                     <div class="info-value">
                                         €@Model.StudentProfile.Preferences.MinBudget - €@Model.StudentProfile.Preferences.MaxBudget
                                     </div>
@@ -436,7 +436,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="info-item">
-                                    <span class="info-label">Tip putovanja</span>
+                                    <span class="info-label">Travel Type</span>
                                     <div class="info-value">
                                         <span class="preference-tag">
                                             @Model.StudentProfile.Preferences.PreferredTravelType
@@ -448,7 +448,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="info-item">
-                                    <span class="info-label">Smještaj</span>
+                                    <span class="info-label">Accommodation</span>
                                     <div class="info-value">
                                         <span class="preference-tag">
                                             @Model.StudentProfile.Preferences.PreferredAccommodation
@@ -458,7 +458,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="info-item">
-                                    <span class="info-label">Destinacije</span>
+                                    <span class="info-label">Destinations</span>
                                     <div class="info-value">
                                         @foreach (var destination in Model.StudentProfile.Preferences.PreferredDestinations)
                                         {
@@ -473,26 +473,26 @@
                     </div>
                 }
 
-                <!-- Sigurnost -->
+                <!-- Security & Settings -->
                 <div class="info-card fade-in" style="animation-delay: 0.2s">
                     <div class="info-card-header">
                         <div class="info-card-icon">S</div>
-                        <h3 class="info-card-title">Sigurnost i postavke</h3>
+                        <h3 class="info-card-title">Security & Settings</h3>
                     </div>
                     <div class="row">
                         <div class="col-md-4">
                             <button class="btn btn-outline-primary action-btn">
-                                Promijeni lozinku
+                                Change Password
                             </button>
                         </div>
                         <div class="col-md-4">
                             <button class="btn btn-outline-secondary action-btn">
-                                Postavke privatnosti
+                                Privacy Settings
                             </button>
                         </div>
                         <div class="col-md-4">
                             <button class="btn btn-outline-warning action-btn">
-                                Notifikacije
+                                Notifications
                             </button>
                         </div>
                     </div>

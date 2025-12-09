@@ -6,7 +6,7 @@ public interface IAuthenticationService
 {
     Task<AuthenticationResult> AuthenticateAsync(string email, string password);
     Task<bool> RegisterUserAsync(Student student, string password);
-    void SetCurrentUser(UserBase user);
-    UserBase? GetCurrentUser();
+    void SetCurrentUser(User user);
+    User? GetCurrentUser();
     void Logout();
 }

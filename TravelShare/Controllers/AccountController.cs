@@ -170,7 +170,7 @@ public class AccountController : Controller
         return !string.IsNullOrEmpty(HttpContext.Session.GetString("CurrentUser"));
     }
 
-    private UserBase? GetCurrentUser()
+    private User? GetCurrentUser()
     {
         var userJson = HttpContext.Session.GetString("CurrentUser");
         if (string.IsNullOrEmpty(userJson))
@@ -188,7 +188,7 @@ public class AccountController : Controller
         };
     }
 
-    private void StoreUserInSession(UserBase user)
+    private void StoreUserInSession(User user)
     {
         var options = new JsonSerializerOptions
         {
