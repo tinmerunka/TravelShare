@@ -1,0 +1,170 @@
+﻿@model IEnumerable<TravelShare.ViewModels.ExpenseShareViewModel>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Share Costs";
+
+    var total = ViewBag.TotalAmount ?? 0.0;
+    var count = ViewBag.ParticipantsCount ?? 1;
+    var share = total / count;
+
+    var balances = Model.Select(s => (Name: s.FirstName + " " + s.LastName, Amount: s.ShareAmount - share)).ToList();
+    var creditors = balances.Where(b => b.Amount > 0).ToList();
+    var debtors = balances.Where(b => b.Amount < 0).ToList();
+    var owesList = new List<(string Debtor, string Creditor, double Amount)>();
+
+    for (int d = 0; d < debtors.Count; d++)
+    {
+        var debtor = debtors[d];
+        double remainingDebt = -debtor.Amount;
+
+        for (int c = 0; c < creditors.Count; c++)
+        {
+            var creditor = creditors[c];
+            if (remainingDebt <= 0) break;
+
+            double payAmount = Math.Min(remainingDebt, creditor.Amount);
+            owesList.Add((debtor.Name, creditor.Name, payAmount));
+
+            remainingDebt -= payAmount;
+            creditors[c] = (creditor.Name, creditor.Amount - payAmount);
+
+            if (creditors[c].Amount <= 0)
+            {
+                creditors.RemoveAt(c);
+                c--;
+            }
+        }
+    }
+}
+
+<div class="hero-section fade-in">
+    <div class="container text-center">
+        <div class="hero-content">
+            <h1>Share Costs</h1>
+            <p>Total: @total.ToString("0.00") € | Each pays: @share.ToString("0.00") €</p>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5">
+
+    <h2 class="section-title fade-in text-center">Participants Balances</h2>
+    <div class="row justify-content-center">
+        @foreach (var s in Model)
+        {
+            var balance = s.ShareAmount - share;
+            <div class="col-md-4 col-sm-6 fade-in">
+                <div class="feature-card">
+                    <div class="feature-icon" style="background-color:@(balance >= 0 ? "#28a745" : "#dc3545")">
+                        @((balance >= 0) ? "+" : "-")
+                    </div>
+                    <h4>@s.FirstName @s.LastName</h4>
+                    <p>Paid: @s.ShareAmount.ToString("0.00") €</p>
+                    <p>Balance: @(balance >= 0 ? "+" : "")@balance.ToString("0.00") €</p>
+                </div>
+            </div>
+        }
+    </div>
+
+    <h2 class="section-title fade-in text-center mt-5">Who owes whom</h2>
+    <div class="row justify-content-center">
+        @foreach (var o in owesList)
+        {
+            <div class="col-md-6 col-sm-12 fade-in">
+                <div class="feature-card">
+                    <div class="feature-icon" style="background-color: #dc3545;">€</div>
+                    <h4>@o.Debtor owes @o.Creditor</h4>
+                    <p>@o.Amount.ToString("0.00") €</p>
+                </div>
+            </div>
+        }
+    </div>
+
+</div>
+
+@section Styles {
+    <style>
+        .hero-section {
+            background: linear-gradient(135deg, #2C3E50 0%, #4A5F7F 100%);
+            padding: 4rem 0 3rem;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+            .hero-section::before, .hero-section::after {
+                content: '';
+                position: absolute;
+                border-radius: 50%;
+            }
+
+            .hero-section::before {
+                top: -50%;
+                right: -10%;
+                width: 500px;
+                height: 500px;
+                background: radial-gradient(circle, rgba(232, 180, 240, 0.2) 0%, transparent 70%);
+            }
+
+            .hero-section::after {
+                bottom: -30%;
+                left: -5%;
+                width: 400px;
+                height: 400px;
+                background: radial-gradient(circle, rgba(255, 184, 77, 0.15) 0%, transparent 70%);
+            }
+
+        .hero-content h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .hero-content p {
+            font-size: 1.25rem;
+            color: white;
+            opacity: 0.9;
+        }
+
+        .feature-card {
+            text-align: center;
+            padding: 2rem;
+            border-radius: 20px;
+            background: white;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            margin-bottom: 1.5rem;
+        }
+
+            .feature-card:hover {
+                transform: translateY(-8px);
+                box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+            }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin: 0 auto 1rem;
+            color: white;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 0.5s ease forwards;
+        }
+    </style>
+}

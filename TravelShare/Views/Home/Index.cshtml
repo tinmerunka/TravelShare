@@ -289,7 +289,7 @@
                 <div class="activity-card">
                     <h4>Expenses</h4>
                     <p class="text-muted mb-3">No active shared expenses</p>
-                    <a href="#" class="btn btn-primary">View Overview</a>
+                    <a asp-controller="Expense" asp-action="Index" class="btn btn-primary">View Overview</a>
                 </div>
             </div>
         </div>
@@ -371,6 +371,7 @@ else
                     <div class="feature-icon">€</div>
                     <h4>Share Costs</h4>
                     <p>Automatically calculate and split trip expenses with your group</p>
+                    <a asp-controller="Expense" asp-action="ShareCosts" class="stretched-link"></a>
                 </div>
             </div>
             <div class="col-md-4 mb-4 fade-in" style="animation-delay: 0.2s">

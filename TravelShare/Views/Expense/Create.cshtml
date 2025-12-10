@@ -1,0 +1,124 @@
+﻿@model TravelShare.Models.Expenses.Expense
+
+@{
+    ViewData["Title"] = "Create Expense";
+    var users = ViewBag.Users as List<TravelShare.Models.Users.User>;
+}
+
+<div class="hero-section fade-in">
+    <div class="container text-center">
+        <div class="hero-content">
+            <h1>Add New Expense</h1>
+            <p>Fill out the details below</p>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5 fade-in">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+
+            <div class="create-card">
+                <form asp-action="Create">
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                    <input asp-for="TripId" type="hidden" value="@ViewBag.NextTripId" />
+
+                    <div class="form-group mb-3">
+                        <label class="form-label">Participants</label>
+                        <div class="participants-list" style="max-height:200px; overflow-y:auto; border:1px solid #ddd; padding:10px; border-radius:12px;">
+                            @foreach (var u in ViewBag.Users as List<TravelShare.Models.Users.User>)
+                            {
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="paidUserIds" value="@u.Id" id="user_@u.Id">
+                                    <label class="form-check-label" for="user_@u.Id">@u.FirstName @u.LastName</label>
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="Amount" class="form-label"></label>
+                        <input asp-for="Amount" class="form-control input-rounded" />
+                        <span asp-validation-for="Amount" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="Description" class="form-label"></label>
+                        <input asp-for="Description" class="form-control input-rounded" />
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-4">
+                        <label asp-for="CreatedAt" class="form-label"></label>
+                        <input asp-for="CreatedAt" type="date" class="form-control input-rounded" />
+                        <span asp-validation-for="CreatedAt" class="text-danger"></span>
+                    </div>
+
+                    <div class="text-center">
+                        <button type="submit" class="btn-create-expense w-100">
+                            Create Expense
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="text-center mt-3">
+                <a asp-action="Index" class="link-back">← Back to Expenses</a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .hero-section {
+            background: linear-gradient(135deg, #2C3E50 0%, #4A5F7F 100%);
+            padding: 3rem 0;
+            color: white;
+            margin-bottom: 2rem;
+        }
+
+        .create-card {
+            padding: 2rem;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        .input-rounded {
+            border-radius: 12px;
+            padding: .8rem;
+        }
+
+        .btn-create-expense {
+            border-radius: 14px;
+            padding: .9rem;
+            background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+            border: none;
+            color: white;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+            .btn-create-expense:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 12px 25px rgba(0,0,0,0.2);
+            }
+
+        .link-back {
+            color: #2C3E50;
+            font-weight: 500;
+        }
+    </style>
+}
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
