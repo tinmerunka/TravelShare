@@ -4,7 +4,7 @@ namespace TravelShare.Services;
 public class MockUserService : IUserService
 {
     private readonly List<User> _users;
-
+   
     public MockUserService()
     {
         _users = new List<User>
