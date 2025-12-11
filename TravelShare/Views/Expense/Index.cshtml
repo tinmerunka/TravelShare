@@ -1,0 +1,119 @@
+﻿@model IEnumerable<TravelShare.Models.Expenses.Expense>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Expenses";
+}
+
+<div class="hero-section fade-in">
+    <div class="container text-center">
+        <div class="hero-content">
+            <h1>All Expenses</h1>
+            <p>Overview of your trip expenses</p>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-4 fade-in text-center">
+    <a asp-action="Create" class="btn-create-expense">
+        + Add New Expense
+    </a>
+</div>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4 col-sm-6 fade-in">
+                <div class="feature-card">
+                    <div class="feature-icon">€</div>
+
+                    <p><strong>Amount:</strong> @item.Amount.ToString("0.00") €</p>
+                    <p><strong>Description:</strong> @item.Description</p>
+                    <p><small class="text-muted">@item.CreatedAt.ToString("dd.MM.yyyy")</small></p>
+
+                    <div class="mt-2">
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-secondary btn-sm me-1">Details</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .hero-section {
+            background: linear-gradient(135deg, #2C3E50 0%, #4A5F7F 100%);
+            padding: 4rem 0 3rem;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .hero-content p {
+            font-size: 1.25rem;
+            color: white;
+            opacity: 0.9;
+        }
+
+        .feature-card {
+            text-align: center;
+            padding: 2rem;
+            border-radius: 20px;
+            background: white;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            margin-bottom: 1.5rem;
+        }
+
+            .feature-card:hover {
+                transform: translateY(-8px);
+                box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+            }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin: 0 auto 1rem;
+            color: white;
+        }
+
+        .btn-create-expense {
+            display: inline-block;
+            padding: 0.75rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: white;
+            border-radius: 15px;
+            background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+            text-decoration: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+            .btn-create-expense:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+                color: white;
+            }
+
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 0.5s ease forwards;
+        }
+    </style>
+}
