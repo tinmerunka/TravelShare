@@ -1,0 +1,114 @@
+﻿@model TravelShare.ViewModels.ExpenseViewModel
+
+@{
+    ViewData["Title"] = "Expense Details";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+
+            <div class="feature-card fade-in">
+                <div class="feature-icon">💰</div>
+                <p><strong>Amount:</strong> @Model.Amount €</p>
+                <p><strong>Description:</strong> @Model.Description</p>
+                <p><strong>Date:</strong> @Model.CreatedAt.ToString("dd.MM.yyyy")</p>
+            </div>
+
+            @if (Model.Shares != null && Model.Shares.Any())
+            {
+                <div class="shares-card fade-in mt-3">
+                    <h5>Users and amounts:</h5>
+                    <ul>
+                        @foreach (var s in Model.Shares)
+                        {
+                            <li style="color:@(s.ShareAmount > 0 ? "green" : "red")">
+                                @s.FirstName @s.LastName - @Math.Abs(s.ShareAmount).ToString("0.00") €
+                                @(s.ShareAmount > 0 ? "(Paid)" : "(Unpaid)")
+                            </li>
+                        }
+                    </ul>
+                </div>
+            }
+
+            <div class="mt-4 text-right">
+                <form asp-action="Delete" asp-route-id="@Model.Id" method="post">
+                    <button type="submit" class="btn btn-danger">
+                        Delete
+                    </button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .feature-card {
+            text-align: center;
+            padding: 2rem;
+            border-radius: 20px;
+            background: white;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin: 0 auto 1rem;
+            color: white;
+            background: linear-gradient(135deg, #28a745, #dc3545);
+        }
+
+        .shares-card {
+            text-align: center;
+            padding: 1.5rem;
+            border-radius: 15px;
+            background: #f9f9f9;
+        }
+
+            .shares-card ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+
+            .shares-card li {
+                margin: 0.5rem 0;
+                font-weight: bold;
+            }
+
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .btn-danger {
+            background-color: #ff4d4d;
+            border-color: #ff4d4d;
+            border-radius: 5px;
+        }
+
+            .btn-danger:hover {
+                background-color: #e60000;
+                border-color: #c70000;
+            }
+
+        .text-right {
+            text-align: right;
+        }
+    </style>
+}
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

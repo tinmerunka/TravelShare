@@ -1,5 +1,6 @@
 using TravelShare.Models.Authentication;
 using TravelShare.Models.Users;
+using TravelShare.Services.Interfaces;
 
 namespace TravelShare.Services;
 public class MockAuthenticationService : IAuthenticationService
@@ -31,7 +32,7 @@ public class MockAuthenticationService : IAuthenticationService
 
     public Task<bool> RegisterUserAsync(Student student, string password)
     {
-        // Mock registration - in real implementation, this would save to database
+        // Mock registration - this would save to database
         return Task.FromResult(true);
     }
 

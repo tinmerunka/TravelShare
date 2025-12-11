@@ -1,6 +1,6 @@
 using TravelShare.Models.Users;
 
-namespace TravelShare.Services;
+namespace TravelShare.Services.Interfaces;
 public interface IUserService
 {
     Task<User?> GetUserByIdAsync(int userId);

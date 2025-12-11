@@ -1,4 +1,5 @@
 using TravelShare.Services;
+using TravelShare.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,9 @@ builder.Services.AddSession(options =>
 // Register application services as singletons for demo (mock data)
 builder.Services.AddSingleton<IAuthenticationService, MockAuthenticationService>();
 builder.Services.AddSingleton<IUserService, MockUserService>();
+
+builder.Services.AddSingleton<MockExpensesData>();
+builder.Services.AddSingleton<MockUserService>();
 
 var app = builder.Build();
 
