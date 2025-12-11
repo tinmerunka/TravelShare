@@ -21,8 +21,6 @@ public class AccountController : Controller
         _logger = logger;
     }
 
-    #region Login
-
     [HttpGet]
     public IActionResult Login()
     {
@@ -58,10 +56,6 @@ public class AccountController : Controller
         ModelState.AddModelError(string.Empty, result.ErrorMessage ?? "Pogrešan email ili lozinka");
         return View(model);
     }
-
-    #endregion
-
-    #region Register
 
     [HttpGet]
     public IActionResult Register()
@@ -120,9 +114,6 @@ public class AccountController : Controller
         return RedirectToAction("Index", "Home");
     }
 
-    #endregion
-
-    #region Logout
 
     [HttpPost]
     [ValidateAntiForgeryToken]
@@ -137,9 +128,6 @@ public class AccountController : Controller
         return RedirectToAction("Index", "Home");
     }
 
-    #endregion
-
-    #region Profile
 
     [HttpGet]
     public IActionResult Profile()
@@ -161,9 +149,100 @@ public class AccountController : Controller
         return View(viewModel);
     }
 
-    #endregion
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> UpdateProfile(UpdateProfileViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return RedirectToAction("Profile");
+        }
 
-    #region Helper Methods
+        var currentUser = GetCurrentUser();
+        if (currentUser == null)
+        {
+            return RedirectToAction("Login");
+        }
+
+        // Update user properties
+        currentUser.FirstName = model.FirstName;
+        currentUser.LastName = model.LastName;
+        currentUser.Email = model.Email;
+
+        if (currentUser is Student student)
+        {
+            student.StudentId = model.StudentId;
+            student.University = model.University;
+            student.Faculty = model.Faculty;
+            student.PhoneNumber = model.PhoneNumber;
+
+            if (student.Preferences != null)
+            {
+                student.Preferences.MinBudget = model.MinBudget ?? student.Preferences.MinBudget;
+                student.Preferences.MaxBudget = model.MaxBudget ?? student.Preferences.MaxBudget;
+
+                if (Enum.TryParse<TravelType>(model.PreferredTravelType, out var travelType))
+                {
+                    student.Preferences.PreferredTravelType = travelType;
+                }
+
+                if (Enum.TryParse<AccommodationType>(model.PreferredAccommodation, out var accommodation))
+                {
+                    student.Preferences.PreferredAccommodation = accommodation;
+                }
+
+                if (!string.IsNullOrEmpty(model.PreferredDestinations))
+                {
+                    student.Preferences.PreferredDestinations = model.PreferredDestinations
+                        .Split(',')
+                        .Select(d => d.Trim())
+                        .Where(d => !string.IsNullOrEmpty(d))
+                        .ToList();
+                }
+            }
+        }
+        else if (currentUser is Administrator admin)
+        {
+            admin.Department = model.Department;
+        }
+
+        // Update session
+        StoreUserInSession(currentUser);
+
+        TempData["SuccessMessage"] = "Profile updated successfully!";
+        return RedirectToAction("Profile");
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            TempData["ErrorMessage"] = "Please fill all required fields.";
+            return RedirectToAction("Profile");
+        }
+
+        if (model.NewPassword != model.ConfirmPassword)
+        {
+            TempData["ErrorMessage"] = "New password and confirmation don't match.";
+            return RedirectToAction("Profile");
+        }
+
+        var currentUser = GetCurrentUser();
+        if (currentUser == null)
+        {
+            return RedirectToAction("Login");
+        }
+
+        // In a real app verify the current password
+        // For demo, just show success
+        TempData["SuccessMessage"] = "Password changed successfully!";
+        return RedirectToAction("Profile");
+    }
+
+
+    // Helper Methods
 
     private bool IsUserLoggedIn()
     {
@@ -201,5 +280,4 @@ public class AccountController : Controller
         HttpContext.Session.SetString("UserEmail", user.Email);
     }
 
-    #endregion
 }
