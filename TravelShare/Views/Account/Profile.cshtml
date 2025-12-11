@@ -2,258 +2,371 @@
 @{
     ViewData["Title"] = "User Profile";
     var currentUser = Model.User;
-    var avatarUrl = currentUser.ProfileImageUrl;
-    if (string.IsNullOrEmpty(avatarUrl))
+    var avatarUrl = currentUser?.ProfileImageUrl;
+    if (string.IsNullOrEmpty(avatarUrl) && currentUser != null)
     {
-        var initials = $"{currentUser.FirstName[0]}{currentUser.LastName[0]}";
+        var initials = $"{currentUser.FirstName?[0]}{currentUser.LastName?[0]}";
         var name = System.Web.HttpUtility.UrlEncode($"{currentUser.FirstName} {currentUser.LastName}");
         avatarUrl = $"https://ui-avatars.com/api/?name={name}&size=120&background=E8B4F0&color=2C3E50&font-size=0.4&bold=true";
     }
 }
 
 @section Styles {
-<style>
-    .profile-page {
-        padding: 2rem 0;
-        min-height: calc(100vh - 200px);
-    }
+    <style>
+        .profile-page {
+            padding: 2rem 0;
+            min-height: calc(100vh - 200px);
+        }
 
-    .profile-sidebar {
-        background: white;
-        border-radius: 20px;
-        padding: 1.5rem;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-        position: sticky;
-        top: 90px;
-        height: fit-content;
-    }
-
-    .profile-avatar-container {
-        position: relative;
-        width: 100px;
-        height: 100px;
-        margin: 0 auto 1rem;
-    }
-
-    .profile-avatar {
-        width: 100px;
-        height: 100px;
-        border-radius: 50%;
-        object-fit: cover;
-        border: 3px solid white;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        background: linear-gradient(135deg, #E8B4F0, #FFB84D);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 2rem;
-        font-weight: 700;
-        color: white;
-    }
-
-    .profile-avatar-img {
-        width: 100%;
-        height: 100%;
-        border-radius: 50%;
-        object-fit: cover;
-    }
-
-    .profile-badge {
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        width: 28px;
-        height: 28px;
-        background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
-        border-radius: 50%;
-        border: 3px solid white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 0.7rem;
-        font-weight: 700;
-        color: white;
-    }
-
-    .profile-name {
-        text-align: center;
-        margin-bottom: 0.8rem;
-    }
-
-    .profile-name h4 {
-        font-size: 1.3rem;
-        font-weight: 700;
-        color: var(--primary-color);
-        margin-bottom: 0.4rem;
-    }
-
-    .profile-type {
-        display: inline-block;
-        padding: 0.3rem 0.8rem;
-        background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
-        color: white;
-        border-radius: 15px;
-        font-weight: 600;
-        font-size: 0.75rem;
-    }
-
-    .profile-meta {
-        text-align: center;
-        color: var(--text-muted);
-        font-size: 0.85rem;
-        margin: 0.8rem 0;
-        padding: 0.8rem 0;
-        border-top: 1px solid var(--light-bg);
-        border-bottom: 1px solid var(--light-bg);
-    }
-
-    .profile-meta p {
-        margin: 0.2rem 0;
-    }
-
-    .stats-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 0.8rem;
-        margin: 1rem 0;
-    }
-
-    .stat-box {
-        text-align: center;
-        padding: 1rem;
-        background: var(--light-bg);
-        border-radius: 12px;
-        transition: all 0.3s ease;
-    }
-
-    .stat-box:hover {
-        transform: translateY(-3px);
-        background: linear-gradient(135deg, rgba(232, 180, 240, 0.2), rgba(255, 184, 77, 0.2));
-    }
-
-    .stat-number {
-        font-size: 1.3rem;
-        font-weight: 700;
-        color: var(--primary-color);
-        display: block;
-    }
-
-    .stat-label {
-        color: var(--text-muted);
-        font-size: 0.75rem;
-        font-weight: 500;
-        margin-top: 0.3rem;
-    }
-
-    .btn-edit {
-        width: 100%;
-        background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
-        border: none;
-        color: white;
-        padding: 0.6rem 1rem;
-        border-radius: 10px;
-        font-weight: 600;
-        font-size: 0.9rem;
-        transition: all 0.3s ease;
-        margin-top: 1rem;
-    }
-
-    .btn-edit:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 15px rgba(232, 180, 240, 0.4);
-    }
-
-    .info-card {
-        background: white;
-        border-radius: 20px;
-        padding: 1.8rem;
-        margin-bottom: 1.5rem;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-        transition: all 0.3s ease;
-    }
-
-    .info-card:hover {
-        box-shadow: 0 6px 16px rgba(0,0,0,0.12);
-        transform: translateY(-2px);
-    }
-
-    .info-card-header {
-        display: flex;
-        align-items: center;
-        margin-bottom: 1.5rem;
-        padding-bottom: 1rem;
-        border-bottom: 2px solid var(--light-bg);
-    }
-
-    .info-card-icon {
-        width: 40px;
-        height: 40px;
-        background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
-        border-radius: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1rem;
-        font-weight: 700;
-        color: white;
-        margin-right: 1rem;
-        flex-shrink: 0;
-    }
-
-    .info-card-title {
-        font-size: 1.2rem;
-        font-weight: 700;
-        color: var(--primary-color);
-        margin: 0;
-    }
-
-    .info-item {
-        margin-bottom: 1.2rem;
-    }
-
-    .info-label {
-        font-weight: 600;
-        color: var(--text-muted);
-        font-size: 0.8rem;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        margin-bottom: 0.4rem;
-        display: block;
-    }
-
-    .info-value {
-        color: var(--text-dark);
-        font-size: 1rem;
-        font-weight: 500;
-    }
-
-    .preference-tag {
-        display: inline-block;
-        background: linear-gradient(135deg, rgba(232, 180, 240, 0.2), rgba(255, 184, 77, 0.2));
-        padding: 0.4rem 0.8rem;
-        border-radius: 15px;
-        margin: 0.2rem;
-        font-size: 0.85rem;
-        font-weight: 500;
-        color: var(--primary-color);
-    }
-
-    .action-btn {
-        padding: 0.7rem 1rem;
-        border-radius: 10px;
-        font-weight: 500;
-        font-size: 0.95rem;
-        transition: all 0.3s ease;
-        margin-bottom: 0.8rem;
-        width: 100%;
-    }
-
-    .action-btn:hover {
-        transform: translateX(3px);
-    }
-
-    @@media (max-width: 991px) {
         .profile-sidebar {
+            background: white;
+            border-radius: 20px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 90px;
+            height: fit-content;
+        }
+
+        .profile-avatar-container {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 1rem;
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            background: linear-gradient(135deg, #E8B4F0, #FFB84D);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .profile-avatar-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .profile-badge {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+            border-radius: 50%;
+            border: 3px solid white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .profile-name {
+            text-align: center;
+            margin-bottom: 0.8rem;
+        }
+
+            .profile-name h4 {
+                font-size: 1.3rem;
+                font-weight: 700;
+                color: var(--primary-color);
+                margin-bottom: 0.4rem;
+            }
+
+        .profile-type {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+            color: white;
+            border-radius: 15px;
+            font-weight: 600;
+            font-size: 0.75rem;
+        }
+
+        .profile-meta {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin: 0.8rem 0;
+            padding: 0.8rem 0;
+            border-top: 1px solid var(--light-bg);
+            border-bottom: 1px solid var(--light-bg);
+        }
+
+            .profile-meta p {
+                margin: 0.2rem 0;
+            }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.8rem;
+            margin: 1rem 0;
+        }
+
+        .stat-box {
+            text-align: center;
+            padding: 1rem;
+            background: var(--light-bg);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+            .stat-box:hover {
+                transform: translateY(-3px);
+                background: linear-gradient(135deg, rgba(232, 180, 240, 0.2), rgba(255, 184, 77, 0.2));
+            }
+
+        .stat-number {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: block;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-top: 0.3rem;
+        }
+
+        .btn-edit {
+            width: 100%;
+            background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+            border: none;
+            color: white;
+            padding: 0.6rem 1rem;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+            .btn-edit:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 15px rgba(232, 180, 240, 0.4);
+            }
+
+        .info-card {
+            background: white;
+            border-radius: 20px;
+            padding: 1.8rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+
+            .info-card:hover {
+                box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+                transform: translateY(-2px);
+            }
+
+        .info-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--light-bg);
+        }
+
+        .info-card-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            font-weight: 700;
+            color: white;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+
+        .info-card-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin: 0;
+        }
+
+        .info-item {
+            margin-bottom: 1.2rem;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.4rem;
+            display: block;
+        }
+
+        .info-value {
+            color: var(--text-dark);
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+            .info-value input, .info-value select {
+                border: 2px solid transparent;
+                background: var(--light-bg);
+                border-radius: 8px;
+                padding: 0.5rem;
+                width: 100%;
+                font-size: 1rem;
+                transition: all 0.3s ease;
+            }
+
+                .info-value input:focus, .info-value select:focus {
+                    outline: none;
+                    border-color: var(--secondary-color);
+                    background: white;
+                    box-shadow: 0 0 0 3px rgba(232, 180, 240, 0.1);
+                }
+
+        .preference-tag {
+            display: inline-block;
+            background: linear-gradient(135deg, rgba(232, 180, 240, 0.2), rgba(255, 184, 77, 0.2));
+            padding: 0.4rem 0.8rem;
+            border-radius: 15px;
+            margin: 0.2rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--primary-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+            .preference-tag.removable:hover {
+                background: linear-gradient(135deg, rgba(220, 53, 69, 0.2), rgba(255, 193, 7, 0.2));
+                color: #dc3545;
+            }
+
+            .preference-tag.removable::after {
+                content: ' ×';
+                font-weight: 700;
+                margin-left: 0.3rem;
+            }
+
+        .action-btn {
+            padding: 0.7rem 1rem;
+            border-radius: 10px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            margin-bottom: 0.8rem;
+            width: 100%;
+            border: 2px solid transparent;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+            .action-btn:hover {
+                transform: translateX(3px);
+                text-decoration: none;
+            }
+
+        .btn-save, .btn-cancel {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            border: none;
+            transition: all 0.3s ease;
+            margin-right: 0.5rem;
+        }
+
+        .btn-save {
+            background: var(--secondary-color);
+            color: var(--primary-color);
+        }
+
+            .btn-save:hover {
+                background: #d49ee0;
+                transform: translateY(-2px);
+            }
+
+        .btn-cancel {
+            background: #6c757d;
+            color: white;
+        }
+
+            .btn-cancel:hover {
+                background: #5a6268;
+                transform: translateY(-2px);
+            }
+
+        .edit-mode .info-value {
+            margin-bottom: 0.5rem;
+        }
+
+        .budget-inputs {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+            .budget-inputs input {
+                flex: 1;
+            }
+
+        .budget-separator {
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .destination-input-container {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+            .destination-input-container input {
+                flex: 1;
+            }
+
+        .btn-add-destination {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 0.5rem 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+            .btn-add-destination:hover {
+                background: #f0a33d;
+                transform: scale(1.05);
+            }
+
+        @@media (max-width: 991px) {
+            .profile-sidebar
+
+        {
             position: relative;
             top: 0;
             margin-bottom: 1.5rem;
@@ -262,8 +375,24 @@
         .stats-grid {
             grid-template-columns: repeat(4, 1fr);
         }
-    }
-</style>
+
+        }
+
+        @@keyframes fadeInDown {
+            from
+
+        {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        }
+    </style>
 }
 
 <div class="profile-page">
@@ -274,10 +403,17 @@
                 <div class="profile-sidebar fade-in">
                     <div class="profile-avatar-container">
                         <div class="profile-avatar">
-                            <img src="@avatarUrl" 
-                                 alt="@currentUser.FirstName @currentUser.LastName" 
-                                 class="profile-avatar-img"
-                                 onerror="this.style.display='none'; this.parentElement.innerHTML='@(currentUser.FirstName[0])@(currentUser.LastName[0])';" />
+                            @if (!string.IsNullOrEmpty(avatarUrl))
+                            {
+                                <img src="@avatarUrl"
+                                     alt="@currentUser?.FirstName @currentUser?.LastName"
+                                     class="profile-avatar-img"
+                                     onerror="this.style.display='none'; this.parentElement.innerHTML='@(currentUser?.FirstName?[0])@(currentUser?.LastName?[0])';" />
+                            }
+                            else
+                            {
+                                <span>@(currentUser?.FirstName?[0])@(currentUser?.LastName?[0])</span>
+                            }
                         </div>
                         <div class="profile-badge">
                             @if (Model.StudentProfile != null)
@@ -290,18 +426,18 @@
                             }
                         </div>
                     </div>
-                    
+
                     <div class="profile-name">
-                        <h4>@currentUser.FirstName @currentUser.LastName</h4>
+                        <h4>@currentUser?.FirstName @currentUser?.LastName</h4>
                         <span class="profile-type">
-                            @currentUser.GetUserType()
+                            @(currentUser?.GetUserType() ?? "Unknown")
                         </span>
                     </div>
-                    
+
                     <div class="profile-meta">
-                        <p>@currentUser.Email</p>
-                        <p>Member since: @currentUser.CreatedAt.ToString("dd.MM.yyyy")</p>
-                        @if (currentUser.LastLoginAt.HasValue)
+                        <p>@currentUser?.Email</p>
+                        <p>Member since: @(currentUser?.CreatedAt.ToString("dd.MM.yyyy") ?? "N/A")</p>
+                        @if (currentUser?.LastLoginAt.HasValue == true)
                         {
                             <p>Last login: @currentUser.LastLoginAt.Value.ToString("dd.MM.yyyy")</p>
                         }
@@ -329,169 +465,275 @@
                         </div>
                     }
 
-                    <button class="btn btn-edit">
-                        Edit Profile
+                    <button class="btn btn-edit" onclick="toggleEditMode()">
+                        <span id="edit-btn-text">Edit Profile</span>
                     </button>
                 </div>
             </div>
 
             <!-- Content - Info Cards -->
             <div class="col-lg-9">
-                <!-- Basic Information -->
-                <div class="info-card fade-in">
-                    <div class="info-card-header">
-                        <div class="info-card-icon">i</div>
-                        <h3 class="info-card-title">Basic Information</h3>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="info-item">
-                                <span class="info-label">Full Name</span>
-                                <div class="info-value">@currentUser.FirstName @currentUser.LastName</div>
+                <form id="profile-form" method="post">
+                    @Html.AntiForgeryToken()
+                    <!-- Basic Information -->
+                    <div class="info-card fade-in" id="basic-info-card">
+                        <div class="info-card-header">
+                            <div style="display: flex; align-items: center;">
+                                <div class="info-card-icon">i</div>
+                                <h3 class="info-card-title">Basic Information</h3>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="info-item">
-                                <span class="info-label">Email Address</span>
-                                <div class="info-value">@currentUser.Email</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    @if (Model.StudentProfile != null)
-                    {
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="info-item">
-                                    <span class="info-label">Student ID</span>
-                                    <div class="info-value">@Model.StudentProfile.StudentId</div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="info-item">
-                                    <span class="info-label">University</span>
-                                    <div class="info-value">@Model.StudentProfile.University</div>
-                                </div>
+                            <div class="edit-controls" style="display: none;">
+                                <button type="button" class="btn-save" onclick="saveProfile()">Save</button>
+                                <button type="button" class="btn-cancel" onclick="cancelEdit()">Cancel</button>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="info-item">
-                                    <span class="info-label">Faculty</span>
-                                    <div class="info-value">@Model.StudentProfile.Faculty</div>
+                                    <span class="info-label">First Name</span>
+                                    <div class="info-value">
+                                        <span class="display-value">@currentUser?.FirstName</span>
+                                        <input type="text" class="edit-input" name="FirstName" value="@currentUser?.FirstName" style="display: none;" />
+                                    </div>
                                 </div>
                             </div>
-                            @if (!string.IsNullOrEmpty(Model.StudentProfile.PhoneNumber))
-                            {
+                            <div class="col-md-6">
+                                <div class="info-item">
+                                    <span class="info-label">Last Name</span>
+                                    <div class="info-value">
+                                        <span class="display-value">@currentUser?.LastName</span>
+                                        <input type="text" class="edit-input" name="LastName" value="@currentUser?.LastName" style="display: none;" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="info-item">
+                                    <span class="info-label">Email Address</span>
+                                    <div class="info-value">
+                                        <span class="display-value">@currentUser?.Email</span>
+                                        <input type="email" class="edit-input" name="Email" value="@currentUser?.Email" style="display: none;" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        @if (Model.StudentProfile != null)
+                        {
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="info-item">
+                                        <span class="info-label">Student ID</span>
+                                        <div class="info-value">
+                                            <span class="display-value">@Model.StudentProfile.StudentId</span>
+                                            <input type="text" class="edit-input" name="StudentId" value="@Model.StudentProfile.StudentId" style="display: none;" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info-item">
+                                        <span class="info-label">University</span>
+                                        <div class="info-value">
+                                            <span class="display-value">@Model.StudentProfile.University</span>
+                                            <input type="text" class="edit-input" name="University" value="@Model.StudentProfile.University" style="display: none;" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="info-item">
+                                        <span class="info-label">Faculty</span>
+                                        <div class="info-value">
+                                            <span class="display-value">@Model.StudentProfile.Faculty</span>
+                                            <select class="edit-input" name="Faculty" style="display: none;">
+                                                <option value="Engineering" selected="@(Model.StudentProfile.Faculty == "Engineering" ? "selected" : null)">Engineering</option>
+                                                <option value="Computer Science" selected="@(Model.StudentProfile.Faculty == "Computer Science" ? "selected" : null)">Computer Science</option>
+                                                <option value="Business" selected="@(Model.StudentProfile.Faculty == "Business" ? "selected" : null)">Business</option>
+                                                <option value="Medicine" selected="@(Model.StudentProfile.Faculty == "Medicine" ? "selected" : null)">Medicine</option>
+                                                <option value="Law" selected="@(Model.StudentProfile.Faculty == "Law" ? "selected" : null)">Law</option>
+                                                <option value="Arts" selected="@(Model.StudentProfile.Faculty == "Arts" ? "selected" : null)">Arts</option>
+                                                <option value="Other" selected="@(Model.StudentProfile.Faculty == "Other" ? "selected" : null)">Other</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="col-md-6">
                                     <div class="info-item">
                                         <span class="info-label">Phone</span>
-                                        <div class="info-value">@Model.StudentProfile.PhoneNumber</div>
-                                    </div>
-                                </div>
-                            }
-                        </div>
-                    }
-                    
-                    @if (Model.AdminProfile != null)
-                    {
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="info-item">
-                                    <span class="info-label">Department</span>
-                                    <div class="info-value">@Model.AdminProfile.Department</div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="info-item">
-                                    <span class="info-label">Permissions</span>
-                                    <div class="info-value">
-                                        @foreach (var permission in Model.AdminProfile.Permissions)
-                                        {
-                                            <span class="preference-tag">@permission</span>
-                                        }
+                                        <div class="info-value">
+                                            <span class="display-value">@(Model.StudentProfile.PhoneNumber ?? "Not provided")</span>
+                                            <input type="tel" class="edit-input" name="PhoneNumber" value="@Model.StudentProfile.PhoneNumber" style="display: none;" />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    }
-                </div>
+                        }
 
-                @if (Model.StudentProfile?.Preferences != null)
-                {
-                    <!-- Travel Preferences -->
-                    <div class="info-card fade-in" style="animation-delay: 0.1s">
-                        <div class="info-card-header">
-                            <div class="info-card-icon">P</div>
-                            <h3 class="info-card-title">Travel Preferences</h3>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="info-item">
-                                    <span class="info-label">Budget</span>
-                                    <div class="info-value">
-                                        €@Model.StudentProfile.Preferences.MinBudget - €@Model.StudentProfile.Preferences.MaxBudget
+                        @if (Model.AdminProfile != null)
+                        {
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="info-item">
+                                        <span class="info-label">Department</span>
+                                        <div class="info-value">
+                                            <span class="display-value">@Model.AdminProfile.Department</span>
+                                            <input type="text" class="edit-input" name="Department" value="@Model.AdminProfile.Department" style="display: none;" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info-item">
+                                        <span class="info-label">Permissions</span>
+                                        <div class="info-value">
+                                            @if (Model.AdminProfile.Permissions != null)
+                                            {
+                                                @foreach (var permission in Model.AdminProfile.Permissions)
+                                                {
+                                                    <span class="preference-tag">@permission</span>
+                                                }
+                                            }
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="info-item">
-                                    <span class="info-label">Travel Type</span>
-                                    <div class="info-value">
-                                        <span class="preference-tag">
-                                            @Model.StudentProfile.Preferences.PreferredTravelType
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="info-item">
-                                    <span class="info-label">Accommodation</span>
-                                    <div class="info-value">
-                                        <span class="preference-tag">
-                                            @Model.StudentProfile.Preferences.PreferredAccommodation
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="info-item">
-                                    <span class="info-label">Destinations</span>
-                                    <div class="info-value">
-                                        @foreach (var destination in Model.StudentProfile.Preferences.PreferredDestinations)
-                                        {
-                                            <span class="preference-tag">
-                                                @destination
-                                            </span>
-                                        }
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        }
                     </div>
-                }
+
+                    @if (Model.StudentProfile?.Preferences != null)
+                    {
+                        <!-- Travel Preferences -->
+                        <div class="info-card fade-in" id="preferences-card" style="animation-delay: 0.1s">
+                            <div class="info-card-header">
+                                <div style="display: flex; align-items: center;">
+                                    <div class="info-card-icon">P</div>
+                                    <h3 class="info-card-title">Travel Preferences</h3>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="info-item">
+                                        <span class="info-label">Budget Range</span>
+                                        <div class="info-value">
+                                            <span class="display-value">
+                                                €@Model.StudentProfile.Preferences.MinBudget - €@Model.StudentProfile.Preferences.MaxBudget
+                                            </span>
+                                            <div class="budget-inputs edit-input" style="display: none;">
+                                                <input type="number" name="MinBudget" value="@Model.StudentProfile.Preferences.MinBudget" min="0" placeholder="Min budget" />
+                                                <span class="budget-separator">-</span>
+                                                <input type="number" name="MaxBudget" value="@Model.StudentProfile.Preferences.MaxBudget" min="0" placeholder="Max budget" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info-item">
+                                        <span class="info-label">Travel Type</span>
+                                        <div class="info-value">
+                                            <span class="display-value">
+                                                <span class="preference-tag">
+                                                    @Model.StudentProfile.Preferences.PreferredTravelType
+                                                </span>
+                                            </span>
+                                            <select class="edit-input" name="PreferredTravelType" style="display: none;">
+                                                @{
+                                                    var travelType = Model.StudentProfile.Preferences.PreferredTravelType.ToString();
+                                                }
+                                                <option value="Beach" selected="@(travelType == "Beach" ? "selected" : null)">Beach</option>
+                                                <option value="City" selected="@(travelType == "City" ? "selected" : null)">City</option>
+                                                <option value="Mountain" selected="@(travelType == "Mountain" ? "selected" : null)">Mountain</option>
+                                                <option value="Cultural" selected="@(travelType == "Cultural" ? "selected" : null)">Cultural</option>
+                                                <option value="Adventure" selected="@(travelType == "Adventure" ? "selected" : null)">Adventure</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="info-item">
+                                        <span class="info-label">Accommodation</span>
+                                        <div class="info-value">
+                                            <span class="display-value">
+                                                <span class="preference-tag">
+                                                    @Model.StudentProfile.Preferences.PreferredAccommodation
+                                                </span>
+                                            </span>
+                                            <select class="edit-input" name="PreferredAccommodation" style="display: none;">
+                                                @{
+                                                    var accommodation = Model.StudentProfile.Preferences.PreferredAccommodation.ToString();
+                                                }
+                                                <option value="Hostel" selected="@(accommodation == "Hostel" ? "selected" : null)">Hostel</option>
+                                                <option value="Hotel" selected="@(accommodation == "Hotel" ? "selected" : null)">Hotel</option>
+                                                <option value="Apartment" selected="@(accommodation == "Apartment" ? "selected" : null)">Apartment</option>
+                                                <option value="Camping" selected="@(accommodation == "Camping" ? "selected" : null)">Camping</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="info-item">
+                                        <span class="info-label">Destinations</span>
+                                        <div class="info-value">
+                                            <div class="display-value">
+                                                @if (Model.StudentProfile.Preferences.PreferredDestinations != null)
+                                                {
+                                                    @foreach (var destination in Model.StudentProfile.Preferences.PreferredDestinations)
+                                                    {
+                                                        <span class="preference-tag" data-destination="@destination">
+                                                            @destination
+                                                        </span>
+                                                    }
+                                                }
+                                            </div>
+                                            <div class="edit-input" style="display: none;">
+                                                <div id="destinations-edit">
+                                                    @if (Model.StudentProfile.Preferences.PreferredDestinations != null)
+                                                    {
+                                                        @foreach (var destination in Model.StudentProfile.Preferences.PreferredDestinations)
+                                                        {
+                                                            <span class="preference-tag removable" onclick="removeDestination(this)" data-destination="@destination">
+                                                                @destination
+                                                            </span>
+                                                        }
+                                                    }
+                                                </div>
+                                                <div class="destination-input-container">
+                                                    <input type="text" id="new-destination" placeholder="Add new destination..." />
+                                                    <button type="button" class="btn-add-destination" onclick="addDestination()">Add</button>
+                                                </div>
+                                                <input type="hidden" name="PreferredDestinations" id="destinations-hidden" value="@(Model.StudentProfile.Preferences.PreferredDestinations != null ? string.Join(",", Model.StudentProfile.Preferences.PreferredDestinations) : "")" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </form>
 
                 <!-- Security & Settings -->
                 <div class="info-card fade-in" style="animation-delay: 0.2s">
                     <div class="info-card-header">
-                        <div class="info-card-icon">S</div>
-                        <h3 class="info-card-title">Security & Settings</h3>
+                        <div style="display: flex; align-items: center;">
+                            <div class="info-card-icon">S</div>
+                            <h3 class="info-card-title">Security & Settings</h3>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-md-4">
-                            <button class="btn btn-outline-primary action-btn">
+                            <button type="button" class="btn btn-outline-primary action-btn" onclick="changePassword()">
                                 Change Password
                             </button>
                         </div>
                         <div class="col-md-4">
-                            <button class="btn btn-outline-secondary action-btn">
+                            <button type="button" class="btn btn-outline-secondary action-btn" onclick="privacySettings()">
                                 Privacy Settings
                             </button>
                         </div>
                         <div class="col-md-4">
-                            <button class="btn btn-outline-warning action-btn">
+                            <button type="button" class="btn btn-outline-warning action-btn" onclick="notificationSettings()">
                                 Notifications
                             </button>
                         </div>
@@ -501,3 +743,218 @@
         </div>
     </div>
 </div>
+
+<!-- Change Password Modal -->
+<div class="modal fade" id="changePasswordModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 20px; border: none;">
+            <div class="modal-header">
+                <h5 class="modal-title">Change Password</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post">
+                @Html.AntiForgeryToken()
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="currentPassword" class="form-label">Current Password</label>
+                        <input type="password" class="form-control" id="currentPassword" name="CurrentPassword" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="newPassword" class="form-label">New Password</label>
+                        <input type="password" class="form-control" id="newPassword" name="NewPassword" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="confirmPassword" class="form-label">Confirm New Password</label>
+                        <input type="password" class="form-control" id="confirmPassword" name="ConfirmPassword" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary" onclick="changePasswordSubmit()">Change Password</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        let isEditMode = false;
+        let originalValues = {};
+
+        function toggleEditMode() {
+            if (isEditMode) {
+                cancelEdit();
+            } else {
+                enterEditMode();
+            }
+        }
+
+        function enterEditMode() {
+            isEditMode = true;
+
+            // Store original values
+            originalValues = {};
+            document.querySelectorAll('.display-value').forEach(element => {
+                const input = element.parentNode.querySelector('.edit-input');
+                if (input) {
+                    if (input.tagName === 'SELECT') {
+                        originalValues[input.name] = input.value;
+                    } else if (input.classList.contains('budget-inputs')) {
+                        const minInput = input.querySelector('input[name="MinBudget"]');
+                        const maxInput = input.querySelector('input[name="MaxBudget"]');
+                        if (minInput) originalValues['MinBudget'] = minInput.value;
+                        if (maxInput) originalValues['MaxBudget'] = maxInput.value;
+                    } else if (input.name === 'PreferredDestinations') {
+                        originalValues[input.name] = input.value;
+                    } else if (input.name) {
+                        originalValues[input.name] = input.value;
+                    }
+                }
+            });
+
+            // Show edit controls and hide display values
+            document.querySelectorAll('.display-value').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.edit-input').forEach(el => el.style.display = 'block');
+            document.querySelectorAll('.edit-controls').forEach(el => el.style.display = 'block');
+
+            // Update button text
+            const editBtn = document.getElementById('edit-btn-text');
+            if (editBtn) editBtn.textContent = 'Cancel Edit';
+
+            // Add edit mode class
+            document.querySelectorAll('.info-card').forEach(card => card.classList.add('edit-mode'));
+        }
+
+        function cancelEdit() {
+            isEditMode = false;
+
+            // Restore original values
+            Object.keys(originalValues).forEach(name => {
+                const input = document.querySelector(`[name="${name}"]`);
+                if (input) {
+                    input.value = originalValues[name];
+                }
+            });
+
+            // Restore destinations if they were modified
+            if (originalValues['PreferredDestinations']) {
+                const destinations = originalValues['PreferredDestinations'].split(',').filter(d => d.trim());
+                const container = document.getElementById('destinations-edit');
+                if (container) {
+                    container.innerHTML = '';
+                    destinations.forEach(dest => {
+                        if (dest.trim()) {
+                            const span = document.createElement('span');
+                            span.className = 'preference-tag removable';
+                            span.setAttribute('onclick', 'removeDestination(this)');
+                            span.setAttribute('data-destination', dest.trim());
+                            span.textContent = dest.trim();
+                            container.appendChild(span);
+                        }
+                    });
+                }
+            }
+
+            exitEditMode();
+        }
+
+        function exitEditMode() {
+            // Hide edit controls and show display values
+            document.querySelectorAll('.display-value').forEach(el => el.style.display = 'block');
+            document.querySelectorAll('.edit-input').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.edit-controls').forEach(el => el.style.display = 'none');
+
+            // Update button text
+            const editBtn = document.getElementById('edit-btn-text');
+            if (editBtn) editBtn.textContent = 'Edit Profile';
+
+            // Remove edit mode class
+            document.querySelectorAll('.info-card').forEach(card => card.classList.remove('edit-mode'));
+
+            isEditMode = false;
+        }
+
+        function saveProfile() {
+            // Update destinations hidden field
+            updateDestinationsHidden();
+
+            // Set form action to update profile
+            const form = document.getElementById('profile-form');
+            if (form) {
+                form.action = '@Url.Action("UpdateProfile", "Account")';
+                form.submit();
+            }
+        }
+
+        function addDestination() {
+            const input = document.getElementById('new-destination');
+            const destination = input?.value?.trim();
+
+            if (destination) {
+                const container = document.getElementById('destinations-edit');
+                if (container) {
+                    const span = document.createElement('span');
+                    span.className = 'preference-tag removable';
+                    span.setAttribute('onclick', 'removeDestination(this)');
+                    span.setAttribute('data-destination', destination);
+                    span.textContent = destination;
+                    container.appendChild(span);
+
+                    input.value = '';
+                    updateDestinationsHidden();
+                }
+            }
+        }
+
+        function removeDestination(element) {
+            if (isEditMode && element) {
+                element.remove();
+                updateDestinationsHidden();
+            }
+        }
+
+        function updateDestinationsHidden() {
+            const destinations = Array.from(document.querySelectorAll('#destinations-edit .preference-tag'))
+                .map(el => el.getAttribute('data-destination'))
+                .filter(dest => dest);
+            const hiddenInput = document.getElementById('destinations-hidden');
+            if (hiddenInput) {
+                hiddenInput.value = destinations.join(',');
+            }
+        }
+
+        function changePassword() {
+            const modal = new bootstrap.Modal(document.getElementById('changePasswordModal'));
+            modal.show();
+        }
+
+        function changePasswordSubmit() {
+            const form = document.querySelector('#changePasswordModal form');
+            if (form) {
+                form.action = '@Url.Action("ChangePassword", "Account")';
+            }
+        }
+
+        function privacySettings() {
+            alert('Privacy Settings functionality - Coming soon!');
+        }
+
+        function notificationSettings() {
+            alert('Notification Settings functionality - Coming soon!');
+        }
+
+        // Add enter key support for destination input
+        document.addEventListener('DOMContentLoaded', function() {
+            const destInput = document.getElementById('new-destination');
+            if (destInput) {
+                destInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        addDestination();
+                    }
+                });
+            }
+        });
+    </script>
+}
