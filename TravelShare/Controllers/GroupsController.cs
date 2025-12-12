@@ -12,13 +12,13 @@ namespace TravelShare.Controllers
         {
             _groupService = groupService;
         }
-
+        [HttpGet]
         public IActionResult Index()
         {
             var groups = _groupService.GetAllGroups();
             return View(groups);
         }
-
+        [HttpGet]
         public IActionResult Details(int id)
         {
             var group = _groupService.GetGroupById(id);
@@ -27,7 +27,7 @@ namespace TravelShare.Controllers
 
             return View(group);
         }
-
+        [HttpGet]
         public IActionResult Create()
         {
             return View(new GroupViewModel());

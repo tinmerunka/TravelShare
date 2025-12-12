@@ -12,7 +12,7 @@ namespace TravelShare.Controllers
         {
             _messageService = messageService;
         }
-
+        [HttpGet]
         public IActionResult Send(int groupId)
         {
             return View(new GroupMessageViewModel { GroupId = groupId });
