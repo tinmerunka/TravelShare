@@ -1,10 +1,12 @@
 ﻿using TravelShare.Models.Expenses;
+using TravelShare.Services.Interfaces;
+
 
 namespace TravelShare.Services.FinanceMockData
 {
-    public class MockExpensesData : ICrud<Expense>
+    public class MockExpensesData : IDataProvider<Expense>
     {
-        private static List<Expense> _expenses;
+        private static IList<Expense> _expenses;
 
         public MockExpensesData()
         {
@@ -21,7 +23,7 @@ namespace TravelShare.Services.FinanceMockData
                     Shares = new List<ExpenseShare>
                     {
                         new ExpenseShare { Id = 1, ExpenseId = 1, UserId = 1, ShareAmount = 30.00 },
-                        new ExpenseShare { Id = 2, ExpenseId = 1, UserId = 2, ShareAmount = 0.00 },
+                        new ExpenseShare { Id = 2, ExpenseId = 1, UserId = 2, ShareAmount = -30.00 },
                         new ExpenseShare { Id = 3, ExpenseId = 1, UserId = 3, ShareAmount = 30.00 },
                     }
                 },new Expense
@@ -35,8 +37,8 @@ namespace TravelShare.Services.FinanceMockData
                     Shares = new List<ExpenseShare>
                     {
                         new ExpenseShare { Id = 4, ExpenseId = 2, UserId = 1, ShareAmount = 40.00 },
-                        new ExpenseShare { Id = 5, ExpenseId = 2, UserId = 3, ShareAmount = 0.00 },
-                        new ExpenseShare { Id = 6, ExpenseId = 2, UserId = 2, ShareAmount = 0.00 },
+                        new ExpenseShare { Id = 5, ExpenseId = 2, UserId = 3, ShareAmount = -40.00 },
+                        new ExpenseShare { Id = 6, ExpenseId = 2, UserId = 2, ShareAmount = -40.00 },
                     }
                 },
                 new Expense
@@ -50,28 +52,18 @@ namespace TravelShare.Services.FinanceMockData
                     Shares = new List<ExpenseShare>
                     {
                         new ExpenseShare { Id = 7, ExpenseId = 3, UserId = 1, ShareAmount = 20.00 },
-                        new ExpenseShare { Id = 8, ExpenseId = 3, UserId = 1, ShareAmount = 0.00 },
-                        new ExpenseShare { Id = 9, ExpenseId = 3, UserId = 1, ShareAmount = 0.00 },
+                        new ExpenseShare { Id = 8, ExpenseId = 3, UserId = 1, ShareAmount = -20.00 },
+                        new ExpenseShare { Id = 9, ExpenseId = 3, UserId = 1, ShareAmount = -20.00 },
                         
                     }
                 }
             };
 
         }
-        public List<Expense> GetAll() => _expenses;
-        public Expense GetById(int id) => _expenses.FirstOrDefault(e => e.Id == id);
-        public void Add(Expense e)
+
+        public IList<Expense> IDataProvider<Expense>.GetAllDataFromSource()
         {
-            e.Id = _expenses.Any() ? _expenses.Max(x => x.Id) + 1 : 1;
-            _expenses.Add(e);
-        }
-        public void Delete(int id)
-        {
-            var expense = GetById(id);
-            if(expense != null)
-            {
-                _expenses.Remove(expense);
-            }
+            return _expenses;
         }
     }
 }
