@@ -61,7 +61,7 @@ namespace TravelShare.Services.FinanceMockData
 
         }
 
-        public IList<Expense> IDataProvider<Expense>.GetAllDataFromSource()
+        public IList<Expense> GetAllDataFromSource()
         {
             return _expenses;
         }
