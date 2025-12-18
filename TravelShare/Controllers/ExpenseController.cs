@@ -1,29 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TravelShare.Models.Expenses;
 using TravelShare.Services;
-<<<<<<< Updated upstream
-using TravelShare.Services.Interface;
-=======
+
 using TravelShare.Services.FinanceMockData;
 using TravelShare.Services.Interfaces;
->>>>>>> Stashed changes
 using TravelShare.ViewModels;
 
 namespace TravelShare.Controllers
 {
     public class ExpenseController : Controller
     {
-<<<<<<< Updated upstream
-        private readonly IWrite<Expense> _writeService ;
-        private readonly IRead<Expense> _readService;
-        private readonly IUserService _userService;
 
-        public ExpenseController(IWrite<Expense> writeService, IRead<Expense> readService, IUserService userService)
-        {
-            _writeService = writeService;
-            _readService = readService;
-            _userService = userService;
-=======
+
         private readonly IRead<Expense> _readService;
         private readonly IWrite<Expense> _writeService;
         private readonly IUserService _usersService;
@@ -33,7 +21,6 @@ namespace TravelShare.Controllers
             _readService = readService;
             _writeService = writeService;
             _usersService = usersService;
->>>>>>> Stashed changes
         }
 
 
@@ -51,11 +38,8 @@ namespace TravelShare.Controllers
             var expense = _readService.GetById(id);
             if (expense == null) return NotFound();
 
-<<<<<<< Updated upstream
-            var allUsers = await _userService.GetAllUsersAsync();
-=======
             var allUsers = await _usersService.GetAllUsersAsync();
->>>>>>> Stashed changes
+
             var paidByUser = allUsers.FirstOrDefault(u => u.Id == expense.PaidByUserId);
 
             var shares = expense.Shares ?? new List<ExpenseShare>();
@@ -88,11 +72,9 @@ namespace TravelShare.Controllers
         [HttpGet]
         public async Task<ActionResult> Create()
         {
-<<<<<<< Updated upstream
-            var users = await _userService.GetAllUsersAsync();
-=======
+
             var users = await _usersService.GetAllUsersAsync();
->>>>>>> Stashed changes
+
             ViewBag.Users = users;
 
 
@@ -110,11 +92,8 @@ namespace TravelShare.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-<<<<<<< Updated upstream
-            var allUsers = await _userService.GetAllUsersAsync();
-=======
             var allUsers = await _usersService.GetAllUsersAsync();
->>>>>>> Stashed changes
+
             double expectedShare = model.Amount / allUsers.Count();
 
             model.Shares = new List<ExpenseShare>();
@@ -132,11 +111,9 @@ namespace TravelShare.Controllers
                 });
             }
 
-<<<<<<< Updated upstream
-            _writeService.Add(model);
-=======
+
             _writeService.Create(model);
->>>>>>> Stashed changes
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -167,11 +144,8 @@ namespace TravelShare.Controllers
         public async Task<ActionResult> ShareCosts()
         {
             double totalAmount = 550.00;
-<<<<<<< Updated upstream
-            var allUsers = await _userService.GetAllUsersAsync();
-=======
+
             var allUsers = await _usersService.GetAllUsersAsync();
->>>>>>> Stashed changes
 
             var shares = new List<ExpenseShare>
             {

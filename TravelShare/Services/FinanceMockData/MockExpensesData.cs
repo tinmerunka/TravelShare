@@ -1,9 +1,6 @@
 ﻿using TravelShare.Models.Expenses;
-<<<<<<< Updated upstream
-using TravelShare.Services.Interface;
-=======
 using TravelShare.Services.Interfaces;
->>>>>>> Stashed changes
+
 
 namespace TravelShare.Services.FinanceMockData
 {
@@ -63,12 +60,8 @@ namespace TravelShare.Services.FinanceMockData
             };
 
         }
-<<<<<<< Updated upstream
 
-        public IList<Expense> GetAllFromDataSource()
-=======
-        IList<Expense> IDataProvider<Expense>.GetAllDataFromSource()
->>>>>>> Stashed changes
+        public IList<Expense> IDataProvider<Expense>.GetAllDataFromSource()
         {
             return _expenses;
         }
