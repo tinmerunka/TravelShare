@@ -18,9 +18,15 @@ builder.Services.AddSession(options =>
 builder.Services.AddSingleton<IAuthenticationService, MockAuthenticationService>();
 builder.Services.AddSingleton<IUserService, MockUserService>();
 
+<<<<<<< Updated upstream
 builder.Services.AddSingleton<IDataProvider<Expense>, MockExpensesData>();
 builder.Services.AddSingleton<IWrite<Expense>,ExpensesService >();
 builder.Services.AddSingleton<IRead<Expense>, ExpensesService>();
+=======
+builder.Services.AddSingleton<IDataProvider<Expense>,MockExpensesData>();
+builder.Services.AddSingleton<IRead<Expense>,ExpensesService>();
+builder.Services.AddSingleton<IWrite<Expense>, ExpensesService>();
+>>>>>>> Stashed changes
 builder.Services.AddSingleton<MockUserService>();
 
 var app = builder.Build();

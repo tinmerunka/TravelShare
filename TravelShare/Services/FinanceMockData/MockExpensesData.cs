@@ -1,11 +1,15 @@
 ﻿using TravelShare.Models.Expenses;
+<<<<<<< Updated upstream
 using TravelShare.Services.Interface;
+=======
+using TravelShare.Services.Interfaces;
+>>>>>>> Stashed changes
 
 namespace TravelShare.Services.FinanceMockData
 {
     public class MockExpensesData : IDataProvider<Expense>
     {
-        private static List<Expense> _expenses;
+        private static IList<Expense> _expenses;
 
         public MockExpensesData()
         {
@@ -59,8 +63,12 @@ namespace TravelShare.Services.FinanceMockData
             };
 
         }
+<<<<<<< Updated upstream
 
         public IList<Expense> GetAllFromDataSource()
+=======
+        IList<Expense> IDataProvider<Expense>.GetAllDataFromSource()
+>>>>>>> Stashed changes
         {
             return _expenses;
         }
