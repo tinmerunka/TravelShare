@@ -1,7 +1,9 @@
 using TravelShare.Models.Expenses;
 using TravelShare.Services;
 using TravelShare.Services.FinanceMockData;
-using TravelShare.Services.Interface;
+
+using TravelShare.Services.Interfaces;
+
 
 var builder = WebApplication.CreateBuilder(args);
 

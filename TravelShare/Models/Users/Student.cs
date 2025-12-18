@@ -1,8 +1,4 @@
 namespace TravelShare.Models.Users;
-
-
-
-
 public class Student : User
 {
     public string StudentId { get; set; } = string.Empty;

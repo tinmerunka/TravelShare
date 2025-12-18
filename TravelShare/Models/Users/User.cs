@@ -1,9 +1,4 @@
 namespace TravelShare.Models.Users;
-
-
-
-
-
 public abstract class User
 {
     public int Id { get; set; }
@@ -15,21 +10,12 @@ public abstract class User
     public DateTime? LastLoginAt { get; set; }
     public bool IsActive { get; set; } = true;
 
-
-
-
     public virtual string GetDisplayName()
     {
         return $"{FirstName} {LastName}";
     }
 
-
-
-
     public abstract string GetUserType();
-
-
-
 
     public virtual string GetUserDescription()
     {
