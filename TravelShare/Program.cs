@@ -1,5 +1,7 @@
+using TravelShare.Models.Expenses;
 using TravelShare.Services;
 using TravelShare.Services.FinanceMockData;
+using TravelShare.Services.Interface;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +18,9 @@ builder.Services.AddSession(options =>
 builder.Services.AddSingleton<IAuthenticationService, MockAuthenticationService>();
 builder.Services.AddSingleton<IUserService, MockUserService>();
 
-builder.Services.AddSingleton<MockExpensesData>();
+builder.Services.AddSingleton<IDataProvider<Expense>, MockExpensesData>();
+builder.Services.AddSingleton<IWrite<Expense>,ExpensesService >();
+builder.Services.AddSingleton<IRead<Expense>, ExpensesService>();
 builder.Services.AddSingleton<MockUserService>();
 
 var app = builder.Build();
