@@ -1,54 +1,38 @@
-using System.Diagnostics;
-using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
-using TravelShare.Models;
 using TravelShare.Models.Users;
+using TravelShare.Services.Interfaces;
 
 namespace TravelShare.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ICurrentUserService _currentUserService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ICurrentUserService currentUserService)
         {
             _logger = logger;
+            _currentUserService = currentUserService;
         }
 
         public IActionResult Index()
         {
-            LoadCurrentUser();
+            var currentUser = _currentUserService.GetCurrentUser();
+            if (currentUser != null)
+            {
+                ViewBag.CurrentUser = currentUser;
+            }
             return View();
         }
 
         public IActionResult Privacy()
         {
-            LoadCurrentUser();
-            return View();
-        }
-
-        private void LoadCurrentUser()
-        {
-            var userJson = HttpContext.Session.GetString("CurrentUser");
-            if (!string.IsNullOrEmpty(userJson))
+            var currentUser = _currentUserService.GetCurrentUser();
+            if (currentUser != null)
             {
-                var userType = HttpContext.Session.GetString("UserType");
-                User? currentUser = null;
-
-                if (userType == "Student")
-                {
-                    currentUser = JsonSerializer.Deserialize<Student>(userJson);
-                }
-                else if (userType == "Administrator")
-                {
-                    currentUser = JsonSerializer.Deserialize<Administrator>(userJson);
-                }
-
-                if (currentUser != null)
-                {
-                    ViewBag.CurrentUser = currentUser;
-                }
+                ViewBag.CurrentUser = currentUser;
             }
+            return View();
         }
     }
 }

@@ -2,10 +2,11 @@ using TravelShare.Models.Users;
 using TravelShare.Services.Interfaces;
 
 namespace TravelShare.Services;
-public class MockUserService : IUserService
+public class MockUserService : IUserService, IProfileUpdateNotifier
 {
     private readonly List<User> _users;
-   
+    private readonly List<IProfileUpdateObserver> _observers = new();
+
     public MockUserService()
     {
         _users = new List<User>
@@ -80,16 +81,21 @@ public class MockUserService : IUserService
         return Task.FromResult(user);
     }
 
-    public Task<bool> UpdateUserProfileAsync(User user)
+    public async Task<bool> UpdateUserProfileAsync(User user)
     {
         var existingUser = _users.FirstOrDefault(u => u.Id == user.Id);
         if (existingUser != null)
         {
             var index = _users.IndexOf(existingUser);
             _users[index] = user;
-            return Task.FromResult(true);
+
+            // Notify observers about profile update (Observer pattern)
+            var notifyTasks = _observers.Select(o => o.OnProfileUpdatedAsync(user));
+            await Task.WhenAll(notifyTasks);
+
+            return true;
         }
-        return Task.FromResult(false);
+        return false;
     }
 
     public Task<IEnumerable<User>> GetAllUsersAsync()
@@ -113,5 +119,19 @@ public class MockUserService : IUserService
             return Task.FromResult(true);
         }
         return Task.FromResult(false);
+    }
+
+    // Observer pattern support
+    public void Subscribe(IProfileUpdateObserver observer)
+    {
+        if (observer == null) return;
+        if (!_observers.Contains(observer))
+            _observers.Add(observer);
+    }
+
+    public void Unsubscribe(IProfileUpdateObserver observer)
+    {
+        if (observer == null) return;
+        _observers.Remove(observer);
     }
 }
