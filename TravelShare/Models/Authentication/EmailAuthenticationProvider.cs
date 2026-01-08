@@ -1,6 +1,7 @@
-using TravelShare.Models.Users;
+Ôªøusing TravelShare.Models.Users;
 
 namespace TravelShare.Models.Authentication;
+
 public class EmailAuthenticationProvider : AuthenticationProvider
 {
     private readonly Dictionary<string, (string password, User user)> _mockUsers;
@@ -9,20 +10,22 @@ public class EmailAuthenticationProvider : AuthenticationProvider
 
     public EmailAuthenticationProvider()
     {
-        // Mock data for demonstration
+        // Mock data for demonstration - matching test expectations
         _mockUsers = new Dictionary<string, (string, User)>
         {
-            ["student@travelshare.com"] = ("password123", new Student
+            ["student@travelshare.com"] = ("password", new Student
             {
                 Id = 1,
                 Email = "student@travelshare.com",
                 FirstName = "Marko",
                 LastName = "Horvat",
                 StudentId = "0246012345",
-                University = "SveuËiliöte u Zagrebu",
-                Faculty = "Fakultet elektrotehnike i raËunarstva",
+                University = "Sveuƒçili≈°te u Zagrebu",
+                Faculty = "Fakultet elektrotehnike i raƒçunarstva",
                 PhoneNumber = "+385 99 123 4567",
                 ProfileImageUrl = "/images/default-avatar.png",
+                IsActive = true,
+                CreatedAt = DateTime.UtcNow,
                 Preferences = new TravelPreferences
                 {
                     MaxBudget = 500,
@@ -32,15 +35,39 @@ public class EmailAuthenticationProvider : AuthenticationProvider
                     PreferredAccommodation = AccommodationType.Hostel
                 }
             }),
-            ["admin@travelshare.com"] = ("admin123", new Administrator
+            ["admin@travelshare.com"] = ("adminpass", new Administrator
             {
                 Id = 2,
                 Email = "admin@travelshare.com",
                 FirstName = "Ana",
-                LastName = "KovaË",
+                LastName = "Kovaƒç",
                 Department = "User Management",
                 ProfileImageUrl = "/images/default-avatar.png",
+                IsActive = true,
+                CreatedAt = DateTime.UtcNow,
                 Permissions = new List<string> { "ManageUsers", "ViewReports", "ManageTrips" }
+            }),
+            ["ivan.novak@travelshare.com"] = ("ivanpass", new Student
+            {
+                Id = 3,
+                Email = "ivan.novak@travelshare.com",
+                FirstName = "Ivan",
+                LastName = "Novak",
+                StudentId = "0246098765",
+                University = "Sveuƒçili≈°te u Splitu",
+                Faculty = "Ekonomski fakultet",
+                PhoneNumber = "+385 98 765 4321",
+                ProfileImageUrl = "/images/default-avatar.png",
+                IsActive = true,
+                CreatedAt = DateTime.UtcNow,
+                Preferences = new TravelPreferences
+                {
+                    MaxBudget = 800,
+                    MinBudget = 200,
+                    PreferredDestinations = new List<string> { "Paris", "Rome", "Amsterdam" },
+                    PreferredTravelType = TravelType.Cultural,
+                    PreferredAccommodation = AccommodationType.Hotel
+                }
             })
         };
     }

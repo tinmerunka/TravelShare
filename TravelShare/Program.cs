@@ -16,7 +16,7 @@ builder.Services.AddSession(options =>
 builder.Services.AddSingleton<IAuthenticationService, MockAuthenticationService>();
 builder.Services.AddSingleton<IUserService, MockUserService>();
 
-builder.Services.AddSingleton<MockExpensesData>();
+//builder.Services.AddSingleton<MockExpensesData>();
 builder.Services.AddSingleton<MockUserService>();
 
 var app = builder.Build();
