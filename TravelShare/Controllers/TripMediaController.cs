@@ -13,7 +13,7 @@ namespace TravelShare.Controllers
         {
             _mediaService = mediaService;
         }
-
+        [HttpGet]
         public IActionResult Add(int tripId)
         {
             return View(new TripMediaViewModel { MediaId = tripId });
@@ -28,7 +28,7 @@ namespace TravelShare.Controllers
             _mediaService.AddMedia(model);
             return RedirectToAction("Details", "Trips", new { id = model.TripId });
         }
-
+        [HttpDelete]
         public IActionResult Delete(int id, int tripId)
         {
             _mediaService.DeleteMedia(id);
