@@ -1,11 +1,13 @@
 using TravelShare.Models.Expenses;
 using TravelShare.Services;
 using TravelShare.Services.FinanceMockData;
-
 using TravelShare.Services.Interfaces;
 
-
 var builder = WebApplication.CreateBuilder(args);
+
+// Configure Kestrel to use the PORT environment variable (required for Render)
+var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
+builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -19,10 +21,8 @@ builder.Services.AddSession(options =>
 // Register application services as singletons for demo (mock data)
 builder.Services.AddSingleton<IAuthenticationService, MockAuthenticationService>();
 builder.Services.AddSingleton<IUserService, MockUserService>();
-
-
-builder.Services.AddSingleton<IDataProvider<Expense>,MockExpensesData>();
-builder.Services.AddSingleton<IRead<Expense>,ExpensesService>();
+builder.Services.AddSingleton<IDataProvider<Expense>, MockExpensesData>();
+builder.Services.AddSingleton<IRead<Expense>, ExpensesService>();
 builder.Services.AddSingleton<IWrite<Expense>, ExpensesService>();
 builder.Services.AddScoped<PaymentService>();
 builder.Services.AddScoped<ExpensesService>();
@@ -38,11 +38,11 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+// Remove or comment out HTTPS redirection for Render (Render handles SSL)
+// app.UseHttpsRedirection();
+
 app.UseStaticFiles();
-
 app.UseRouting();
-
 app.UseSession();
 app.UseAuthorization();
 
