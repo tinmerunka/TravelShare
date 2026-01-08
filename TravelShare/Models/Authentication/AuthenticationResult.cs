@@ -12,6 +12,9 @@ public class AuthenticationResult
 
     public static AuthenticationResult Success(User user)
     {
+        if (user == null)
+            throw new ArgumentNullException(nameof(user));
+
         return new AuthenticationResult
         {
             IsSuccess = true,

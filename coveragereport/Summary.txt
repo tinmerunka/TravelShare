@@ -1,0 +1,93 @@
+Summary
+  Generated on: 08/01/2026 - 21:34:52
+  Coverage date: 08/01/2026 - 21:30:07
+  Parser: Cobertura
+  Assemblies: 1
+  Classes: 71
+  Files: 67
+  Line coverage: 35.8%
+  Covered lines: 499
+  Uncovered lines: 893
+  Coverable lines: 1392
+  Total lines: 6253
+  Branch coverage: 14.6% (93 of 636)
+  Covered branches: 93
+  Total branches: 636
+  Method coverage: 29.7% (101 of 339)
+  Full method coverage: 28.9% (98 of 339)
+  Covered methods: 101
+  Fully covered methods: 98
+  Total methods: 339
+
+TravelShare                                                       35.8%
+  AspNetCoreGeneratedDocument.Views__ViewStart                       0%
+  AspNetCoreGeneratedDocument.Views_Account_Login                    0%
+  AspNetCoreGeneratedDocument.Views_Account_Profile                  0%
+  AspNetCoreGeneratedDocument.Views_Account_Register                 0%
+  AspNetCoreGeneratedDocument.Views_Expense_Create                   0%
+  AspNetCoreGeneratedDocument.Views_Expense_Delete                   0%
+  AspNetCoreGeneratedDocument.Views_Expense_Details                  0%
+  AspNetCoreGeneratedDocument.Views_Expense_Index                    0%
+  AspNetCoreGeneratedDocument.Views_Expense_ShareCosts               0%
+  AspNetCoreGeneratedDocument.Views_Home_Index                       0%
+  AspNetCoreGeneratedDocument.Views_Home_Privacy                     0%
+  AspNetCoreGeneratedDocument.Views_Shared__Layout                   0%
+  AspNetCoreGeneratedDocument.Views_Shared_Error                     0%
+  Program                                                            0%
+  TravelShare.Controllers.AccountController                       84.7%
+  TravelShare.Controllers.ExpenseController                          0%
+  TravelShare.Controllers.GroupMessagesController                    0%
+  TravelShare.Controllers.GroupsController                           0%
+  TravelShare.Controllers.HomeController                           100%
+  TravelShare.Controllers.TripCreateViewModel                        0%
+  TravelShare.Controllers.TripEditViewModel                          0%
+  TravelShare.Controllers.TripInvitationsController                  0%
+  TravelShare.Controllers.TripMediaController                        0%
+  TravelShare.Controllers.TripMembersController                      0%
+  TravelShare.Controllers.TripsController                            0%
+  TravelShare.Models.Authentication.AuthenticationProvider           0%
+  TravelShare.Models.Authentication.AuthenticationResult           100%
+  TravelShare.Models.Authentication.EmailAuthenticationProvider      0%
+  TravelShare.Models.ErrorViewModel                                  0%
+  TravelShare.Models.Expenses.Expense                                0%
+  TravelShare.Models.Expenses.ExpenseShare                           0%
+  TravelShare.Models.Groups.Group                                    0%
+  TravelShare.Models.Groups.GroupMember                              0%
+  TravelShare.Models.Groups.GroupMessage                             0%
+  TravelShare.Models.Groups.GroupPost                                0%
+  TravelShare.Models.Reports.ReportSummary                           0%
+  TravelShare.Models.Reports.UserBalance                             0%
+  TravelShare.Models.Trips.Trip                                      0%
+  TravelShare.Models.Trips.TripInvitation                            0%
+  TravelShare.Models.Trips.TripMedia                                 0%
+  TravelShare.Models.Trips.TripMember                                0%
+  TravelShare.Models.Users.Administrator                           100%
+  TravelShare.Models.Users.Student                                 100%
+  TravelShare.Models.Users.TravelPreferences                       100%
+  TravelShare.Models.Users.User                                   78.5%
+  TravelShare.Services.Factories.UserFactory                       100%
+  TravelShare.Services.FinanceMockData.MockExpensesData              0%
+  TravelShare.Services.FinanceMockData.MockReportData                0%
+  TravelShare.Services.MockAuthenticationService                   100%
+  TravelShare.Services.MockUserService                             100%
+  TravelShare.Services.ProfileChangeLogger                           0%
+  TravelShare.Services.SessionCurrentUserService                   100%
+  TravelShare.Services.SocialGroups.GroupService                     0%
+  TravelShare.Services.Trips.TripService                             0%
+  TravelShare.ViewModels.ChangePasswordViewModel                   100%
+  TravelShare.ViewModels.ExpenseShareViewModel                       0%
+  TravelShare.ViewModels.ExpenseViewModel                            0%
+  TravelShare.ViewModels.LoginViewModel                           66.6%
+  TravelShare.ViewModels.RegisterViewModel                         100%
+  TravelShare.ViewModels.SocialGroups.GroupMemberViewmodel           0%
+  TravelShare.ViewModels.SocialGroups.GroupMessageViewmodel          0%
+  TravelShare.ViewModels.SocialGroups.GroupMessageViewModel          0%
+  TravelShare.ViewModels.SocialGroups.GroupPostViewmodel             0%
+  TravelShare.ViewModels.SocialGroups.GroupViewModel                 0%
+  TravelShare.ViewModels.Trips.TripInvitationViewModel               0%
+  TravelShare.ViewModels.Trips.TripMediaViewmodel                    0%
+  TravelShare.ViewModels.Trips.TripMediaViewModel                    0%
+  TravelShare.ViewModels.Trips.TripMemberViewmodel                   0%
+  TravelShare.ViewModels.Trips.TripViewModel                         0%
+  TravelShare.ViewModels.UpdateProfileViewModel                   92.3%
+  TravelShare.ViewModels.UserProfileViewModel                      100%

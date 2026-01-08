@@ -3,6 +3,7 @@ public class Administrator : User
 {
     public string Department { get; set; } = string.Empty;
     public List<string> Permissions { get; set; } = new();
+    public string PasswordHash { get; set; }
 
     public override string GetUserType()
     {
@@ -16,6 +17,9 @@ public class Administrator : User
 
     public bool HasPermission(string permission)
     {
-        return Permissions.Contains(permission, StringComparer.OrdinalIgnoreCase);
+        if (Permissions == null || string.IsNullOrEmpty(permission))
+            return false;
+
+        return Permissions.Contains(permission, StringComparer.Ordinal); // Changed to case-sensitive
     }
 }

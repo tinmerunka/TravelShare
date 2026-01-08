@@ -44,7 +44,7 @@ public class RegisterViewModel
     [Display(Name = "Phone Number")]
     public string? PhoneNumber { get; set; }
 
-    [Required(ErrorMessage = "You must accept the terms of use")]
+    [Range(typeof(bool), "true", "true", ErrorMessage = "You must accept the terms of use")]
     [Display(Name = "I accept the terms of use")]
     public bool AcceptTerms { get; set; }
 }

@@ -27,6 +27,7 @@ builder.Services.AddSingleton<IWrite<Expense>, ExpensesService>();
 builder.Services.AddScoped<PaymentService>();
 builder.Services.AddScoped<ExpensesService>();
 
+builder.Services.AddSingleton<MockExpensesData>();
 builder.Services.AddSingleton<MockUserService>();
 
 var app = builder.Build();

@@ -23,12 +23,20 @@ public class SessionCurrentUserService : ICurrentUserService
             return null;
 
         var userType = Session?.GetString("UserType");
-        return userType switch
+        try
         {
-            "Student" => JsonSerializer.Deserialize<Student>(userJson),
-            "Administrator" => JsonSerializer.Deserialize<Administrator>(userJson),
-            _ => null
-        };
+            return userType switch
+            {
+                "Student" => JsonSerializer.Deserialize<Student>(userJson, _jsonOptions),
+                "Administrator" => JsonSerializer.Deserialize<Administrator>(userJson, _jsonOptions),
+                _ => null
+            };
+        }
+        catch (JsonException)
+        {
+            // Handle malformed JSON gracefully
+            return null;
+        }
     }
 
     public void StoreCurrentUser(User user)

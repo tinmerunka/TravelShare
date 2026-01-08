@@ -89,7 +89,7 @@ public class MockUserService : IUserService, IProfileUpdateNotifier
             var index = _users.IndexOf(existingUser);
             _users[index] = user;
 
-            // Notify observers about profile update (Observer pattern)
+            // profile update (Observer pattern)
             var notifyTasks = _observers.Select(o => o.OnProfileUpdatedAsync(user));
             await Task.WhenAll(notifyTasks);
 

@@ -91,7 +91,7 @@ public class AccountController : Controller
 
         var newStudent = _userFactory.CreateStudent(model);
 
-        // In a real app you'd call _authService.RegisterUserAsync(...). For now store in session.
+        // In a real app you'd call _authService.RegisterUserAsync. For now store in session.
         _currentUserService.StoreCurrentUser(newStudent);
         _logger.LogInformation("New user {Email} registered successfully", model.Email);
 
