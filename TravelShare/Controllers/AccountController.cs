@@ -1,31 +1,37 @@
 using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
 using TravelShare.Models.Users;
 using TravelShare.Services.Interfaces;
+using TravelShare.Services.Factories;
 using TravelShare.ViewModels;
+using Microsoft.Extensions.Logging;
 
 namespace TravelShare.Controllers;
 public class AccountController : Controller
 {
     private readonly IAuthenticationService _authService;
     private readonly IUserService _userService;
+    private readonly IUserFactory _userFactory;
+    private readonly ICurrentUserService _currentUserService;
     private readonly ILogger<AccountController> _logger;
 
     public AccountController(
         IAuthenticationService authService,
         IUserService userService,
+        IUserFactory userFactory,
+        ICurrentUserService currentUserService,
         ILogger<AccountController> logger)
     {
         _authService = authService;
         _userService = userService;
+        _userFactory = userFactory;
+        _currentUserService = currentUserService;
         _logger = logger;
     }
 
     [HttpGet]
     public IActionResult Login()
     {
-        // Redirect if already logged in
-        if (IsUserLoggedIn())
+        if (_currentUserService.IsUserLoggedIn())
         {
             return RedirectToAction("Index", "Home");
         }
@@ -46,10 +52,9 @@ public class AccountController : Controller
 
         if (result.IsSuccess && result.User != null)
         {
-            // Store user in session
-            StoreUserInSession(result.User);
+            _currentUserService.StoreCurrentUser(result.User);
             _logger.LogInformation("User {Email} logged in successfully", model.Email);
-            
+
             return RedirectToAction("Index", "Home");
         }
 
@@ -60,8 +65,7 @@ public class AccountController : Controller
     [HttpGet]
     public IActionResult Register()
     {
-        // Redirect if already logged in
-        if (IsUserLoggedIn())
+        if (_currentUserService.IsUserLoggedIn())
         {
             return RedirectToAction("Index", "Home");
         }
@@ -85,54 +89,33 @@ public class AccountController : Controller
             return View(model);
         }
 
-        var newStudent = new Student
-        {
-            Id = new Random().Next(1000, 9999),
-            Email = model.Email,
-            FirstName = model.FirstName,
-            LastName = model.LastName,
-            StudentId = model.StudentId,
-            University = model.University,
-            Faculty = model.Faculty,
-            PhoneNumber = model.PhoneNumber,
-            CreatedAt = DateTime.UtcNow,
-            IsActive = true,
-            Preferences = new TravelPreferences
-            {
-                MinBudget = 200,
-                MaxBudget = 1000,
-                PreferredTravelType = TravelType.Beach,
-                PreferredAccommodation = AccommodationType.Hostel,
-                PreferredDestinations = new List<string> { "Hrvatska", "Italija" }
-            }
-        };
+        var newStudent = _userFactory.CreateStudent(model);
 
-        StoreUserInSession(newStudent);
+        // In a real app you'd call _authService.RegisterUserAsync(...). For now store in session.
+        _currentUserService.StoreCurrentUser(newStudent);
         _logger.LogInformation("New user {Email} registered successfully", model.Email);
 
         TempData["SuccessMessage"] = "Registracija uspješna! Dobrodošli u TravelShare!";
         return RedirectToAction("Index", "Home");
     }
 
-
     [HttpPost]
     [ValidateAntiForgeryToken]
     public IActionResult Logout()
     {
-        var userEmail = HttpContext.Session.GetString("UserEmail");
+        var userEmail = _currentUserService.GetCurrentUser()?.Email;
         _authService.Logout();
-        HttpContext.Session.Clear();
-        
+        _currentUserService.ClearCurrentUser();
+
         _logger.LogInformation("User {Email} logged out", userEmail);
-        
+
         return RedirectToAction("Index", "Home");
     }
-
 
     [HttpGet]
     public IActionResult Profile()
     {
-        var currentUser = GetCurrentUser();
+        var currentUser = _currentUserService.GetCurrentUser();
         if (currentUser == null)
         {
             return RedirectToAction("Login");
@@ -158,7 +141,7 @@ public class AccountController : Controller
             return RedirectToAction("Profile");
         }
 
-        var currentUser = GetCurrentUser();
+        var currentUser = _currentUserService.GetCurrentUser();
         if (currentUser == null)
         {
             return RedirectToAction("Login");
@@ -206,8 +189,9 @@ public class AccountController : Controller
             admin.Department = model.Department;
         }
 
-        // Update session
-        StoreUserInSession(currentUser);
+        // Persist changes and update session
+        await _userService.UpdateUserProfileAsync(currentUser);
+        _currentUserService.StoreCurrentUser(currentUser);
 
         TempData["SuccessMessage"] = "Profile updated successfully!";
         return RedirectToAction("Profile");
@@ -229,55 +213,14 @@ public class AccountController : Controller
             return RedirectToAction("Profile");
         }
 
-        var currentUser = GetCurrentUser();
+        var currentUser = _currentUserService.GetCurrentUser();
         if (currentUser == null)
         {
             return RedirectToAction("Login");
         }
 
         // In a real app verify the current password
-        // For demo, just show success
         TempData["SuccessMessage"] = "Password changed successfully!";
         return RedirectToAction("Profile");
     }
-
-
-    // Helper Methods
-
-    private bool IsUserLoggedIn()
-    {
-        return !string.IsNullOrEmpty(HttpContext.Session.GetString("CurrentUser"));
-    }
-
-    private User? GetCurrentUser()
-    {
-        var userJson = HttpContext.Session.GetString("CurrentUser");
-        if (string.IsNullOrEmpty(userJson))
-        {
-            return null;
-        }
-
-        var userType = HttpContext.Session.GetString("UserType");
-        
-        return userType switch
-        {
-            "Student" => JsonSerializer.Deserialize<Student>(userJson),
-            "Administrator" => JsonSerializer.Deserialize<Administrator>(userJson),
-            _ => null
-        };
-    }
-
-    private void StoreUserInSession(User user)
-    {
-        var options = new JsonSerializerOptions
-        {
-            WriteIndented = false
-        };
-
-        var userJson = JsonSerializer.Serialize(user, user.GetType(), options);
-        HttpContext.Session.SetString("CurrentUser", userJson);
-        HttpContext.Session.SetString("UserType", user.GetUserType());
-        HttpContext.Session.SetString("UserEmail", user.Email);
-    }
-
 }
