@@ -22,7 +22,7 @@ namespace TravelShare.Services.FinanceMockData
                     CreatedAt = DateTime.UtcNow.AddDays(-3),
                     Shares = new List<ExpenseShare>
                     {
-                        new ExpenseShare { Id = 1, ExpenseId = 1, UserId = 1, ShareAmount = 30.00 },
+                        new ExpenseShare { Id = 1, ExpenseId = 1, UserId = 1, ShareAmount = -30.00 },
                         new ExpenseShare { Id = 2, ExpenseId = 1, UserId = 2, ShareAmount = -30.00 },
                         new ExpenseShare { Id = 3, ExpenseId = 1, UserId = 3, ShareAmount = 30.00 },
                     }
@@ -52,8 +52,8 @@ namespace TravelShare.Services.FinanceMockData
                     Shares = new List<ExpenseShare>
                     {
                         new ExpenseShare { Id = 7, ExpenseId = 3, UserId = 1, ShareAmount = 20.00 },
-                        new ExpenseShare { Id = 8, ExpenseId = 3, UserId = 1, ShareAmount = -20.00 },
-                        new ExpenseShare { Id = 9, ExpenseId = 3, UserId = 1, ShareAmount = -20.00 },
+                        new ExpenseShare { Id = 8, ExpenseId = 3, UserId = 2, ShareAmount = -20.00 },
+                        new ExpenseShare { Id = 9, ExpenseId = 3, UserId = 3, ShareAmount = -20.00 },
                         
                     }
                 }

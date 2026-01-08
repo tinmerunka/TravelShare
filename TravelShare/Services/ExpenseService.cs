@@ -1,5 +1,4 @@
 ﻿using TravelShare.Models.Expenses;
-
 using TravelShare.Services.Interfaces;
 
 namespace TravelShare.Services
@@ -12,8 +11,6 @@ namespace TravelShare.Services
         {
             _provider = provider;
         }
-
-
 
         public Expense Create(Expense expense)
         {
@@ -57,7 +54,14 @@ namespace TravelShare.Services
 
             list.Remove(existing);
             list.Add(expense);
+            existing.Amount = expense.Amount;
+            existing.Description = expense.Description;
+            existing.TripId = expense.TripId;
+            existing.PaidByUserId = expense.PaidByUserId;
+            existing.CreatedAt = expense.CreatedAt;
 
+           
+            existing.Shares = expense.Shares;
             return true;
         }
     }
