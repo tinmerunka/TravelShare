@@ -25,6 +25,13 @@
                             <li style="color:@(s.ShareAmount > 0 ? "green" : "red")">
                                 @s.FirstName @s.LastName - @Math.Abs(s.ShareAmount).ToString("0.00") €
                                 @(s.ShareAmount > 0 ? "(Paid)" : "(Unpaid)")
+
+                                @if (s.CanPay)
+                                {
+                                    <a asp-controller="Payment" asp-action="CreatePayment" asp-route-paymentId="@s.Id" asp-route-expenseId="@Model.Id" class="btn btn-success">
+                                        Pay
+                                    </a>
+                                }
                             </li>
                         }
                     </ul>
@@ -74,16 +81,16 @@
             background: #f9f9f9;
         }
 
-            .shares-card ul {
-                list-style: none;
-                padding: 0;
-                margin: 0;
-            }
+        .shares-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
 
-            .shares-card li {
-                margin: 0.5rem 0;
-                font-weight: bold;
-            }
+        .shares-card li {
+            margin: 0.5rem 0;
+            font-weight: bold;
+        }
 
         .fade-in {
             opacity: 0;
@@ -96,10 +103,10 @@
             border-radius: 5px;
         }
 
-            .btn-danger:hover {
-                background-color: #e60000;
-                border-color: #c70000;
-            }
+        .btn-danger:hover {
+            background-color: #e60000;
+            border-color: #c70000;
+        }
 
         .text-right {
             text-align: right;

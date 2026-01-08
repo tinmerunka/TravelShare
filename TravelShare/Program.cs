@@ -24,6 +24,8 @@ builder.Services.AddSingleton<IUserService, MockUserService>();
 builder.Services.AddSingleton<IDataProvider<Expense>,MockExpensesData>();
 builder.Services.AddSingleton<IRead<Expense>,ExpensesService>();
 builder.Services.AddSingleton<IWrite<Expense>, ExpensesService>();
+builder.Services.AddScoped<PaymentService>();
+builder.Services.AddScoped<ExpensesService>();
 
 builder.Services.AddSingleton<MockUserService>();
 

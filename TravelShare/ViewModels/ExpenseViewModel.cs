@@ -1,6 +1,4 @@
-﻿using TravelShare.Models.Expenses;
-
-namespace TravelShare.ViewModels
+﻿namespace TravelShare.ViewModels
 {
     public class ExpenseViewModel
     {
@@ -11,11 +9,8 @@ namespace TravelShare.ViewModels
         public double Amount { get; set; }
         public string Description { get; set; }
         public DateTime CreatedAt { get; set; }
-
         public List<string> PaidUsers { get; set; } = new();
         public List<string> UnpaidUsers { get; set; } = new();
-
         public List<ExpenseShareViewModel> Shares { get; set; } = new();
-
     }
 }
