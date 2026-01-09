@@ -39,7 +39,7 @@ public class AccountViewTests
             new HtmlHelperOptions());
     }
 
-    #region Login View Tests
+    // Login View Tests
 
     [Fact]
     public void LoginView_WithValidModel_ShouldRenderCorrectly()
@@ -115,9 +115,8 @@ public class AccountViewTests
         model.Email.Should().Be("test@test.com");
     }
 
-    #endregion
 
-    #region Profile View Tests
+    // Profile View Tests
 
     [Fact]
     public void ProfileView_WithStudentUser_ShouldDisplayStudentFields()
@@ -224,9 +223,8 @@ public class AccountViewTests
         // View should handle null preferences gracefully
     }
 
-    #endregion
 
-    #region Helper Methods
+    //Helper Methods
 
     private static List<System.ComponentModel.DataAnnotations.ValidationResult> ValidateModel(object model)
     {
@@ -236,5 +234,4 @@ public class AccountViewTests
         return validationResults;
     }
 
-    #endregion
 }
