@@ -14,13 +14,13 @@ namespace TravelShare.Controllers
         {
             _tripService = tripService;
         }
-
+        [HttpGet]
         public IActionResult Index()
         {
             var trips = _tripService.GetAllTrips();
             return View(trips);
         }
-
+        [HttpGet]
         public IActionResult Details(int id)
         {
             var trip = _tripService.GetTripById(id);
@@ -65,7 +65,7 @@ namespace TravelShare.Controllers
             _tripService.UpdateTrip(model);
             return RedirectToAction("Details", new { id = model.Id });
         }
-
+        [HttpDelete]
         public IActionResult Delete(int id)
         {
             _tripService.DeleteTrip(id);
