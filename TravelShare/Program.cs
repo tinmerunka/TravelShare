@@ -2,6 +2,7 @@ using TravelShare.Models.Expenses;
 using TravelShare.Services;
 using TravelShare.Services.FinanceMockData;
 using TravelShare.Services.Interfaces;
+using TravelShare.Services.Factories; // Add this using statement
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +27,9 @@ builder.Services.AddSession(options =>
 builder.Services.AddSingleton<IAuthenticationService, MockAuthenticationService>();
 builder.Services.AddSingleton<IUserService, MockUserService>();
 builder.Services.AddSingleton<MockUserService>();
+
+// Add this line to register IUserFactory
+builder.Services.AddScoped<IUserFactory, UserFactory>();
 
 // Register MockExpensesData and expose it as IDataProvider
 builder.Services.AddSingleton<MockExpensesData>();
