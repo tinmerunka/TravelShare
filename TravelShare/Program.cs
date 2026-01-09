@@ -11,6 +11,10 @@ builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// ADD THIS - Required for SessionCurrentUserService
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(30);
@@ -18,17 +22,20 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
-// Register application services as singletons for demo (mock data)
+// Register application services
 builder.Services.AddSingleton<IAuthenticationService, MockAuthenticationService>();
 builder.Services.AddSingleton<IUserService, MockUserService>();
-builder.Services.AddSingleton<IDataProvider<Expense>, MockExpensesData>();
-builder.Services.AddSingleton<IRead<Expense>, ExpensesService>();
-builder.Services.AddSingleton<IWrite<Expense>, ExpensesService>();
-builder.Services.AddScoped<PaymentService>();
-builder.Services.AddScoped<ExpensesService>();
-
-builder.Services.AddSingleton<MockExpensesData>();
 builder.Services.AddSingleton<MockUserService>();
+
+// Register MockExpensesData and expose it as IDataProvider
+builder.Services.AddSingleton<MockExpensesData>();
+builder.Services.AddSingleton<IDataProvider<Expense>, MockExpensesData>();
+// Change these to Scoped (not Singleton) because they depend on SessionCurrentUserService which needs HttpContext
+builder.Services.AddScoped<ICurrentUserService, SessionCurrentUserService>();
+builder.Services.AddScoped<ExpensesService>();
+builder.Services.AddScoped<IRead<Expense>>(sp => sp.GetRequiredService<ExpensesService>());
+builder.Services.AddScoped<IWrite<Expense>>(sp => sp.GetRequiredService<ExpensesService>());
+builder.Services.AddScoped<PaymentService>();
 
 var app = builder.Build();
 
