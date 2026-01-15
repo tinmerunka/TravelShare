@@ -13,7 +13,7 @@ public class MockAuthenticationService : IAuthenticationService
         // Mock data for demonstration - matching the test expectations exactly
         _mockUsers = new Dictionary<string, (string, User)>
         {
-            ["student@travelshare.com"] = ("password", new Student
+            ["student@travelshare.com"] = ("password123", new Student
             {
                 Id = 1,
                 Email = "student@travelshare.com",
@@ -35,7 +35,7 @@ public class MockAuthenticationService : IAuthenticationService
                     PreferredAccommodation = AccommodationType.Hostel
                 }
             }),
-            ["admin@travelshare.com"] = ("adminpass", new Administrator
+            ["admin@travelshare.com"] = ("admin123", new Administrator
             {
                 Id = 2,
                 Email = "admin@travelshare.com",
