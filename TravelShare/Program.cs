@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.HttpOverrides;
 using TravelShare.Models.Expenses;
 using TravelShare.Services;
+using TravelShare.Services.Factories; // Add this using statement
 using TravelShare.Services.FinanceMockData;
 using TravelShare.Services.Interfaces;
 using TravelShare.Services.Factories;
@@ -15,9 +17,10 @@ builder.Services.AddControllersWithViews();
 
 // Required for SessionCurrentUserService
 builder.Services.AddHttpContextAccessor();
+
+
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(30);
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
     // ADDED: Enhanced security for session cookies
@@ -42,6 +45,10 @@ builder.Services.AddScoped<PaymentService>();
 
 var app = builder.Build();
 
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedProto | ForwardedHeaders.XForwardedFor
+});
 var isDevelopment = app.Environment.IsDevelopment();
 
 // Configure the HTTP request pipeline.
@@ -98,10 +105,29 @@ app.Use(async (context, next) =>
 
 app.UseRouting();
 app.UseSession();
+app.UseAuthentication();
 app.UseAuthorization();
+
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.Use(async (context, next) =>
+{
+    if (!context.Request.IsHttps)
+    {
+        context.Request.Scheme = "https";
+    }
+    // Ukloni potencijalno opasne header-e
+    context.Response.Headers.Remove("X-Powered-By");
+    context.Response.Headers.Remove("Server");
+
+    // Dodaj sigurnosne header-e
+    context.Response.Headers["X-Content-Type-Options"] = "nosniff";
+    context.Response.Headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains; preload";
+
+    await next();
+});
 
 app.Run();
