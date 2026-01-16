@@ -4,6 +4,7 @@ using TravelShare.Services;
 using TravelShare.Services.Factories; // Add this using statement
 using TravelShare.Services.FinanceMockData;
 using TravelShare.Services.Interfaces;
+using TravelShare.Services.Factories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +15,7 @@ builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-// ADD THIS - Required for SessionCurrentUserService
+// Required for SessionCurrentUserService
 builder.Services.AddHttpContextAccessor();
 
 
@@ -22,29 +23,20 @@ builder.Services.AddSession(options =>
 {
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
-    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;  // <-- ensures cookie only sent over HTTPS
-    options.Cookie.SameSite = SameSiteMode.Lax;
-});
-
-builder.Services.ConfigureApplicationCookie(options =>
-{
-    options.Cookie.HttpOnly = true;
-    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;  // <-- same here for auth cookie
-    options.Cookie.SameSite = SameSiteMode.Lax;
+    // ADDED: Enhanced security for session cookies
+    options.Cookie.SameSite = SameSiteMode.Strict;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
 });
 
 // Register application services
 builder.Services.AddSingleton<IAuthenticationService, MockAuthenticationService>();
 builder.Services.AddSingleton<IUserService, MockUserService>();
 builder.Services.AddSingleton<MockUserService>();
-
-// Add this line to register IUserFactory
 builder.Services.AddScoped<IUserFactory, UserFactory>();
 
 // Register MockExpensesData and expose it as IDataProvider
 builder.Services.AddSingleton<MockExpensesData>();
 builder.Services.AddSingleton<IDataProvider<Expense>, MockExpensesData>();
-// Change these to Scoped (not Singleton) because they depend on SessionCurrentUserService which needs HttpContext
 builder.Services.AddScoped<ICurrentUserService, SessionCurrentUserService>();
 builder.Services.AddScoped<ExpensesService>();
 builder.Services.AddScoped<IRead<Expense>>(sp => sp.GetRequiredService<ExpensesService>());
@@ -57,18 +49,60 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
 {
     ForwardedHeaders = ForwardedHeaders.XForwardedProto | ForwardedHeaders.XForwardedFor
 });
+var isDevelopment = app.Environment.IsDevelopment();
 
 // Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+if (!isDevelopment)
 {
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
 
-// Remove or comment out HTTPS redirection for Render (Render handles SSL)
-// app.UseHttpsRedirection();
-
 app.UseStaticFiles();
+
+// Security headers middleware
+app.Use(async (context, next) =>
+{
+    string csp;
+
+    if (isDevelopment)
+    {
+        csp = "default-src 'self'; " +
+              "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; " +
+              "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; " +
+              "img-src 'self' data: https://images.unsplash.com; " +
+              "font-src 'self' data: https://cdn.jsdelivr.net https://fonts.gstatic.com; " +
+              "connect-src 'self' ws://localhost:* wss://localhost:* http://localhost:*; " +
+              "frame-ancestors 'none'; " +
+              "form-action 'self'; " +
+              "base-uri 'self'; " +
+              "object-src 'none'";
+    }
+    else
+    {
+        csp = "default-src 'self'; " +
+              "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; " +
+              "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; " +
+              "img-src 'self' data: https://images.unsplash.com; " +
+              "font-src 'self' data: https://cdn.jsdelivr.net https://fonts.gstatic.com; " +
+              "connect-src 'self'; " +
+              "frame-ancestors 'none'; " +
+              "form-action 'self'; " +
+              "base-uri 'self'; " +
+              "object-src 'none'; " +
+              "upgrade-insecure-requests";
+    }
+
+    context.Response.Headers.Append("Content-Security-Policy", csp);
+    context.Response.Headers.Append("X-Frame-Options", "DENY");
+    context.Response.Headers.Append("X-Content-Type-Options", "nosniff");
+    context.Response.Headers.Append("Referrer-Policy", "strict-origin-when-cross-origin");
+    context.Response.Headers.Append("Permissions-Policy",
+        "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()");
+
+    await next();
+});
+
 app.UseRouting();
 app.UseSession();
 app.UseAuthentication();
