@@ -20,13 +20,11 @@
 
             <div class="create-card">
                 <form asp-action="Create">
-
                     <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
-
                     <input asp-for="TripId" type="hidden" value="@ViewBag.NextTripId" />
 
                     <div class="form-group mb-3">
-                        <label class="form-label">Participants</label>
+                        <legend class="form-label">Participants</legend>
                         <div class="participants-list" style="max-height:200px; overflow-y:auto; border:1px solid #ddd; padding:10px; border-radius:12px;">
                             @foreach (var u in ViewBag.Users as List<TravelShare.Models.Users.User>)
                             {
@@ -40,19 +38,19 @@
                     </div>
 
                     <div class="form-group mb-3">
-                        <label asp-for="Amount" class="form-label"></label>
+                        <label for="Amount" class="form-label">@Html.DisplayNameFor(e => e.Amount)</label>
                         <input asp-for="Amount" class="form-control input-rounded" />
                         <span asp-validation-for="Amount" class="text-danger"></span>
                     </div>
 
                     <div class="form-group mb-3">
-                        <label asp-for="Description" class="form-label"></label>
+                        <label for="Description" class="form-label">@Html.DisplayNameFor(e=>e.Description)</label>
                         <input asp-for="Description" class="form-control input-rounded" />
                         <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
 
                     <div class="form-group mb-4">
-                        <label asp-for="CreatedAt" class="form-label"></label>
+                        <label for="CreatedAt" class="form-label">@Html.DisplayNameFor(e => e.CreatedAt)</label>
                         <input asp-for="CreatedAt" type="date" class="form-control input-rounded" />
                         <span asp-validation-for="CreatedAt" class="text-danger"></span>
                     </div>

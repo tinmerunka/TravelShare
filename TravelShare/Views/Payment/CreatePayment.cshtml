@@ -61,27 +61,27 @@
         <input type="hidden" asp-for="ExpenseId" />
 
         <div>
-            <label asp-for="Amount"></label>
+            <label for="Amount">@Html.DisplayNameFor(p => p.Amount)</label>
             <input asp-for="Amount" readonly />
         </div>
 
         <div>
-            <label asp-for="Currency"></label>
+            <label for="Currency">@Html.DisplayNameFor(p => p.Currency)</label>
             <input asp-for="Currency" readonly />
         </div>
 
         <div>
-            <label asp-for="CardNumber"></label>
+            <label for="CardNumber">@Html.DisplayNameFor(p => p.CardNumber)</label>
             <input asp-for="CardNumber" placeholder="Card Number" />
         </div>
 
         <div>
-            <label asp-for="Cvv"></label>
+            <label for="Cvv">@Html.DisplayNameFor(p => p.Cvv)</label>
             <input asp-for="Cvv" placeholder="CVV" />
         </div>
 
         <div>
-            <label asp-for="Expiry"></label>
+            <label for="Expiry">@Html.DisplayNameFor(p => p.Expiry)</label>
             <input asp-for="Expiry" placeholder="MM/YY" />
         </div>
 

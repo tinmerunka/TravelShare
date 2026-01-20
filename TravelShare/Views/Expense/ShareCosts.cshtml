@@ -17,8 +17,9 @@
         var debtor = debtors[d];
         double remainingDebt = -debtor.Amount;
 
-        for (int c = 0; c < creditors.Count; c++)
+        for (int c = creditors.Count - 1; c >= 0; c--)
         {
+        
             var creditor = creditors[c];
             if (remainingDebt <= 0) break;
 
@@ -31,7 +32,6 @@
             if (creditors[c].Amount <= 0)
             {
                 creditors.RemoveAt(c);
-                c--;
             }
         }
     }

@@ -29,10 +29,14 @@ namespace TravelShare.Controllers
         // GET: ExpensesController/Details/5
         public async Task<ActionResult> Details(int id)
         {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
             var expense = _readService.GetById(id);
 
             if (expense == null) 
                 return NotFound();
+
             var currentUser = _authService.GetCurrentUser();
 
             var allUsers = await _usersService.GetAllUsersAsync();
@@ -89,7 +93,6 @@ namespace TravelShare.Controllers
                 return View(model);
 
             var allUsers = await _usersService.GetAllUsersAsync();
-
             double expectedShare = model.Amount / allUsers.Count();
 
             model.Shares = new List<ExpenseShare>();
@@ -108,13 +111,15 @@ namespace TravelShare.Controllers
             }
 
             _writeService.Create(model);
-
             return RedirectToAction(nameof(Index));
         }
 
         // GET: ExpensesController/Delete/5
         public ActionResult Delete(int id)
         {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
             var expense = _readService.GetById(id);
             if (expense == null)
                 return NotFound();
@@ -127,6 +132,8 @@ namespace TravelShare.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            if (!ModelState.IsValid)
+                return BadRequest();
             var expense = _readService.GetById(id);
             if (expense == null)
                 return NotFound();
@@ -139,7 +146,6 @@ namespace TravelShare.Controllers
         public async Task<ActionResult> ShareCosts()
         {
             double totalAmount = 550.00;
-
             var allUsers = await _usersService.GetAllUsersAsync();
 
             var shares = new List<ExpenseShare>

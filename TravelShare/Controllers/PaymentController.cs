@@ -26,6 +26,9 @@ namespace TravelShare.Controllers
        // GET: PaymentController/Create
         public ActionResult CreatePayment(int paymentId, int expenseId)
         {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
             var expense = _expenseService.GetById(expenseId);
             if (expense == null) return NotFound();
 
@@ -74,7 +77,7 @@ namespace TravelShare.Controllers
 
             var userEmail = "student@travelshare.com";
 
-            var paymentEmailDecorator = new PaymentEmailDecorator(new PaymentService(), userEmail);
+            var paymentEmailDecorator = new PaymentEmailDecorator(_paymentService, userEmail);
             paymentEmailDecorator.Pay(payment);
 
             return RedirectToAction("Details", "Expense", new { id = model.ExpenseId });
