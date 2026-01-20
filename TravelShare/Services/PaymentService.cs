@@ -19,10 +19,10 @@ namespace TravelShare.Services
             return PaymentResult.Approved(transactionId);
         }
 
-        private string GenerateTransactionGuid() => Guid.NewGuid().ToString();
+        private static string GenerateTransactionGuid() => Guid.NewGuid().ToString();
 
-        private bool isCvvValid(string cvv) => !string.IsNullOrWhiteSpace(cvv) && cvv.Length == 3;
+        private static bool isCvvValid(string cvv) => !string.IsNullOrWhiteSpace(cvv) && cvv.Length == 3;
 
-        private bool isCardValid(string cardNumber) => !string.IsNullOrWhiteSpace(cardNumber) && cardNumber.IsValidLuhnNumber(); // card number koji zadovoljava Luhn 4111 1111 1111 1111
+        private  static bool isCardValid(string cardNumber) => !string.IsNullOrWhiteSpace(cardNumber) && cardNumber.IsValidLuhnNumber(); // card number koji zadovoljava Luhn 4111 1111 1111 1111
     }
 }

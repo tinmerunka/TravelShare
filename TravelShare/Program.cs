@@ -4,7 +4,6 @@ using TravelShare.Services;
 using TravelShare.Services.Factories; // Add this using statement
 using TravelShare.Services.FinanceMockData;
 using TravelShare.Services.Interfaces;
-using TravelShare.Services.Factories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -130,4 +129,4 @@ app.Use(async (context, next) =>
     await next();
 });
 
-app.Run();
+await app.RunAsync();

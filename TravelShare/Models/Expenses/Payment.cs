@@ -1,4 +1,6 @@
-﻿namespace TravelShare.Models.Expenses
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace TravelShare.Models.Expenses
 {
     public class Payment
     {
@@ -6,10 +8,15 @@
         {
         }
 
+        [Display(Name = "Amount")]
         public double Amount { get; private set; }
+        [Display(Name = "Currency")]
         public string Currency { get; private set; }
+        [Display(Name = "CardNumber")]
         public string CardNumber { get; private set; }
+        [Display(Name = "Expiry")]
         public string Expiry { get; private set; }
+        [Display(Name = "Cvv")]
         public string Cvv { get; private set; } 
 
         public class Builder
@@ -45,8 +52,8 @@
             public Builder SetExpiry(string monthYear)
             {
                 string[] details = monthYear.Split("/");
-                bool succMonth = int.TryParse(details.First(), out int month);
-                bool succYear = int.TryParse(details.Last(), out int year);
+                bool succMonth = int.TryParse(details[0], out int month);
+                bool succYear = int.TryParse(details[1], out int year);
                 if (!succMonth || !succYear)
                     return this;
                 var currentDate = DateTime.UtcNow;
