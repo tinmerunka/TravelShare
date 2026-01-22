@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using TravelShare.Models.Users;
 using TravelShare.Services.Interfaces;
 using TravelShare.Services.Factories;
@@ -58,7 +58,7 @@ public class AccountController : Controller
             return RedirectToAction("Index", "Home");
         }
 
-        ModelState.AddModelError(string.Empty, result.ErrorMessage ?? "Pogre�an email ili lozinka");
+        ModelState.AddModelError(string.Empty, result.ErrorMessage ?? "Pogrešan email ili lozinka");
         return View(model);
     }
 
@@ -70,7 +70,21 @@ public class AccountController : Controller
             return RedirectToAction("Index", "Home");
         }
 
-        return View();
+        // Registration-specific logging
+        _logger.LogInformation("Registration page accessed at {Timestamp}", DateTime.UtcNow);
+
+        // Prepare registration-specific data
+        ViewBag.Universities = GetUniversities();
+        ViewBag.PageTitle = "Join TravelShare";
+        ViewBag.ShowWelcomeMessage = true;
+
+        // Initialize model with registration defaults
+        var model = new RegisterViewModel
+        {
+            AcceptTerms = false
+        };
+
+        return View(model);
     }
 
     [HttpPost]
@@ -85,7 +99,7 @@ public class AccountController : Controller
         var existingUser = await _userService.GetUserByEmailAsync(model.Email);
         if (existingUser != null)
         {
-            ModelState.AddModelError("Email", "Email adresa je ve� registrirana");
+            ModelState.AddModelError("Email", "Email adresa je veæ registrirana");
             return View(model);
         }
 
@@ -95,9 +109,25 @@ public class AccountController : Controller
         _currentUserService.StoreCurrentUser(newStudent);
         _logger.LogInformation("New user {Email} registered successfully", model.Email);
 
-        TempData["SuccessMessage"] = "Registracija uspje�na! Dobrodo�li u TravelShare!";
+        TempData["SuccessMessage"] = "Registracija uspješna! Dobrodošli u TravelShare!";
         return RedirectToAction("Index", "Home");
     }
+
+    private static List<string> GetUniversities()
+    {
+        return new List<string>
+    {
+        "Sveučilište u Zagrebu",
+        "Sveučilište u Splitu",
+        "Sveučilište u Rijeci",
+        "Sveučilište u Osijeku",
+        "Sveučilište u Zadru",
+        "Sveučilište Josipa Jurja Strossmayera u Osijeku",
+        "Sveučilište u Dubrovniku"
+    };
+    }
+
+    
 
     [HttpPost]
     [ValidateAntiForgeryToken]
