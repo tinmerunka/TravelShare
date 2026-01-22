@@ -6,12 +6,10 @@ namespace TravelShare.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly ICurrentUserService _currentUserService;
 
         public HomeController(ILogger<HomeController> logger, ICurrentUserService currentUserService)
         {
-            _logger = logger;
             _currentUserService = currentUserService;
         }
 
@@ -26,13 +24,18 @@ namespace TravelShare.Controllers
         }
 
         public IActionResult Privacy()
-        {
-            var currentUser = _currentUserService.GetCurrentUser();
-            if (currentUser != null)
-            {
-                ViewBag.CurrentUser = currentUser;
-            }
-            return View();
-        }
+{
+    var currentUser = _currentUserService.GetCurrentUser();
+    if (currentUser != null)
+    {
+        ViewBag.CurrentUser = currentUser;
+    }
+    
+    // Add privacy-specific data
+    ViewBag.PageTitle = "Privacy Policy";
+    ViewBag.ContactEmail = "privacy@travelshare.com";
+    
+    return View();
+}
     }
 }

@@ -408,7 +408,7 @@
                                 <img src="@avatarUrl"
                                      alt="@currentUser?.FirstName @currentUser?.LastName"
                                      class="profile-avatar-img"
-                                     onerror="this.style.display='none'; this.parentElement.innerHTML='@(currentUser?.FirstName?[0])@(currentUser?.LastName?[0])';" />
+                                     data-fallback="@(currentUser?.FirstName?[0])@(currentUser?.LastName?[0])" />
                             }
                             else
                             {
@@ -693,9 +693,14 @@
                                                     {
                                                         @foreach (var destination in Model.StudentProfile.Preferences.PreferredDestinations)
                                                         {
-                                                            <span class="preference-tag removable" onclick="removeDestination(this)" data-destination="@destination">
+                                                            <button type="button"
+                                                                    class="preference-tag removable"
+                                                                    onclick="removeDestination(this)"
+                                                                    onkeydown="handleDestinationKeydown(event, this)"
+                                                                    data-destination="@destination"
+                                                                    aria-label="Remove @destination">
                                                                 @destination
-                                                            </span>
+                                                            </button>
                                                         }
                                                     }
                                                 </div>
